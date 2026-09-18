@@ -1,0 +1,118 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Bouton } from "@/components/Bouton";
+import { EnTete, Section } from "@/components/Mise";
+import { agenda, heure, libelleType, periode } from "@/lib/agenda";
+import type { Evenement } from "@/content/types";
+
+/* Revalidation quotidienne : un événement passé disparaît de la liste
+   « à venir » sans redéploiement. C’est le correctif du problème le plus
+   visible de l’ancien site. */
+export const revalidate = 86400;
+
+export const metadata: Metadata = {
+  title: "Agenda",
+  description:
+    "Auditions, journées portes ouvertes, spectacles d’élèves et stages de l’École de Théâtre de Lyon.",
+  alternates: { canonical: "/agenda" },
+};
+
+function Ligne({ e, passe = false }: { e: Evenement; passe?: boolean }) {
+  const h = heure(e.debut);
+  return (
+    <li className={`bg-salle py-8 ${passe ? "opacity-60" : ""}`}>
+      <div className="grid gap-5 md:grid-cols-12 md:gap-8">
+        <div className="md:col-span-3">
+          <p
+            className={`font-display text-[length:var(--text-lg)] ${passe ? "text-ivoire-sourd" : "text-scene"}`}
+          >
+            {periode(e)}
+          </p>
+          {h && !passe && (
+            <p className="mt-1 font-sans text-xs text-ivoire-sourd tnum">
+              à partir de {h}
+            </p>
+          )}
+        </div>
+
+        <div className="md:col-span-6">
+          <p className="surtitre surtitre-sourd">{libelleType[e.type]}</p>
+          <h3 className="mt-2 font-display text-[length:var(--text-xl)]">
+            {e.titre}
+          </h3>
+          {e.description && (
+            <p className="mt-3 font-sans text-sm text-ivoire-doux">
+              {e.description}
+            </p>
+          )}
+          {e.lieu && (
+            <p className="mt-3 font-sans text-xs text-ivoire-sourd">{e.lieu}</p>
+          )}
+        </div>
+
+        <div className="md:col-span-3">
+          {e.lien && (
+            <Link
+              href={e.lien.href}
+              className="font-sans text-sm text-ivoire transition-colors hover:text-scene-chaud"
+            >
+              {e.lien.libelle} <span aria-hidden>→</span>
+            </Link>
+          )}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+export default function Agenda() {
+  const { aVenir, passes } = agenda();
+
+  return (
+    <>
+      <EnTete
+        surtitre="Agenda"
+        titre="Ce qui se passe à l’école"
+        chapo="Auditions, portes ouvertes, spectacles, stages. Les dates passées basculent automatiquement dans l’archive."
+      />
+
+      <Section className="!pt-0" surtitre="À venir">
+        {aVenir.length > 0 ? (
+          <ul className="space-y-px bg-ivoire/10">
+            {aVenir.map((e) => (
+              <Ligne key={e.slug} e={e} />
+            ))}
+          </ul>
+        ) : (
+          <div className="border border-ivoire/15 p-8">
+            <p className="font-display text-[length:var(--text-xl)]">
+              Aucune date programmée pour l’instant.
+            </p>
+            <p className="prose-etl mt-4">
+              Les candidatures, elles, restent ouvertes toute l’année : les
+              auditions sont organisées à réception des dossiers.
+            </p>
+            <div className="mt-8">
+              <Bouton href="/candidater">Candidater</Bouton>
+            </div>
+          </div>
+        )}
+      </Section>
+
+      {passes.length > 0 && (
+        <Section
+          fond="plateau"
+          surtitre="Archive"
+          titre="C’est passé"
+          chapo="Pour donner une idée du rythme d’une année à l’école."
+        >
+          <ul className="space-y-px bg-ivoire/10 [&>li]:bg-plateau">
+            {passes.map((e) => (
+              <Ligne key={e.slug} e={e} passe />
+            ))}
+          </ul>
+        </Section>
+      )}
+    </>
+  );
+}
