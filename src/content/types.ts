@@ -18,6 +18,8 @@ export type Discipline = {
   methode: string[];
   objectif: string;
   photo?: string;
+  /** Photographies de cours retrouvees pour cette discipline. */
+  photos?: string[];
   intervenants: string[];
 };
 
@@ -66,6 +68,8 @@ export type Stage = {
    *  explicitement au lieu d’afficher un champ vide, comme l’ancien site. */
   dates: string | null;
   horaires: string | null;
+  /** Photographies du stage retrouvées sur l’ancien site. */
+  photos?: string[];
   externe?: { partenaire: string; url?: string };
 };
 

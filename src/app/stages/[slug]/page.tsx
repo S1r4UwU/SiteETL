@@ -6,6 +6,8 @@ import { Formulaire } from "@/components/Formulaire";
 import { EnTete, Fiche, Section } from "@/components/Mise";
 import { stageParSlug, stages } from "@/content/stages";
 import { site } from "@/lib/site";
+import { Galerie } from "@/components/Galerie";
+import { parId } from "@/content/medias";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -153,6 +155,18 @@ export default async function FicheStage({ params }: Params) {
           </aside>
         </div>
       </Section>
+
+      {s.photos && s.photos.length > 0 && (
+        <Section registre="creme" surtitre="Le stage, en images">
+          <Galerie
+            legende={s.titre}
+            colonnes="trois"
+            medias={s.photos.map(
+              (x) => parId(x) ?? { id: x, alt: `Stage ${s.titre}`, l: 0, h: 0 },
+            )}
+          />
+        </Section>
+      )}
 
       <script
         type="application/ld+json"

@@ -7,6 +7,8 @@ import { EnTete, Section } from "@/components/Mise";
 import { disciplines } from "@/content/disciplines";
 import { equipe } from "@/content/equipe";
 import { site } from "@/lib/site";
+import { Galerie } from "@/components/Galerie";
+import { parId } from "@/content/medias";
 
 type Params = { params: Promise<{ discipline: string }> };
 
@@ -147,6 +149,20 @@ export default async function DisciplinePage({ params }: Params) {
           </aside>
         </div>
       </Section>
+
+      {/* Les photographies de cours retrouvees pour cette discipline, avec
+          les legendes de l'ecole : elles nomment la promotion et l'annee. */}
+      {d.photos && d.photos.length > 0 && (
+        <Section registre="creme" surtitre="Le cours, en images">
+          <Galerie
+            legende={d.titre}
+            colonnes="trois"
+            medias={d.photos.map(
+              (x) => parId(x) ?? { id: x, alt: `${d.titre} — cours`, l: 0, h: 0 },
+            )}
+          />
+        </Section>
+      )}
 
       <Section registre="creme" className="!py-16">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">

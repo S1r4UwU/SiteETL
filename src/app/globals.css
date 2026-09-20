@@ -1388,3 +1388,41 @@
     --pr: 0.5;
   }
 }
+
+@layer components {
+  /* --- Le repertoire, en mur d'affiche ------------------------------------
+     Vingt-sept auteurs composes a trois corps differents. En liste a puces
+     c'est un inventaire ; a des tailles inegales, c'est une affiche. Le
+     desequilibre est le sujet. */
+  .repertoire {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.7em;
+    row-gap: 0.15em;
+    font-family: var(--font-display);
+    line-height: 1.02;
+  }
+
+  .repertoire-nom {
+    color: var(--color-texte-doux);
+    transition: color 0.2s var(--ease-scene);
+  }
+
+  .repertoire-nom:hover {
+    color: var(--color-accent);
+  }
+
+  .repertoire-nom[data-taille="a"] {
+    font-size: var(--text-3xl);
+  }
+
+  .repertoire-nom[data-taille="b"] {
+    font-size: var(--text-xl);
+    color: var(--color-texte-sourd);
+  }
+
+  .repertoire-nom[data-taille="c"] {
+    font-size: var(--text-2xl);
+  }
+}

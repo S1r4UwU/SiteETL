@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Bouton } from "@/components/Bouton";
 import { EnTete, Fiche, Section } from "@/components/Mise";
+import { Marque } from "@/components/Marque";
+import { Photo } from "@/components/Photo";
+import { Poursuite } from "@/components/Poursuite";
+import { parId } from "@/content/medias";
 import { spectacles } from "@/content/spectacles";
 import { agenda, libelleType, periode } from "@/lib/agenda";
 import { site } from "@/lib/site";
@@ -154,7 +158,16 @@ export default function Candidater() {
           {etapes.map((e) => (
             <li key={e.numero} className="bg-fond-doux p-7 md:p-10">
               <div className="grid gap-8 md:grid-cols-12 md:gap-10">
-                <div className="md:col-span-3">
+                <div className="relative md:col-span-3">
+                  {/* Un crochet de marge sur l'étape qui angoisse tout le
+                      monde. Une seule marque sur toute la page. */}
+                  {e.numero === "04" && (
+                    <Marque
+                      forme="crochet"
+                      bascule={-2}
+                      className="pointer-events-none absolute -left-7 top-1 hidden h-32 w-5 xl:block"
+                    />
+                  )}
                   <p className="font-display text-[length:var(--text-3xl)] leading-none text-accent tnum">
                     {e.numero}
                   </p>
@@ -232,6 +245,54 @@ export default function Candidater() {
               </div>
             </div>
           </aside>
+        </div>
+      </Section>
+
+      {/* On candidate pour ça. */}
+      <Section registre="salle" className="!py-0">
+        <div className="grid items-center gap-10 py-[var(--spacing-section)] lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-6">
+            <Poursuite className="aspect-[4/3] w-full">
+              <Photo
+                id={spectacles[0].photos[1]}
+                alt="Les élèves de l’École de Théâtre de Lyon en représentation"
+                largeur={1200}
+                hauteur={900}
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                className="poursuite-froid"
+              />
+              <Photo
+                id={spectacles[0].photos[1]}
+                alt=""
+                decoratif
+                largeur={1200}
+                hauteur={900}
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                className="poursuite-chaud"
+              />
+            </Poursuite>
+            {parId(spectacles[0].photos[1])?.credit && (
+              <p className="credit mt-3">
+                Photo : {parId(spectacles[0].photos[1])?.credit}
+              </p>
+            )}
+          </div>
+          <div className="lg:col-span-6">
+            <p className="surtitre">Au bout des trois ans</p>
+            <h2 className="mt-5 text-[length:var(--text-2xl)]">
+              Un spectacle, dans un vrai théâtre, devant un vrai public
+            </h2>
+            <p className="prose-etl mt-6">
+              Chaque promotion crée et joue son spectacle de sortie au Théâtre
+              Le Nombril du Monde. C’est là que se mesure tout le reste — et
+              c’est la première ligne d’un CV de comédien.
+            </p>
+            <div className="mt-8">
+              <Bouton href="/spectacles" variante="fantome">
+                Quinze ans de spectacles
+              </Bouton>
+            </div>
+          </div>
         </div>
       </Section>
 

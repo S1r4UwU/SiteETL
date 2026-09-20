@@ -7,6 +7,10 @@ import type { Discipline } from "./types";
 export const disciplines: Discipline[] = [
   {
     slug: "jeu-et-interpretation",
+    photos: [
+      "7dee3f_8a6fb994a3354a7293e930f7f323ad46~mv2.jpg",
+      "7dee3f_7f1cd7b55ebb491cbd8d46fee5484bc5~mv2_d_5184_3456_s_4_2.jpg",
+    ],
     titre: "Jeu d’acteur & interprétation",
     annees: "1re, 2e et 3e années",
     accroche:
@@ -27,6 +31,9 @@ export const disciplines: Discipline[] = [
   },
   {
     slug: "jeu-face-camera",
+    photos: [
+      "7dee3f_bf08fa2d07324f88a2775854a65b7f98~mv2.jpg",
+    ],
     titre: "Jeu d’acteur face caméra",
     annees: "3e année",
     accroche:
@@ -45,6 +52,10 @@ export const disciplines: Discipline[] = [
   },
   {
     slug: "voix-et-corps",
+    photos: [
+      "7dee3f_23b6a8e5abbc46af933a3b0097f4d757~mv2.jpg",
+      "7dee3f_003650d3cd2e45979c69fc96b0e70419~mv2.jpg",
+    ],
     titre: "Voix & corps",
     annees: "1re année",
     accroche:
@@ -80,6 +91,10 @@ export const disciplines: Discipline[] = [
   },
   {
     slug: "chant",
+    photos: [
+      "7dee3f_1397fdb3bf174a778badfe4b26249b29~mv2.jpg",
+      "7dee3f_1ab04061e5c44394a84a96e90a9d0477~mv2.jpg",
+    ],
     titre: "Chant",
     annees: "1re et 2e années",
     accroche:
@@ -101,6 +116,9 @@ export const disciplines: Discipline[] = [
   },
   {
     slug: "danse",
+    photos: [
+      "7dee3f_e8e37463bca0434787de4787aab7eb2c~mv2.jpg",
+    ],
     titre: "Danse",
     annees: "1re et 2e années",
     accroche:
@@ -122,18 +140,21 @@ export const disciplines: Discipline[] = [
 export const modules = [
   {
     titre: "Escrime & combat de scène",
+    photo: "7dee3f_7af43e1e2e5b4912b85c73954f03b8e5~mv2.jpg",
     intervenant: "florence-leguy",
     description:
       "Maniement des armes et mise en action dans le spectacle vivant. Se déplacer dans l’espace, réagir aux temps donnés, être en constante relation avec son partenaire.",
   },
   {
     titre: "Clown",
+    photo: "7dee3f_0e6854a41e3649df98510410665972f8~mv2.jpg",
     intervenant: "maude-lallier",
     description:
       "Trouver son clown, c’est-à-dire trouver ce qui, chez soi, fait rire sans qu’on le décide. Un travail sur l’échec, l’adresse au public et la présence.",
   },
   {
     titre: "Marionnette & théâtre d’objet",
+    photo: "7dee3f_74c3bc963bb34c8aa5d8d15dea75c8fe~mv2.jpg",
     intervenant: "clement-peretjatko",
     description:
       "Théâtre d’ombre, maniement des marionnettes et des objets, et leur mise en action dans le spectacle vivant.",
@@ -146,6 +167,7 @@ export const modules = [
   },
   {
     titre: "Administration & communication",
+    photo: "7dee3f_ed97f1cd82ac4177b3c1a29abdc12318~mv2.jpg",
     intervenant: "thierry-buenafuente",
     description:
       "Cours théoriques. Monter une compagnie, comprendre le régime de l’intermittence, construire un dossier, s’adresser à un lieu, à une institution, à un public.",

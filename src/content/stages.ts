@@ -7,6 +7,7 @@ import type { Stage } from "./types";
 export const stages: Stage[] = [
   {
     slug: "escrime-et-combat-de-scene",
+    photos: ["7dee3f_7af43e1e2e5b4912b85c73954f03b8e5~mv2.jpg"],
     titre: "Escrime & combat de scène",
     duree: "30 heures — deux niveaux : initiation et renforcement",
     intervenant: "Florence Leguy",
@@ -28,6 +29,7 @@ export const stages: Stage[] = [
   },
   {
     slug: "marionnettes",
+    photos: ["7dee3f_74c3bc963bb34c8aa5d8d15dea75c8fe~mv2.jpg"],
     titre: "Marionnettes & théâtre d’objet",
     duree: "20 heures",
     intervenant: "Clément Peretjatko",
@@ -49,6 +51,7 @@ export const stages: Stage[] = [
   },
   {
     slug: "commedia-dell-arte",
+    photos: ["7dee3f_ed97f1cd82ac4177b3c1a29abdc12318~mv2.jpg", "7dee3f_ba50c4e28dd545b3b8ec0e63616b410b~mv2.jpg"],
     titre: "Commedia dell’Arte",
     duree: "15 heures",
     intervenant: "Christophe Herrada",

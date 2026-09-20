@@ -2,11 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
+import { Poursuite } from "@/components/Poursuite";
+import { Galerie } from "@/components/Galerie";
+import { Distribution } from "@/components/Distribution";
+import { Marque } from "@/components/Marque";
+import { Apparition, TitreLeve } from "@/components/Apparition";
 import { EnTete, Fiche, Section } from "@/components/Mise";
-import { Compteur } from "@/components/Apparition";
-import { disciplines, modules, repertoire } from "@/content/disciplines";
+import {
+  disciplines,
+  feuilleFormation,
+  modules,
+  repertoire,
+} from "@/content/disciplines";
 import { nomComplet } from "@/content/equipe";
-import { chiffresFormation } from "@/content/alumni";
+import { cours } from "@/content/coulisses";
+import { parId } from "@/content/medias";
 import { spectacles } from "@/content/spectacles";
 
 export const metadata: Metadata = {
@@ -16,20 +26,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/la-formation" },
 };
 
-/* L’ancien site présentait la progression 1re → 2e → 3e année nulle part.
-   C’est pourtant ce que cherche à comprendre quelqu’un qui hésite à s’engager
-   pour trois ans et 13 500 €. */
+/* Les trois années, avec les disciplines réellement au programme de chacune. */
 const annees = [
   {
     numero: "01",
-    titre: "Première année — les fondations",
+    titre: "Les fondations",
     texte:
       "Le corps et la voix avant tout le reste. On désapprend les réflexes, on trouve son ancrage, sa respiration, son médium. Le vers entre dès cette année, et le chant et la danse commencent.",
     disciplines: ["Voix & corps", "Jeu d’acteur", "Dire le vers", "Chant", "Danse"],
   },
   {
     numero: "02",
-    titre: "Deuxième année — le répertoire",
+    titre: "Le répertoire",
     texte:
       "Le travail de scènes s’intensifie et le répertoire s’ouvre : tragédie grecque, classique, contemporain. Les modules arrivent — escrime, clown, marionnette, biomécanique. La promotion monte son premier vrai spectacle.",
     disciplines: [
@@ -43,9 +51,9 @@ const annees = [
   },
   {
     numero: "03",
-    titre: "Troisième année — la sortie",
+    titre: "La sortie",
     texte:
-      "La caméra entre dans le cursus : castings, jeu face caméra, conditions réelles. Les cours d’administration et de communication préparent la vie d’après : monter une compagnie, comprendre l’intermittence, s’adresser à un lieu. La promotion crée son spectacle de sortie.",
+      "La caméra entre dans le cursus : castings, jeu face caméra, conditions réelles. Les cours d’administration et de communication préparent la vie d’après. La promotion crée son spectacle de sortie, joué devant du public.",
     disciplines: [
       "Jeu face caméra",
       "Jeu d’acteur",
@@ -67,12 +75,14 @@ const competences = [
 ];
 
 export default function LaFormation() {
+  const photosCours = cours.filter((c) => c.alt || c.titre);
+
   return (
     <>
       <EnTete
         surtitre="Formation professionnalisante — certifiée Qualiopi"
         titre="Trois ans pour devenir comédien·ne"
-        chapo="De septembre à juin, 14 à 18 heures de cours par semaine, dans une promotion de vingt élèves au maximum. Un cursus complet : jeu, caméra, voix, corps, vers, chant, danse, escrime, clown, marionnette — et les cours qui préparent la vie professionnelle."
+        chapo="De septembre à juin, dans une promotion de vingt élèves au maximum. Jeu, caméra, voix, corps, vers, chant, danse, escrime, clown, marionnette — et les cours qui préparent la vie professionnelle."
         photo={spectacles[1].photos[1]}
         enfants={
           <div className="flex flex-wrap gap-4">
@@ -84,187 +94,220 @@ export default function LaFormation() {
         }
       />
 
-      {/* Les chiffres, en haut, avant tout argumentaire. */}
-      <Section>
-        <div className="grid gap-12 border-y border-filet py-14 sm:grid-cols-3">
-          {chiffresFormation.map((c) => (
-            <div key={c.libelle}>
-              <p className="font-display text-[length:var(--text-3xl)] leading-none text-accent">
-                <Compteur valeur={c.nombre} />
-                <span className="ml-2 text-[length:var(--text-lg)] text-texte">
-                  {c.unite}
-                </span>
-              </p>
-              <p className="mt-3 font-sans text-sm text-texte-doux">
-                {c.libelle}
-              </p>
-            </div>
-          ))}
+      {/* ═══ La feuille de service ═════════════════════════════════════════ */}
+      <Section className="!pb-16">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <p className="marge-numero">Feuille de service</p>
+            <p className="surtitre">Le cursus en chiffres</p>
+            <p className="prose-etl mt-5">
+              Les volumes réels, ceux de la plaquette. C’est la première chose
+              qu’on veut savoir avant de s’engager trois ans.
+            </p>
+          </div>
+          <div className="lg:col-span-8">
+            <Apparition>
+              <dl className="feuille">
+                {feuilleFormation.map((l) => (
+                  <div key={l.libelle} className="feuille-ligne">
+                    <dt className="feuille-valeur">
+                      {l.valeur}
+                      <span className="ml-1.5 text-[length:var(--text-sm)] text-texte-sourd">
+                        {l.unite}
+                      </span>
+                    </dt>
+                    <dd className="feuille-libelle">{l.libelle}</dd>
+                    <dd className="feuille-note">{l.note}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Apparition>
+          </div>
         </div>
       </Section>
 
-      {/* La progression sur trois ans. */}
-      <Section
-        surtitre="La progression"
-        titre="Ce qui change d’une année à l’autre"
-      >
-        <ol className="space-y-px bg-[var(--color-filet)]">
-          {annees.map((a) => (
-            <li
-              key={a.numero}
-              className="grid gap-6 bg-fond py-10 md:grid-cols-12 md:gap-10"
-            >
-              <p className="font-display text-[length:var(--text-3xl)] leading-none text-accent md:col-span-2 tnum">
-                {a.numero}
-              </p>
-              <div className="md:col-span-6">
-                <h3 className="text-[length:var(--text-xl)]">{a.titre}</h3>
-                <p className="prose-etl mt-4">{a.texte}</p>
+      {/* ═══ La progression ════════════════════════════════════════════════ */}
+      <Section registre="creme" surtitre="La progression">
+        <TitreLeve
+          className="max-w-3xl text-[length:var(--text-3xl)]"
+          lignes={["Ce qui change", "d’une année à l’autre"]}
+        />
+
+        <ol className="mt-14 space-y-px bg-[var(--color-filet)]">
+          {annees.map((a, i) => (
+            <li key={a.numero} className="bg-fond-doux py-10">
+              <div className="grid gap-6 md:grid-cols-12 md:gap-10">
+                <div className="md:col-span-3">
+                  <p className="porte-marque inline-block font-display text-[length:var(--text-4xl)] leading-none text-accent tnum">
+                    {a.numero}
+                    {/* Une seule marque, sur la dernière année : celle qui compte. */}
+                    {i === 2 && (
+                      <Marque
+                        forme="cercle"
+                        bascule={-3}
+                        delai={300}
+                        className="marque-sur -left-[24%] -top-[22%] w-[150%]"
+                      />
+                    )}
+                  </p>
+                  <h3 className="mt-5 text-[length:var(--text-xl)]">{a.titre}</h3>
+                </div>
+                <p className="prose-etl md:col-span-5">{a.texte}</p>
+                <ul className="flex flex-wrap content-start gap-2 md:col-span-4">
+                  {a.disciplines.map((d) => (
+                    <li
+                      key={d}
+                      className="border border-filet px-3 py-1.5 font-sans text-xs text-texte-doux"
+                    >
+                      {d}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="flex flex-wrap content-start gap-2 md:col-span-4">
-                {a.disciplines.map((d) => (
-                  <li
-                    key={d}
-                    className="border border-filet px-3 py-1.5 font-sans text-xs text-texte-doux"
-                  >
-                    {d}
-                  </li>
-                ))}
-              </ul>
             </li>
           ))}
         </ol>
       </Section>
 
-      {/* Les six disciplines. */}
-      <Section
-        id="disciplines"
-        registre="creme"
-        surtitre="Les enseignements"
-        titre="Six disciplines, chacune avec sa méthode"
-        chapo="Plusieurs intervenants, plusieurs approches — tous artistes professionnels en activité."
-      >
-        <div className="grid gap-px bg-[var(--color-filet)] sm:grid-cols-2 lg:grid-cols-3">
-          {disciplines.map((d) => (
-            <Link
-              key={d.slug}
-              href={`/la-formation/${d.slug}`}
-              className="group flex min-h-72 flex-col bg-fond-doux p-7 transition-colors hover:bg-fond-fort"
-            >
-              <p className="surtitre surtitre-sourd">{d.annees}</p>
-              <h3 className="mt-3 text-[length:var(--text-lg)] group-hover:text-accent">
-                {d.titre}
-              </h3>
-              <p className="mt-4 flex-1 font-sans text-sm text-texte-doux">
-                {d.accroche}
-              </p>
-              <p className="mt-5 font-sans text-xs text-texte-sourd">
-                {d.intervenants.map(nomComplet).join(" · ")}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </Section>
-
-      {/* Modules. */}
-      <Section
-        surtitre="En complément"
-        titre="Les modules"
-        chapo="Des disciplines qui ouvrent le champ des rôles possibles — et qui, sur un CV de comédien, font souvent la différence."
-      >
-        <div className="grid gap-px bg-[var(--color-filet)] md:grid-cols-2">
-          {modules.map((m) => (
-            <div key={m.titre} className="bg-fond p-7">
-              <h3 className="text-[length:var(--text-lg)]">{m.titre}</h3>
-              {m.intervenant && (
-                <p className="mt-2 font-sans text-xs uppercase tracking-[0.14em] text-accent">
-                  {nomComplet(m.intervenant)}
-                </p>
-              )}
-              <p className="mt-4 font-sans text-sm text-texte-doux">
-                {m.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Répertoire — la liste d’auteurs, traitée comme une affiche. */}
-      <Section registre="creme" surtitre="Le répertoire" titre="Ce qu’on joue">
-        <p className="prose-etl mb-10">
-          Les pièces, scènes et textes abordés sont représentatifs du répertoire.
-          Ils vont de la tragédie grecque au contemporain, en passant par la
-          comédie et le classique.
+      {/* ═══ Les disciplines, en distribution ══════════════════════════════ */}
+      <Section id="disciplines" surtitre="Les enseignements">
+        <TitreLeve
+          className="max-w-3xl text-[length:var(--text-3xl)]"
+          lignes={["Six disciplines,", "chacune avec sa méthode"]}
+        />
+        <p className="prose-etl mt-6">
+          Plusieurs intervenants, plusieurs approches — tous artistes
+          professionnels en activité. Aucun élève ne sort d’ici avec une seule
+          manière de faire.
         </p>
-        <ul className="flex flex-wrap gap-x-6 gap-y-3">
-          {repertoire.map((auteur) => (
-            <li
-              key={auteur}
-              className="font-display text-[length:var(--text-xl)] text-texte-doux transition-colors hover:text-accent"
-            >
-              {auteur}
-            </li>
-          ))}
-        </ul>
+
+        <div className="mt-14">
+          <Distribution
+            lignes={disciplines.map((d) => ({
+              slug: d.slug,
+              titre: d.titre,
+              mention: d.annees,
+              second: d.intervenants.map(nomComplet).join(" · "),
+              photo: d.photos?.[0] ?? d.photo,
+              href: `/la-formation/${d.slug}`,
+            }))}
+          />
+        </div>
       </Section>
 
-      {/* Méthodes, évaluation, et ce qu’on sait faire en sortant. */}
-      <Section surtitre="Le cadre" titre="Méthodes, évaluation, débouchés">
-        <div className="grid gap-12 lg:grid-cols-3">
-          <div>
-            <h3 className="surtitre">Les méthodes mobilisées</h3>
-            <ul className="mt-6 space-y-2.5 font-sans text-sm text-texte-doux">
-              {[
-                "Mises en situation",
-                "Jeux de rôles",
-                "Exercices physiques",
-                "Présentation de supports",
-                "Cours et apports théoriques",
-                "Exposés magistraux",
-              ].map((m) => (
-                <li key={m}>{m}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="surtitre">Les modalités d’évaluation</h3>
-            <ul className="mt-6 space-y-2.5 font-sans text-sm text-texte-doux">
-              {[
-                "Contrôle continu",
-                "Mises en situation",
-                "Restitutions",
-                "Exposés",
-                "Rendus écrits",
-                "Entretiens personnels",
-              ].map((m) => (
-                <li key={m}>{m}</li>
-              ))}
-            </ul>
-            <p className="mt-6 font-sans text-xs text-texte-sourd">
-              Suivi individuel régulier et bilan semestriel.
+      {/* ═══ Le répertoire, en mur d'affiche ═══════════════════════════════
+          Vingt-sept auteurs. En liste à puces c'est un inventaire ; composés
+          à des corps différents, c'est une affiche — et c'est ce qu'est
+          vraiment un répertoire : une déclaration d'intention.
+         ═══════════════════════════════════════════════════════════════════ */}
+      <Section registre="salle">
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <p className="surtitre">Le répertoire</p>
+            <h2 className="mt-5 text-[length:var(--text-2xl)]">Ce qu’on joue</h2>
+            <p className="prose-etl mt-6">
+              De la tragédie grecque au contemporain, en passant par la comédie
+              et le classique. Ce ne sont pas des références : ce sont les
+              textes que les élèves ont sur les bras.
             </p>
           </div>
 
-          <div>
-            <h3 className="surtitre">En sortant, l’étudiant·e sait</h3>
-            <ul className="mt-6 space-y-2.5">
+          <div className="lg:col-span-8">
+            <Apparition>
+              <ul className="repertoire">
+                {repertoire.map((auteur, i) => (
+                  <li
+                    key={auteur}
+                    className="repertoire-nom"
+                    data-taille={["a", "b", "c", "b", "a", "c", "b"][i % 7]}
+                  >
+                    {auteur}
+                  </li>
+                ))}
+              </ul>
+            </Apparition>
+          </div>
+        </div>
+      </Section>
+
+      {/* ═══ Les modules ═══════════════════════════════════════════════════ */}
+      <Section surtitre="En complément" titre="Les modules">
+        <p className="prose-etl">
+          Des disciplines qui ouvrent le champ des rôles possibles — et qui, sur
+          un CV de comédien, font souvent la différence.
+        </p>
+
+        <dl className="feuille mt-12">
+          {modules.map((m) => (
+            <div key={m.titre} className="feuille-ligne !grid-cols-1 md:!grid-cols-[minmax(0,14rem)_1fr_minmax(0,auto)]">
+              <dt className="font-display text-[length:var(--text-lg)] leading-tight">
+                {m.titre}
+              </dt>
+              <dd className="feuille-libelle !text-texte-doux">
+                {m.description}
+              </dd>
+              <dd className="feuille-note">
+                {m.intervenant ? nomComplet(m.intervenant) : "—"}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ═══ Les cours, en images ══════════════════════════════════════════ */}
+      {photosCours.length > 0 && (
+        <Section registre="creme" surtitre="Les cours">
+          <div className="max-w-2xl">
+            <h2 className="text-[length:var(--text-2xl)]">
+              Quatre-vingt-quinze pour cent du temps, les élèves sont debout
+            </h2>
+            <p className="prose-etl mt-5">
+              Chant, danse, clown, marionnette, escrime, enregistrement de voix
+              en studio, préparation aux castings. Les légendes sont celles de
+              l’école : elles nomment les promotions et les années.
+            </p>
+          </div>
+          <div className="mt-12">
+            <Galerie medias={photosCours} legende="Les cours" colonnes="quatre" />
+          </div>
+        </Section>
+      )}
+
+      {/* ═══ Le cadre ══════════════════════════════════════════════════════ */}
+      <Section surtitre="Le cadre">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <h2 className="text-[length:var(--text-2xl)]">
+              En sortant, l’étudiant·e sait
+            </h2>
+            <ul className="mt-8 space-y-3.5">
               {competences.map((c) => (
-                <li
-                  key={c}
-                  className="flex gap-3 font-sans text-sm text-texte-doux"
-                >
-                  <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-accent" />
+                <li key={c} className="flex gap-4 font-sans text-sm text-texte-doux">
+                  <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-accent" />
                   {c}
                 </li>
               ))}
             </ul>
           </div>
+
+          <div className="lg:col-span-5">
+            <p className="surtitre">Méthodes mobilisées</p>
+            <p className="mt-4 font-sans text-sm text-texte-doux">
+              Mises en situation, jeux de rôles, exercices physiques,
+              présentation de supports, apports théoriques, exposés magistraux.
+            </p>
+            <p className="surtitre mt-10">Évaluation</p>
+            <p className="mt-4 font-sans text-sm text-texte-doux">
+              Contrôle continu, mises en situation, restitutions, exposés,
+              rendus écrits, entretiens personnels. Suivi individuel régulier et
+              bilan semestriel.
+            </p>
+          </div>
         </div>
       </Section>
 
-      {/* Fiche pratique + plaquette. */}
-      <Section registre="creme" surtitre="En pratique">
+      {/* ═══ En pratique ═══════════════════════════════════════════════════ */}
+      <Section registre="salle" surtitre="En pratique">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <Fiche
@@ -278,10 +321,7 @@ export default function LaFormation() {
                   valeur:
                     "Stage obligatoire en milieu professionnel chaque année (théâtres, compagnies)",
                 },
-                {
-                  terme: "Lieu",
-                  valeur: "53 rue des Tables Claudiennes, Lyon 1er",
-                },
+                { terme: "Lieu", valeur: "53 rue des Tables Claudiennes, Lyon 1er" },
                 {
                   terme: "Tarifs",
                   valeur: (
@@ -313,14 +353,30 @@ export default function LaFormation() {
           </div>
 
           <div className="lg:col-span-5">
-            <Photo
-              id={spectacles[2].photos[0]}
-              alt="Élèves de l’École de Théâtre de Lyon en répétition sur le plateau"
-              largeur={900}
-              hauteur={1100}
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              className="w-full object-cover"
-            />
+            <Poursuite className="aspect-[4/5] w-full">
+              <Photo
+                id={spectacles[2].photos[0]}
+                alt="Élèves de l’École de Théâtre de Lyon en répétition"
+                largeur={900}
+                hauteur={1100}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="poursuite-froid"
+              />
+              <Photo
+                id={spectacles[2].photos[0]}
+                alt=""
+                decoratif
+                largeur={900}
+                hauteur={1100}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="poursuite-chaud"
+              />
+            </Poursuite>
+            <p className="credit mt-3">
+              {parId(spectacles[2].photos[0])?.credit
+                ? `Photo : ${parId(spectacles[2].photos[0])?.credit}`
+                : ""}
+            </p>
           </div>
         </div>
       </Section>

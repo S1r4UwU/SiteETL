@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Bouton } from "@/components/Bouton";
 import { Chiffre, Citation, EnTete, Section } from "@/components/Mise";
 import { alumni, indicateurs } from "@/content/alumni";
+import { photosDe } from "@/lib/scene";
+import { GalerieAlumni } from "@/components/GalerieAlumni";
 
 export const metadata: Metadata = {
   title: "Les alumni",
@@ -66,6 +68,10 @@ export default function Alumni() {
                     auteur={a.nom}
                     precision={`Promotion ${a.promotion}`}
                   />
+
+                  {/* Si les crédits des photographies la nomment, on la montre
+                      en scène — dans le spectacle qu'elle raconte. */}
+                  <GalerieAlumni nom={a.nom} medias={photosDe(a.nom)} />
                 </div>
               </div>
             </li>

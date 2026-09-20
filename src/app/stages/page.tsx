@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EnTete, Section } from "@/components/Mise";
+import { Photo } from "@/components/Photo";
+import { parId } from "@/content/medias";
 import { stages } from "@/content/stages";
 
 export const metadata: Metadata = {
@@ -27,7 +29,20 @@ export default function Stages() {
                 href={`/stages/${s.slug}`}
                 className="group grid gap-6 bg-fond py-10 md:grid-cols-12 md:gap-10"
               >
-                <div className="md:col-span-5">
+                {s.photos?.[0] && (
+                  <div className="md:col-span-3">
+                    <Photo
+                      id={s.photos[0]}
+                      alt={parId(s.photos[0])?.alt ?? `Stage ${s.titre}`}
+                      largeur={600}
+                      hauteur={450}
+                      sizes="(max-width: 768px) 100vw, 22vw"
+                      className="aspect-[4/3] w-full object-cover grayscale transition-all duration-500 ease-[var(--ease-scene)] group-hover:grayscale-0"
+                    />
+                  </div>
+                )}
+
+                <div className={s.photos?.[0] ? "md:col-span-3" : "md:col-span-5"}>
                   <h2 className="font-display text-[length:var(--text-2xl)] group-hover:text-accent">
                     {s.titre}
                   </h2>
@@ -36,7 +51,7 @@ export default function Stages() {
                   </p>
                 </div>
 
-                <p className="font-sans text-sm text-texte-doux md:col-span-4">
+                <p className="font-sans text-sm text-texte-doux md:col-span-3">
                   {s.chapo}
                 </p>
 

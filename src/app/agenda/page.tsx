@@ -3,6 +3,9 @@ import Link from "next/link";
 import { Bouton } from "@/components/Bouton";
 import { EnTete, Section } from "@/components/Mise";
 import { agenda, heure, libelleType, periode } from "@/lib/agenda";
+import { Photo } from "@/components/Photo";
+import { affiches } from "@/content/medias";
+import { spectacleParSlug } from "@/content/spectacles";
 import type { Evenement } from "@/content/types";
 
 /* Revalidation quotidienne : un événement passé disparaît de la liste
@@ -19,6 +22,14 @@ export const metadata: Metadata = {
 
 function Ligne({ e, passe = false }: { e: Evenement; passe?: boolean }) {
   const h = heure(e.debut);
+  // Un événement qui pointe vers un spectacle affiche son affiche : c'est
+  // l'objet qui annonce, et le public le reconnaît avant de lire le titre.
+  const slug = e.lien?.href.startsWith("/spectacles/")
+    ? e.lien.href.replace("/spectacles/", "")
+    : null;
+  const aff = slug ? spectacleParSlug(slug)?.affiche : null;
+  const media = aff ? affiches[aff] : null;
+
   return (
     <li className={`bg-fond py-8 ${passe ? "opacity-60" : ""}`}>
       <div className="grid gap-5 md:grid-cols-12 md:gap-8">
@@ -35,7 +46,20 @@ function Ligne({ e, passe = false }: { e: Evenement; passe?: boolean }) {
           )}
         </div>
 
-        <div className="md:col-span-6">
+        {media && (
+          <div className="md:col-span-2">
+            <Photo
+              id={media.id}
+              alt={`Affiche du spectacle ${e.titre}`}
+              largeur={400}
+              hauteur={566}
+              sizes="140px"
+              className="w-full max-w-[9rem] bg-fond-fort object-contain shadow-[0_10px_24px_-16px_rgb(0_0_0/0.8)]"
+            />
+          </div>
+        )}
+
+        <div className={media ? "md:col-span-4" : "md:col-span-6"}>
           <p className="surtitre surtitre-sourd">{libelleType[e.type]}</p>
           <h3 className="mt-2 font-display text-[length:var(--text-xl)]">
             {e.titre}
