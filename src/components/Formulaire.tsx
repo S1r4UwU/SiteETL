@@ -61,7 +61,7 @@ export function Formulaire({
       {erreur && (
         <p
           role="alert"
-          className="border border-rideau bg-rideau/15 px-4 py-3 font-sans text-sm text-ivoire"
+          className="border border-[var(--color-rideau)] bg-[color-mix(in_oklab,var(--color-rideau)_18%,transparent)] px-4 py-3 font-sans text-sm text-texte"
         >
           {erreur}
         </p>

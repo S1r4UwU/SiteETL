@@ -10,7 +10,7 @@ export default function Introuvable() {
         chapo="L’adresse demandée n’existe pas, ou plus. Elle a peut-être changé lors de la refonte du site."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="flex flex-wrap gap-4">
           <Bouton href="/">Retour à l’accueil</Bouton>
           <Bouton href="/la-formation" variante="fantome" fleche={false}>

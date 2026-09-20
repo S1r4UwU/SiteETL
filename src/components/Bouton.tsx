@@ -10,10 +10,10 @@ const bases =
 /* L’orange est un fond UNIQUEMENT sous du texte noir (11,3:1). Jamais sous du
    blanc : c’est l’erreur de l’ancien site, 2,62:1, sous le seuil AA. */
 const variantes: Record<Variante, string> = {
-  scene: "bg-scene text-salle hover:bg-scene-chaud",
+  scene: "bg-accent text-fond hover:bg-accent-vif",
   fantome:
-    "border border-ivoire/30 text-ivoire hover:border-scene hover:text-scene-chaud",
-  sourd: "!overflow-visible text-ivoire-doux hover:text-scene-chaud px-0 py-2",
+    "border border-filet text-texte hover:border-accent hover:text-accent-vif",
+  sourd: "!overflow-visible text-texte-doux hover:text-accent-vif px-0 py-2",
 };
 
 function Fleche() {

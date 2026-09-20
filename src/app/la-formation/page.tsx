@@ -85,17 +85,17 @@ export default function LaFormation() {
       />
 
       {/* Les chiffres, en haut, avant tout argumentaire. */}
-      <Section className="!pt-0">
-        <div className="grid gap-12 border-y border-ivoire/10 py-14 sm:grid-cols-3">
+      <Section>
+        <div className="grid gap-12 border-y border-filet py-14 sm:grid-cols-3">
           {chiffresFormation.map((c) => (
             <div key={c.libelle}>
-              <p className="font-display text-[length:var(--text-3xl)] leading-none text-scene">
+              <p className="font-display text-[length:var(--text-3xl)] leading-none text-accent">
                 <Compteur valeur={c.nombre} />
-                <span className="ml-2 text-[length:var(--text-lg)] text-ivoire">
+                <span className="ml-2 text-[length:var(--text-lg)] text-texte">
                   {c.unite}
                 </span>
               </p>
-              <p className="mt-3 font-sans text-sm text-ivoire-doux">
+              <p className="mt-3 font-sans text-sm text-texte-doux">
                 {c.libelle}
               </p>
             </div>
@@ -108,13 +108,13 @@ export default function LaFormation() {
         surtitre="La progression"
         titre="Ce qui change d’une année à l’autre"
       >
-        <ol className="space-y-px bg-ivoire/10">
+        <ol className="space-y-px bg-[var(--color-filet)]">
           {annees.map((a) => (
             <li
               key={a.numero}
-              className="grid gap-6 bg-salle py-10 md:grid-cols-12 md:gap-10"
+              className="grid gap-6 bg-fond py-10 md:grid-cols-12 md:gap-10"
             >
-              <p className="font-display text-[length:var(--text-3xl)] leading-none text-scene md:col-span-2 tnum">
+              <p className="font-display text-[length:var(--text-3xl)] leading-none text-accent md:col-span-2 tnum">
                 {a.numero}
               </p>
               <div className="md:col-span-6">
@@ -125,7 +125,7 @@ export default function LaFormation() {
                 {a.disciplines.map((d) => (
                   <li
                     key={d}
-                    className="border border-ivoire/20 px-3 py-1.5 font-sans text-xs text-ivoire-doux"
+                    className="border border-filet px-3 py-1.5 font-sans text-xs text-texte-doux"
                   >
                     {d}
                   </li>
@@ -139,26 +139,26 @@ export default function LaFormation() {
       {/* Les six disciplines. */}
       <Section
         id="disciplines"
-        fond="plateau"
+        registre="creme"
         surtitre="Les enseignements"
         titre="Six disciplines, chacune avec sa méthode"
         chapo="Plusieurs intervenants, plusieurs approches — tous artistes professionnels en activité."
       >
-        <div className="grid gap-px bg-ivoire/10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px bg-[var(--color-filet)] sm:grid-cols-2 lg:grid-cols-3">
           {disciplines.map((d) => (
             <Link
               key={d.slug}
               href={`/la-formation/${d.slug}`}
-              className="group flex min-h-72 flex-col bg-plateau p-7 transition-colors hover:bg-coulisse"
+              className="group flex min-h-72 flex-col bg-fond-doux p-7 transition-colors hover:bg-fond-fort"
             >
               <p className="surtitre surtitre-sourd">{d.annees}</p>
-              <h3 className="mt-3 text-[length:var(--text-lg)] group-hover:text-scene">
+              <h3 className="mt-3 text-[length:var(--text-lg)] group-hover:text-accent">
                 {d.titre}
               </h3>
-              <p className="mt-4 flex-1 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 flex-1 font-sans text-sm text-texte-doux">
                 {d.accroche}
               </p>
-              <p className="mt-5 font-sans text-xs text-ivoire-sourd">
+              <p className="mt-5 font-sans text-xs text-texte-sourd">
                 {d.intervenants.map(nomComplet).join(" · ")}
               </p>
             </Link>
@@ -172,16 +172,16 @@ export default function LaFormation() {
         titre="Les modules"
         chapo="Des disciplines qui ouvrent le champ des rôles possibles — et qui, sur un CV de comédien, font souvent la différence."
       >
-        <div className="grid gap-px bg-ivoire/10 md:grid-cols-2">
+        <div className="grid gap-px bg-[var(--color-filet)] md:grid-cols-2">
           {modules.map((m) => (
-            <div key={m.titre} className="bg-salle p-7">
+            <div key={m.titre} className="bg-fond p-7">
               <h3 className="text-[length:var(--text-lg)]">{m.titre}</h3>
               {m.intervenant && (
-                <p className="mt-2 font-sans text-xs uppercase tracking-[0.14em] text-scene">
+                <p className="mt-2 font-sans text-xs uppercase tracking-[0.14em] text-accent">
                   {nomComplet(m.intervenant)}
                 </p>
               )}
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 {m.description}
               </p>
             </div>
@@ -190,7 +190,7 @@ export default function LaFormation() {
       </Section>
 
       {/* Répertoire — la liste d’auteurs, traitée comme une affiche. */}
-      <Section fond="plateau" surtitre="Le répertoire" titre="Ce qu’on joue">
+      <Section registre="creme" surtitre="Le répertoire" titre="Ce qu’on joue">
         <p className="prose-etl mb-10">
           Les pièces, scènes et textes abordés sont représentatifs du répertoire.
           Ils vont de la tragédie grecque au contemporain, en passant par la
@@ -200,7 +200,7 @@ export default function LaFormation() {
           {repertoire.map((auteur) => (
             <li
               key={auteur}
-              className="font-display text-[length:var(--text-xl)] text-ivoire-doux transition-colors hover:text-scene"
+              className="font-display text-[length:var(--text-xl)] text-texte-doux transition-colors hover:text-accent"
             >
               {auteur}
             </li>
@@ -213,7 +213,7 @@ export default function LaFormation() {
         <div className="grid gap-12 lg:grid-cols-3">
           <div>
             <h3 className="surtitre">Les méthodes mobilisées</h3>
-            <ul className="mt-6 space-y-2.5 font-sans text-sm text-ivoire-doux">
+            <ul className="mt-6 space-y-2.5 font-sans text-sm text-texte-doux">
               {[
                 "Mises en situation",
                 "Jeux de rôles",
@@ -229,7 +229,7 @@ export default function LaFormation() {
 
           <div>
             <h3 className="surtitre">Les modalités d’évaluation</h3>
-            <ul className="mt-6 space-y-2.5 font-sans text-sm text-ivoire-doux">
+            <ul className="mt-6 space-y-2.5 font-sans text-sm text-texte-doux">
               {[
                 "Contrôle continu",
                 "Mises en situation",
@@ -241,7 +241,7 @@ export default function LaFormation() {
                 <li key={m}>{m}</li>
               ))}
             </ul>
-            <p className="mt-6 font-sans text-xs text-ivoire-sourd">
+            <p className="mt-6 font-sans text-xs text-texte-sourd">
               Suivi individuel régulier et bilan semestriel.
             </p>
           </div>
@@ -252,9 +252,9 @@ export default function LaFormation() {
               {competences.map((c) => (
                 <li
                   key={c}
-                  className="flex gap-3 font-sans text-sm text-ivoire-doux"
+                  className="flex gap-3 font-sans text-sm text-texte-doux"
                 >
-                  <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-scene" />
+                  <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-accent" />
                   {c}
                 </li>
               ))}
@@ -264,7 +264,7 @@ export default function LaFormation() {
       </Section>
 
       {/* Fiche pratique + plaquette. */}
-      <Section fond="plateau" surtitre="En pratique">
+      <Section registre="creme" surtitre="En pratique">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <Fiche

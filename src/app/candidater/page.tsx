@@ -85,7 +85,7 @@ export default function Candidater() {
       />
 
       {/* Prérequis — courts, francs, sans jargon. */}
-      <Section className="!pt-0" surtitre="Avant de commencer" titre="Les prérequis">
+      <Section surtitre="Avant de commencer" titre="Les prérequis">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <Fiche
@@ -123,7 +123,7 @@ export default function Candidater() {
 
           {auditions.length > 0 && (
             <aside className="lg:col-span-5">
-              <div className="border border-scene/40 p-7">
+              <div className="border border-accent/45 p-7">
                 <p className="surtitre">Prochaines auditions</p>
                 <ul className="mt-5 space-y-4">
                   {auditions.map((a) => (
@@ -131,7 +131,7 @@ export default function Candidater() {
                       <p className="font-display text-[length:var(--text-lg)]">
                         {periode(a)}
                       </p>
-                      <p className="mt-1 font-sans text-xs text-ivoire-sourd">
+                      <p className="mt-1 font-sans text-xs text-texte-sourd">
                         {libelleType[a.type]} · {a.lieu}
                       </p>
                     </li>
@@ -145,28 +145,28 @@ export default function Candidater() {
 
       {/* Les cinq étapes, en ligne de temps. */}
       <Section
-        fond="plateau"
+        registre="creme"
         surtitre="Le parcours"
         titre="Candidater en cinq étapes"
         chapo="Voici exactement ce qui se passe, de votre première demande jusqu’à la réponse du jury."
       >
-        <ol className="space-y-px bg-ivoire/10">
+        <ol className="space-y-px bg-[var(--color-filet)]">
           {etapes.map((e) => (
-            <li key={e.numero} className="bg-plateau p-7 md:p-10">
+            <li key={e.numero} className="bg-fond-doux p-7 md:p-10">
               <div className="grid gap-8 md:grid-cols-12 md:gap-10">
                 <div className="md:col-span-3">
-                  <p className="font-display text-[length:var(--text-3xl)] leading-none text-scene tnum">
+                  <p className="font-display text-[length:var(--text-3xl)] leading-none text-accent tnum">
                     {e.numero}
                   </p>
                   <h3 className="mt-4 text-[length:var(--text-lg)]">{e.titre}</h3>
-                  <p className="mt-3 font-sans text-xs uppercase tracking-[0.12em] text-ivoire-sourd">
+                  <p className="mt-3 font-sans text-xs uppercase tracking-[0.12em] text-texte-sourd">
                     {e.delai}
                   </p>
                 </div>
 
                 <div className="md:col-span-5">
                   <p className="surtitre surtitre-sourd">Vous</p>
-                  <p className="mt-3 font-sans text-sm text-ivoire-doux">
+                  <p className="mt-3 font-sans text-sm text-texte-doux">
                     {e.vous}
                   </p>
                   {e.action && (
@@ -180,7 +180,7 @@ export default function Candidater() {
 
                 <div className="md:col-span-4">
                   <p className="surtitre surtitre-sourd">L’école</p>
-                  <p className="mt-3 font-sans text-sm text-ivoire-doux">
+                  <p className="mt-3 font-sans text-sm text-texte-doux">
                     {e.nous}
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export default function Candidater() {
           ))}
         </ol>
 
-        <p className="mt-10 max-w-2xl font-sans text-sm text-ivoire-sourd">
+        <p className="mt-10 max-w-2xl font-sans text-sm text-texte-sourd">
           Les scènes et chansons écrites ou composées par les candidat·es ne sont
           pas prises en compte pour l’audition : nous avons besoin d’entendre
           comment vous vous emparez d’un texte qui n’est pas le vôtre.
@@ -210,7 +210,7 @@ export default function Candidater() {
                 { terme: "3e année", valeur: "4 700 € pour l’année" },
               ]}
             />
-            <p className="mt-6 font-sans text-xs text-ivoire-sourd">
+            <p className="mt-6 font-sans text-xs text-texte-sourd">
               Ces tarifs sont susceptibles d’évolution. Tout dossier
               d’inscription doit comporter le paiement des droits de réservation
               ainsi que l’ensemble des documents demandés.
@@ -218,9 +218,9 @@ export default function Candidater() {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-ivoire/15 p-7">
+            <div className="border border-filet p-7">
               <p className="surtitre">Financer sa formation</p>
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 L’école est certifiée Qualiopi. Selon votre situation, tout ou
                 partie de la formation peut être prise en charge : AFDAS, France
                 Travail, dispositifs régionaux, financement personnel échelonné.
@@ -235,7 +235,7 @@ export default function Candidater() {
         </div>
       </Section>
 
-      <Section fond="plateau" className="!py-16">
+      <Section registre="creme" className="!py-16">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-lg font-display text-[length:var(--text-xl)]">
             Une question avant de vous lancer ?

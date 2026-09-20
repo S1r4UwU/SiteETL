@@ -68,21 +68,21 @@ export default function Confidentialite() {
         </Article>
 
         <Article titre="Les traitements que nous mettons en œuvre">
-          <div className="space-y-px bg-ivoire/10">
+          <div className="space-y-px bg-[var(--color-filet)]">
             {traitements.map((t) => (
-              <div key={t.finalite} className="bg-salle py-6">
-                <p className="font-sans text-sm text-ivoire">{t.finalite}</p>
-                <dl className="mt-3 space-y-1.5 font-sans text-xs text-ivoire-doux">
+              <div key={t.finalite} className="bg-fond py-6">
+                <p className="font-sans text-sm text-texte">{t.finalite}</p>
+                <dl className="mt-3 space-y-1.5 font-sans text-xs text-texte-doux">
                   <div>
-                    <dt className="inline text-ivoire-sourd">Données : </dt>
+                    <dt className="inline text-texte-sourd">Données : </dt>
                     <dd className="inline">{t.donnees}</dd>
                   </div>
                   <div>
-                    <dt className="inline text-ivoire-sourd">Base légale : </dt>
+                    <dt className="inline text-texte-sourd">Base légale : </dt>
                     <dd className="inline">{t.base}</dd>
                   </div>
                   <div>
-                    <dt className="inline text-ivoire-sourd">Conservation : </dt>
+                    <dt className="inline text-texte-sourd">Conservation : </dt>
                     <dd className="inline">{t.duree}</dd>
                   </div>
                 </dl>

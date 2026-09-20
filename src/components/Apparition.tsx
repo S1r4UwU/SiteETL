@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
+import { surveiller } from "@/lib/envue";
 
 /* ------------------------------------------------------------------------
    Les entrées en scène.
@@ -9,14 +10,17 @@ import { useEffect, useRef, useState, type ElementType, type ReactNode } from "r
    de derrière un cache. Jamais de « fade-in-up » générique.
 
    RÈGLE DE SÛRETÉ — du contenu ne doit JAMAIS pouvoir rester invisible.
-   L'état caché n'est appliqué que sous `html[data-js]`, un attribut posé par
-   un script en ligne dans le <head> : sans JavaScript, le texte est là, point.
-   Et si l'IntersectionObserver tarde ou ne se déclenche pas (onglet en
-   arrière-plan, navigateur qui bride), un garde-fou révèle tout au bout d'une
-   seconde et demie.
+   Deux verrous :
+     · l'état caché n'existe que sous `html[data-js]`, posé par un script en
+       ligne dans le <head> — sans JavaScript, le texte est là, point ;
+     · la détection d'entrée dans le champ (lib/envue.ts) double
+       l'IntersectionObserver d'un contrôle au défilement partagé, parce qu'un
+       observateur peut rester muet (onglet en arrière-plan, fenêtre sans
+       focus, navigateur qui bride) et qu'un observateur muet, ici, ce serait
+       du contenu perdu.
    ------------------------------------------------------------------------ */
 
-function useEnVue<T extends HTMLElement>(seuil = 0.15) {
+function useEnVue<T extends HTMLElement>(marge = 0.1) {
   const ref = useRef<T>(null);
   const [vu, setVu] = useState(false);
 
@@ -24,37 +28,13 @@ function useEnVue<T extends HTMLElement>(seuil = 0.15) {
     const noeud = ref.current;
     if (!noeud) return;
 
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      typeof IntersectionObserver === "undefined"
-    ) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setVu(true);
       return;
     }
 
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVu(true);
-          obs.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: seuil },
-    );
-    obs.observe(noeud);
-
-    // Garde-fou : si rien ne s'est déclenché, on montre quand même ce qui est
-    // déjà dans le champ. Mieux vaut une animation manquée qu'un texte perdu.
-    const secours = window.setTimeout(() => {
-      const r = noeud.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0) setVu(true);
-    }, 1500);
-
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(secours);
-    };
-  }, [seuil]);
+    return surveiller(noeud, () => setVu(true), marge);
+  }, [marge]);
 
   return { ref, vu };
 }
@@ -93,7 +73,7 @@ export function TitreLeve({
           >
             {ligne.split("*").map((bout, j) =>
               j % 2 ? (
-                <span key={bout} className="text-scene">
+                <span key={bout} className="text-accent">
                   {bout}
                 </span>
               ) : (
@@ -135,8 +115,8 @@ export function Apparition({
 export function FiletTrace({ className = "" }: { className?: string }) {
   const { ref, vu } = useEnVue<HTMLDivElement>(0.4);
   return (
-    <div ref={ref} className={`h-px w-full bg-ivoire/15 ${className}`}>
-      <div className="filet-trace h-px bg-scene" data-vu={vu ? "1" : undefined} />
+    <div ref={ref} className={`h-px w-full bg-[var(--color-filet)] ${className}`}>
+      <div className="filet-trace h-px bg-accent" data-vu={vu ? "1" : undefined} />
     </div>
   );
 }

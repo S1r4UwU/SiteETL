@@ -20,16 +20,16 @@ export const metadata: Metadata = {
 function Ligne({ e, passe = false }: { e: Evenement; passe?: boolean }) {
   const h = heure(e.debut);
   return (
-    <li className={`bg-salle py-8 ${passe ? "opacity-60" : ""}`}>
+    <li className={`bg-fond py-8 ${passe ? "opacity-60" : ""}`}>
       <div className="grid gap-5 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-3">
           <p
-            className={`font-display text-[length:var(--text-lg)] ${passe ? "text-ivoire-sourd" : "text-scene"}`}
+            className={`font-display text-[length:var(--text-lg)] ${passe ? "text-texte-sourd" : "text-accent"}`}
           >
             {periode(e)}
           </p>
           {h && !passe && (
-            <p className="mt-1 font-sans text-xs text-ivoire-sourd tnum">
+            <p className="mt-1 font-sans text-xs text-texte-sourd tnum">
               à partir de {h}
             </p>
           )}
@@ -41,12 +41,12 @@ function Ligne({ e, passe = false }: { e: Evenement; passe?: boolean }) {
             {e.titre}
           </h3>
           {e.description && (
-            <p className="mt-3 font-sans text-sm text-ivoire-doux">
+            <p className="mt-3 font-sans text-sm text-texte-doux">
               {e.description}
             </p>
           )}
           {e.lieu && (
-            <p className="mt-3 font-sans text-xs text-ivoire-sourd">{e.lieu}</p>
+            <p className="mt-3 font-sans text-xs text-texte-sourd">{e.lieu}</p>
           )}
         </div>
 
@@ -54,7 +54,7 @@ function Ligne({ e, passe = false }: { e: Evenement; passe?: boolean }) {
           {e.lien && (
             <Link
               href={e.lien.href}
-              className="font-sans text-sm text-ivoire transition-colors hover:text-scene-chaud"
+              className="font-sans text-sm text-texte transition-colors hover:text-accent-vif"
             >
               {e.lien.libelle} <span aria-hidden>→</span>
             </Link>
@@ -76,15 +76,15 @@ export default function Agenda() {
         chapo="Auditions, portes ouvertes, spectacles, stages. Les dates passées basculent automatiquement dans l’archive."
       />
 
-      <Section className="!pt-0" surtitre="À venir">
+      <Section surtitre="À venir">
         {aVenir.length > 0 ? (
-          <ul className="space-y-px bg-ivoire/10">
+          <ul className="space-y-px bg-[var(--color-filet)]">
             {aVenir.map((e) => (
               <Ligne key={e.slug} e={e} />
             ))}
           </ul>
         ) : (
-          <div className="border border-ivoire/15 p-8">
+          <div className="border border-filet p-8">
             <p className="font-display text-[length:var(--text-xl)]">
               Aucune date programmée pour l’instant.
             </p>
@@ -101,12 +101,12 @@ export default function Agenda() {
 
       {passes.length > 0 && (
         <Section
-          fond="plateau"
+          registre="creme"
           surtitre="Archive"
           titre="C’est passé"
           chapo="Pour donner une idée du rythme d’une année à l’école."
         >
-          <ul className="space-y-px bg-ivoire/10 [&>li]:bg-plateau">
+          <ul className="space-y-px bg-[var(--color-filet)] [&>li]:bg-fond-doux">
             {passes.map((e) => (
               <Ligne key={e.slug} e={e} passe />
             ))}

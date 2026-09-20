@@ -31,20 +31,20 @@ export function Champ({
 }) {
   const idAide = aide ? `${nom}-aide` : undefined;
   const classes =
-    "mt-2 w-full border border-ivoire/25 bg-salle px-4 py-3.5 font-sans text-base text-ivoire " +
-    "placeholder:text-ivoire-sourd transition-colors focus:border-scene focus:outline-none " +
+    "mt-2 w-full border border-filet bg-fond px-4 py-3.5 font-sans text-base text-texte " +
+    "placeholder:text-texte-sourd transition-colors focus:border-accent focus:outline-none " +
     "focus:ring-2 focus:ring-scene/40";
 
   return (
     <p className="block">
-      <label htmlFor={nom} className="font-sans text-sm text-ivoire">
+      <label htmlFor={nom} className="font-sans text-sm text-texte">
         {libelle}
         {requis ? (
-          <span className="ml-1 text-scene" aria-hidden>
+          <span className="ml-1 text-accent" aria-hidden>
             *
           </span>
         ) : (
-          <span className="ml-2 text-xs text-ivoire-sourd">(facultatif)</span>
+          <span className="ml-2 text-xs text-texte-sourd">(facultatif)</span>
         )}
       </label>
 
@@ -71,7 +71,7 @@ export function Champ({
       )}
 
       {aide && (
-        <span id={idAide} className="mt-2 block font-sans text-xs text-ivoire-sourd">
+        <span id={idAide} className="mt-2 block font-sans text-xs text-texte-sourd">
           {aide}
         </span>
       )}
@@ -87,11 +87,11 @@ export function Consentement({ children }: { children: ReactNode }) {
         name="consentement"
         type="checkbox"
         required
-        className="mt-1 size-4 shrink-0 accent-[var(--color-scene)]"
+        className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]"
       />
       <label
         htmlFor="consentement"
-        className="font-sans text-xs leading-relaxed text-ivoire-doux"
+        className="font-sans text-xs leading-relaxed text-texte-doux"
       >
         {children}
       </label>

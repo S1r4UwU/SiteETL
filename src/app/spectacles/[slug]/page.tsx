@@ -57,7 +57,7 @@ export default async function FicheSpectacle({ params }: Params) {
         photo={s.photos[0]}
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
             {s.texte ? (
@@ -90,7 +90,7 @@ export default async function FicheSpectacle({ params }: Params) {
 
             {/* Crédits photo : usage du spectacle vivant, et une demande
                 faite à l’école dans le brief de refonte. */}
-            <p className="mt-6 font-sans text-xs text-ivoire-sourd">
+            <p className="mt-6 font-sans text-xs text-texte-sourd">
               Crédits photographiques à compléter — voir la liste des éléments à
               fournir par l’école.
             </p>
@@ -100,7 +100,7 @@ export default async function FicheSpectacle({ params }: Params) {
 
       {/* Galerie — grille éditoriale, pas un carrousel automatique. */}
       {s.photos.length > 1 && (
-        <Section fond="plateau" surtitre="En images">
+        <Section registre="creme" surtitre="En images">
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {s.photos.map((p, i) => (
               <li
@@ -127,10 +127,10 @@ export default async function FicheSpectacle({ params }: Params) {
             <p className="surtitre surtitre-sourd">Spectacle suivant</p>
             <Link
               href={`/spectacles/${suivant.slug}`}
-              className="mt-2 block font-display text-[length:var(--text-xl)] hover:text-scene"
+              className="mt-2 block font-display text-[length:var(--text-xl)] hover:text-accent"
             >
               {suivant.titre}{" "}
-              <span className="text-ivoire-sourd tnum">({suivant.annee})</span>
+              <span className="text-texte-sourd tnum">({suivant.annee})</span>
             </Link>
           </div>
           <div className="flex flex-wrap gap-4">

@@ -1,0 +1,122 @@
+/* ==========================================================================
+   LES DEUX REGISTRES
+
+   Un théâtre, c'est deux matières : le papier crème du programme de salle,
+   et le noir de la salle une fois la lumière tombée. Le site fait pareil.
+
+     .registre-papier  — tout ce qui se LIT : formation, admission, équipe,
+                         mentions. Encre sur papier, éditorial, calme.
+     .registre-salle   — tout ce qui se REGARDE : plateau, spectacles, mur
+                         d'affiches. La photo prend le pouvoir, la poursuite
+                         redevient possible.
+
+   Passer de l'un à l'autre en descendant la page est l'effet principal du
+   site. Il ne coûte rien et personne d'autre ne le fait.
+
+   Chaque registre redéfinit les mêmes variables sémantiques. Les composants
+   n'écrivent JAMAIS une couleur en dur : ils utilisent bg-fond, text-texte,
+   text-accent… et héritent du registre dans lequel on les pose.
+   ========================================================================== */
+
+@theme {
+  /* --- Matières brutes --------------------------------------------------- */
+
+  /* Papier */
+  --color-papier: #f2eee6;
+  --color-papier-creme: #e9e3d8;
+  --color-papier-blanc: #ffffff;
+  --color-encre: #14120f;
+  --color-encre-doux: #4a453d;
+  --color-encre-sourd: #6e685e;
+  --color-brique: #9a4a08;
+  --color-brique-fonce: #7a3a06;
+
+  /* Salle */
+  --color-salle: #0b0b0c;
+  --color-plateau: #16161a;
+  --color-coulisse: #212127;
+  --color-ivoire: #f4f1ea;
+  --color-ivoire-doux: #b8b4ac;
+  --color-ivoire-sourd: #7d7a74;
+  --color-scene: #ed8600;
+  --color-scene-chaud: #ffa733;
+  --color-rideau: #8c2318;
+
+  /* --- Rôles ------------------------------------------------------------
+     Ce sont ces noms-là que les composants emploient. Ils pointent vers des
+     variables réassignées par le registre courant.                        */
+  --color-fond: var(--r-fond);
+  --color-fond-doux: var(--r-fond-doux);
+  --color-fond-fort: var(--r-fond-fort);
+  --color-texte: var(--r-texte);
+  --color-texte-doux: var(--r-texte-doux);
+  --color-texte-sourd: var(--r-texte-sourd);
+  --color-accent: var(--r-accent);
+  --color-accent-vif: var(--r-accent-vif);
+  --color-filet: var(--r-filet);
+}
+
+/* --------------------------------------------------------------------------
+   Registre PAPIER
+
+   Contrastes vérifiés sur --color-papier (#F2EEE6) :
+     encre        16,2:1  AAA
+     encre-doux    8,2:1  AAA
+     encre-sourd   4,8:1  AA
+     brique        5,4:1  AA      ← l'orange du logo ASSOMBRI
+
+   L'orange vif #ED8600 ne donne que 2,62:1 sur du clair : c'était très
+   exactement l'erreur de l'ancien site. Sur papier on utilise sa version
+   foncée, et le survol assombrit encore au lieu d'éclaircir.
+   -------------------------------------------------------------------------- */
+.registre-papier {
+  --r-fond: var(--color-papier);
+  --r-fond-doux: var(--color-papier-creme);
+  --r-fond-fort: var(--color-papier-blanc);
+  --r-texte: var(--color-encre);
+  --r-texte-doux: var(--color-encre-doux);
+  --r-texte-sourd: var(--color-encre-sourd);
+  --r-accent: var(--color-brique);
+  --r-accent-vif: var(--color-brique-fonce);
+  --r-filet: color-mix(in oklab, var(--color-encre) 18%, transparent);
+
+  background-color: var(--r-fond);
+  color: var(--r-texte);
+}
+
+/* --------------------------------------------------------------------------
+   Registre SALLE
+
+   Contrastes vérifiés sur --color-salle (#0B0B0C) :
+     ivoire       17,4:1  AAA
+     ivoire-doux   9,5:1  AAA
+     ivoire-sourd  4,6:1  AA
+     scene         7,5:1  AAA     ← l'orange du logo, plein
+   -------------------------------------------------------------------------- */
+.registre-salle {
+  --r-fond: var(--color-salle);
+  --r-fond-doux: var(--color-plateau);
+  --r-fond-fort: var(--color-coulisse);
+  --r-texte: var(--color-ivoire);
+  --r-texte-doux: var(--color-ivoire-doux);
+  --r-texte-sourd: var(--color-ivoire-sourd);
+  --r-accent: var(--color-scene);
+  --r-accent-vif: var(--color-scene-chaud);
+  --r-filet: color-mix(in oklab, var(--color-ivoire) 14%, transparent);
+
+  background-color: var(--r-fond);
+  color: var(--r-texte);
+}
+
+/* Le document démarre en papier : la majorité des pages se lisent. */
+:root {
+  --r-fond: var(--color-papier);
+  --r-fond-doux: var(--color-papier-creme);
+  --r-fond-fort: var(--color-papier-blanc);
+  --r-texte: var(--color-encre);
+  --r-texte-doux: var(--color-encre-doux);
+  --r-texte-sourd: var(--color-encre-sourd);
+  --r-accent: var(--color-brique);
+  --r-accent-vif: var(--color-brique-fonce);
+  --r-filet: color-mix(in oklab, var(--color-encre) 18%, transparent);
+}

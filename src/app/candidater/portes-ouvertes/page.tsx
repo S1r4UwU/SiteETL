@@ -46,14 +46,14 @@ export default function PortesOuvertes() {
         }
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-6">
             <p className="surtitre">Au programme</p>
             <ul className="mt-6 space-y-4">
               {programme.map((p) => (
-                <li key={p} className="flex gap-4 font-sans text-sm text-ivoire-doux">
-                  <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-scene" />
+                <li key={p} className="flex gap-4 font-sans text-sm text-texte-doux">
+                  <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-accent" />
                   {p}
                 </li>
               ))}
@@ -77,11 +77,11 @@ export default function PortesOuvertes() {
           </div>
 
           <div className="lg:col-span-6">
-            <div className="border border-ivoire/15 p-7 md:p-9">
+            <div className="border border-filet p-7 md:p-9">
               <p className="surtitre">
                 {prochaine ? "S’inscrire" : "Être prévenu·e"}
               </p>
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 {prochaine
                   ? "Les places sont limitées par créneau : merci de vous inscrire à l’avance."
                   : "Nous vous écrirons dès que la date sera fixée."}
@@ -112,21 +112,21 @@ export default function PortesOuvertes() {
                   {prochaine && (
                     <>
                       <fieldset className="border-0 p-0">
-                        <legend className="font-sans text-sm text-ivoire">
+                        <legend className="font-sans text-sm text-texte">
                           Créneau souhaité
                         </legend>
                         <div className="mt-3 space-y-2">
                           {["10h — 12h30", "13h30 — 16h"].map((c) => (
                             <label
                               key={c}
-                              className="flex items-center gap-3 font-sans text-sm text-ivoire-doux"
+                              className="flex items-center gap-3 font-sans text-sm text-texte-doux"
                             >
                               <input
                                 type="radio"
                                 name="creneau"
                                 value={c}
                                 required
-                                className="size-4 accent-[var(--color-scene)]"
+                                className="size-4 accent-[var(--color-accent)]"
                               />
                               {c}
                             </label>
@@ -148,10 +148,10 @@ export default function PortesOuvertes() {
                   <p className="block">
                     <label
                       htmlFor="source"
-                      className="font-sans text-sm text-ivoire"
+                      className="font-sans text-sm text-texte"
                     >
                       Comment avez-vous connu l’école&nbsp;?
-                      <span className="ml-2 text-xs text-ivoire-sourd">
+                      <span className="ml-2 text-xs text-texte-sourd">
                         (facultatif)
                       </span>
                     </label>
@@ -159,7 +159,7 @@ export default function PortesOuvertes() {
                       id="source"
                       name="source"
                       defaultValue=""
-                      className="mt-2 w-full border border-ivoire/25 bg-salle px-4 py-3.5 font-sans text-base text-ivoire focus:border-scene focus:outline-none focus:ring-2 focus:ring-scene/40"
+                      className="mt-2 w-full border border-filet bg-fond px-4 py-3.5 font-sans text-base text-texte focus:border-accent focus:outline-none focus:ring-2 focus:ring-scene/40"
                     >
                       <option value="">—</option>
                       <option>Internet</option>

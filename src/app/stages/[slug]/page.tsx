@@ -47,7 +47,7 @@ export default async function FicheStage({ params }: Params) {
         chapo={s.chapo}
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
             <p className="surtitre">L’intervenant·e</p>
@@ -60,8 +60,8 @@ export default async function FicheStage({ params }: Params) {
               <p className="surtitre">Au programme</p>
               <ul className="mt-6 space-y-4">
                 {s.contenu.map((c) => (
-                  <li key={c} className="flex gap-4 font-sans text-sm text-ivoire-doux">
-                    <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-scene" />
+                  <li key={c} className="flex gap-4 font-sans text-sm text-texte-doux">
+                    <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-accent" />
                     {c}
                   </li>
                 ))}
@@ -87,16 +87,16 @@ export default async function FicheStage({ params }: Params) {
             </div>
 
             {s.externe && (
-              <p className="mt-10 border border-ivoire/15 p-6 font-sans text-sm text-ivoire-doux">
+              <p className="mt-10 border border-filet p-6 font-sans text-sm text-texte-doux">
                 Ce stage est organisé par{" "}
-                <strong className="text-ivoire">{s.externe.partenaire}</strong>,
+                <strong className="text-texte">{s.externe.partenaire}</strong>,
                 partenaire de l’École de Théâtre de Lyon. L’inscription et le
                 financement se traitent directement avec eux — nous faisons le
                 lien si besoin.
               </p>
             )}
 
-            <p className="mt-10 font-sans text-sm text-ivoire-sourd">
+            <p className="mt-10 font-sans text-sm text-texte-sourd">
               Situation de handicap&nbsp;: nous étudions tous les dossiers et
               proposons des aménagements.{" "}
               <Link href="/l-ecole/accessibilite" className="lien">
@@ -107,11 +107,11 @@ export default async function FicheStage({ params }: Params) {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-ivoire/15 p-7 md:p-9">
+            <div className="border border-filet p-7 md:p-9">
               <p className="surtitre">
                 {s.dates ? "S’inscrire" : "Être prévenu·e des dates"}
               </p>
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 {s.dates
                   ? "Nous vous envoyons le formulaire d’inscription et les modalités de règlement."
                   : "Les dates ne sont pas encore fixées. Laissez-nous votre adresse : vous serez prévenu·e dès leur publication, avant l’ouverture des inscriptions."}

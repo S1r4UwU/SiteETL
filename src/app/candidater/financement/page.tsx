@@ -49,14 +49,14 @@ export default function Financement() {
         chapo="L’École de Théâtre de Lyon est un organisme de formation déclaré et certifié Qualiopi. Selon votre statut, tout ou partie du coût pédagogique peut être pris en charge."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
-            <div className="space-y-px bg-ivoire/10">
+            <div className="space-y-px bg-[var(--color-filet)]">
               {dispositifs.map((d) => (
-                <div key={d.nom} className="bg-salle py-8">
+                <div key={d.nom} className="bg-fond py-8">
                   <h2 className="text-[length:var(--text-xl)]">{d.nom}</h2>
-                  <p className="mt-2 font-sans text-xs uppercase tracking-[0.12em] text-scene">
+                  <p className="mt-2 font-sans text-xs uppercase tracking-[0.12em] text-accent">
                     {d.pour}
                   </p>
                   <p className="prose-etl mt-4">{d.texte}</p>
@@ -64,7 +64,7 @@ export default function Financement() {
               ))}
             </div>
 
-            <p className="mt-10 font-sans text-sm text-ivoire-sourd">
+            <p className="mt-10 font-sans text-sm text-texte-sourd">
               Ces dispositifs évoluent, et leurs conditions dépendent de votre
               situation personnelle. Nous ne montons pas les dossiers à votre
               place, mais nous fournissons toutes les pièces nécessaires — devis,
@@ -74,7 +74,7 @@ export default function Financement() {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-scene/40 p-7">
+            <div className="border border-accent/45 p-7">
               <p className="surtitre">Nos références administratives</p>
               <div className="mt-6">
                 <Fiche
@@ -93,13 +93,13 @@ export default function Financement() {
                   ]}
                 />
               </div>
-              <p className="mt-6 font-sans text-xs text-ivoire-sourd">
+              <p className="mt-6 font-sans text-xs text-texte-sourd">
                 Ces informations sont celles à transmettre à votre financeur.
               </p>
             </div>
 
             <div className="mt-10">
-              <p className="font-sans text-sm text-ivoire-doux">
+              <p className="font-sans text-sm text-texte-doux">
                 Un doute sur votre éligibilité&nbsp;? Écrivez-nous en précisant
                 votre statut : nous vous dirons en une réponse quels dispositifs
                 sont ouverts dans votre cas.

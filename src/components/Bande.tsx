@@ -84,7 +84,7 @@ export function Bande({ spectacles }: { spectacles: Spectacle[] }) {
           {s.titre}
         </span>
         {s.miseEnScene && (
-          <span className="mt-2 block font-sans text-xs text-ivoire-sourd">
+          <span className="mt-2 block font-sans text-xs text-texte-sourd">
             Mise en scène : {s.miseEnScene}
           </span>
         )}
@@ -109,9 +109,9 @@ export function Bande({ spectacles }: { spectacles: Spectacle[] }) {
       <div className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden">
         <div className="enveloppe mb-10 flex items-end justify-between gap-8">
           <p className="surtitre">Le mur d’affiches</p>
-          <p className="font-display text-[length:var(--text-2xl)] leading-none text-scene tnum">
+          <p className="font-display text-[length:var(--text-2xl)] leading-none text-accent tnum">
             {String(actif + 1).padStart(2, "0")}
-            <span className="text-ivoire-sourd">
+            <span className="text-texte-sourd">
               /{String(spectacles.length).padStart(2, "0")}
             </span>
           </p>
@@ -121,7 +121,7 @@ export function Bande({ spectacles }: { spectacles: Spectacle[] }) {
           {cartes}
         </div>
 
-        <p className="enveloppe mt-10 font-sans text-xs uppercase tracking-[0.18em] text-ivoire-sourd">
+        <p className="enveloppe mt-10 font-sans text-xs uppercase tracking-[0.18em] text-texte-sourd">
           Continuez à défiler <span aria-hidden>→</span>
         </p>
       </div>

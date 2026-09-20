@@ -23,7 +23,7 @@ export default function LEcole() {
         photo={spectacles[0].photos[2]}
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
             <p className="surtitre">Le projet pédagogique</p>
@@ -76,7 +76,7 @@ export default function LEcole() {
       {/* Le lieu — argument réel : les pentes de la Croix-Rousse, un théâtre
           partenaire à la même adresse que l’administration. */}
       <Section
-        fond="plateau"
+        registre="creme"
         surtitre="Le lieu"
         titre="Sur les pentes, à deux pas d’un théâtre"
       >
@@ -85,7 +85,7 @@ export default function LEcole() {
             <h3 className="font-display text-[length:var(--text-lg)]">
               Les salles de cours
             </h3>
-            <p className="mt-4 font-sans text-sm text-ivoire-doux">
+            <p className="mt-4 font-sans text-sm text-texte-doux">
               {site.adresseCours.rue}, dans le 1er arrondissement, sur les pentes
               de la Croix-Rousse. Métro Croix-Paquet à deux minutes, bus S6 à
               l’arrêt Tables Claudiennes.
@@ -95,7 +95,7 @@ export default function LEcole() {
             <h3 className="font-display text-[length:var(--text-lg)]">
               Le théâtre
             </h3>
-            <p className="mt-4 font-sans text-sm text-ivoire-doux">
+            <p className="mt-4 font-sans text-sm text-texte-doux">
               Les spectacles d’élèves se jouent au Théâtre Le Nombril du Monde,
               place Chardonnet. Jouer dans un vrai lieu, devant un vrai public,
               fait partie de la formation.
@@ -105,7 +105,7 @@ export default function LEcole() {
             <h3 className="font-display text-[length:var(--text-lg)]">
               L’administration
             </h3>
-            <p className="mt-4 font-sans text-sm text-ivoire-doux">
+            <p className="mt-4 font-sans text-sm text-texte-doux">
               {site.adresseAdmin.rue}, {site.adresseAdmin.cp}{" "}
               {site.adresseAdmin.ville}. Ouverte du lundi au vendredi, de 9h à
               17h30 — on y répond au téléphone.
@@ -121,7 +121,7 @@ export default function LEcole() {
             <Citation key={t.auteur} texte={t.texte} auteur={t.auteur} />
           ))}
         </div>
-        <p className="mt-12 font-sans text-xs text-ivoire-sourd">
+        <p className="mt-12 font-sans text-xs text-texte-sourd">
           Extraits des enquêtes de satisfaction 2025-2026.{" "}
           <a href="/l-ecole/resultats" className="lien">
             Voir tous les indicateurs

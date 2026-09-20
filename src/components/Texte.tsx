@@ -27,8 +27,8 @@ export function Article({
 /** Mention visible d’un point qui doit être validé par l’école ou son conseil. */
 export function AValider({ children }: { children: ReactNode }) {
   return (
-    <p className="border-l-2 border-scene bg-plateau px-5 py-4 font-sans text-sm text-ivoire-doux">
-      <span className="mb-1 block text-xs uppercase tracking-[0.14em] text-scene">
+    <p className="border-l-2 border-accent bg-fond-doux px-5 py-4 font-sans text-sm text-texte-doux">
+      <span className="mb-1 block text-xs uppercase tracking-[0.14em] text-accent">
         À compléter par l’école
       </span>
       {children}

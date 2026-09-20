@@ -61,7 +61,7 @@ export default async function DisciplinePage({ params }: Params) {
         photo={d.photo}
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           {/* La triade Principe / Méthode / Objectif — la structure
               pédagogique de l’école, rendue lisible au lieu d’être aplatie
@@ -69,7 +69,7 @@ export default async function DisciplinePage({ params }: Params) {
           <div className="space-y-14 lg:col-span-7">
             <div>
               <p className="surtitre">Le principe</p>
-              <p className="prose-etl mt-5 text-[length:var(--text-lg)] !text-ivoire">
+              <p className="prose-etl mt-5 text-[length:var(--text-lg)] !text-texte">
                 {d.principe}
               </p>
             </div>
@@ -79,10 +79,10 @@ export default async function DisciplinePage({ params }: Params) {
               <ul className="mt-6 space-y-4">
                 {d.methode.map((m, i) => (
                   <li key={m} className="flex gap-5">
-                    <span className="mt-0.5 font-display text-sm text-scene tnum">
+                    <span className="mt-0.5 font-display text-sm text-accent tnum">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="font-sans text-sm text-ivoire-doux">{m}</span>
+                    <span className="font-sans text-sm text-texte-doux">{m}</span>
                   </li>
                 ))}
               </ul>
@@ -99,12 +99,12 @@ export default async function DisciplinePage({ params }: Params) {
             <p className="surtitre surtitre-sourd">
               {enseignants.length > 1 ? "Les intervenants" : "L’intervenant·e"}
             </p>
-            <ul className="mt-6 space-y-px bg-ivoire/10">
+            <ul className="mt-6 space-y-px bg-[var(--color-filet)]">
               {enseignants.map((i) => (
                 <li key={i.slug}>
                   <Link
                     href={`/l-ecole/equipe/${i.slug}`}
-                    className="group flex items-center gap-5 bg-salle p-5 transition-colors hover:bg-plateau"
+                    className="group flex items-center gap-5 bg-fond p-5 transition-colors hover:bg-fond-doux"
                   >
                     {i.portrait && (
                       <Photo
@@ -118,10 +118,10 @@ export default async function DisciplinePage({ params }: Params) {
                       />
                     )}
                     <span className="min-w-0">
-                      <span className="block font-display text-[length:var(--text-lg)] group-hover:text-scene">
+                      <span className="block font-display text-[length:var(--text-lg)] group-hover:text-accent">
                         {i.prenom} {i.nom}
                       </span>
-                      <span className="block font-sans text-xs text-ivoire-sourd">
+                      <span className="block font-sans text-xs text-texte-sourd">
                         {i.fonction}
                       </span>
                     </span>
@@ -130,9 +130,9 @@ export default async function DisciplinePage({ params }: Params) {
               ))}
             </ul>
 
-            <div className="mt-12 border border-ivoire/15 p-7">
+            <div className="mt-12 border border-filet p-7">
               <p className="surtitre">Année {site.anneeScolaire}</p>
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 Cette discipline fait partie du cursus de comédien·ne en trois
                 ans. Elle n’est pas dispensée séparément — hors stages ouverts
                 aux comédiens extérieurs.
@@ -148,7 +148,7 @@ export default async function DisciplinePage({ params }: Params) {
         </div>
       </Section>
 
-      <Section fond="plateau" className="!py-16">
+      <Section registre="creme" className="!py-16">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="surtitre surtitre-sourd">Discipline suivante</p>

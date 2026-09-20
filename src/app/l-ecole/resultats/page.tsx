@@ -19,8 +19,8 @@ export default function Resultats() {
         chapo="La certification Qualiopi impose de publier ces chiffres. Nous préférons les mettre ici, en évidence, plutôt qu’au fond d’un lien de pied de page : ce sont eux qui disent le mieux ce que vaut la formation."
       />
 
-      <Section className="!pt-0">
-        <div className="grid gap-14 border-y border-ivoire/10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+      <Section>
+        <div className="grid gap-14 border-y border-filet py-16 sm:grid-cols-2 lg:grid-cols-4">
           {indicateurs.map((i) => (
             <Chiffre
               key={i.libelle}
@@ -60,14 +60,14 @@ export default function Resultats() {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-ivoire/15 p-7">
+            <div className="border border-filet p-7">
               <p className="surtitre">Méthode</p>
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 Les enquêtes de satisfaction sont conduites auprès de l’ensemble
                 des élèves en fin d’année scolaire. Les enquêtes d’insertion sont
                 menées à six mois et à un an après la sortie de promotion.
               </p>
-              <p className="mt-4 font-sans text-xs text-ivoire-sourd">
+              <p className="mt-4 font-sans text-xs text-texte-sourd">
                 Dernière enquête de satisfaction : 2025-2026. Dernière enquête
                 d’insertion : promotion 2022-2025.
               </p>
@@ -77,7 +77,7 @@ export default function Resultats() {
       </Section>
 
       <Section
-        fond="plateau"
+        registre="creme"
         surtitre="Enquête de satisfaction 2025-2026"
         titre="Ce que les élèves écrivent"
       >

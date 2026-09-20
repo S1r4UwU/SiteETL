@@ -17,10 +17,10 @@ function Carte({ i }: { i: Intervenant }) {
     <li>
       <Link
         href={`/l-ecole/equipe/${i.slug}`}
-        className="group block bg-salle transition-colors"
+        className="group block bg-fond transition-colors"
       >
         {i.portrait && (
-          <div className="overflow-hidden bg-plateau">
+          <div className="overflow-hidden bg-fond-doux">
             <Photo
               id={i.portrait}
               alt=""
@@ -33,11 +33,11 @@ function Carte({ i }: { i: Intervenant }) {
           </div>
         )}
         <div className="pt-5">
-          <h3 className="font-display text-[length:var(--text-lg)] group-hover:text-scene">
+          <h3 className="font-display text-[length:var(--text-lg)] group-hover:text-accent">
             {i.prenom} {i.nom}
           </h3>
-          <p className="mt-1 font-sans text-xs text-ivoire-sourd">{i.fonction}</p>
-          <p className="mt-3 font-sans text-sm text-ivoire-doux">
+          <p className="mt-1 font-sans text-xs text-texte-sourd">{i.fonction}</p>
+          <p className="mt-3 font-sans text-sm text-texte-doux">
             {i.matieres.join(" · ")}
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function Equipe() {
         chapo="Des artistes professionnels, hautement diplômés, qui montent sur scène par ailleurs. C’est la condition pour transmettre un métier tel qu’il s’exerce aujourd’hui, pas tel qu’il s’exerçait il y a vingt ans."
       />
 
-      <Section className="!pt-0" surtitre="Le cursus">
+      <Section surtitre="Le cursus">
         <ul className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
           {cursus.map((i) => (
             <Carte key={i.slug} i={i} />
@@ -67,7 +67,7 @@ export default function Equipe() {
       </Section>
 
       <Section
-        fond="plateau"
+        registre="creme"
         surtitre="Les modules"
         chapo="Escrime et combat de scène, marionnette et théâtre d’objet : deux spécialités enseignées par des référents de leur discipline."
       >
@@ -79,15 +79,15 @@ export default function Equipe() {
       </Section>
 
       <Section surtitre="Administration">
-        <ul className="grid gap-px bg-ivoire/10 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-px bg-[var(--color-filet)] sm:grid-cols-2 lg:grid-cols-4">
           {administration.map((a) => (
-            <li key={a.nom} className="bg-salle p-7">
+            <li key={a.nom} className="bg-fond p-7">
               <p className="font-display text-[length:var(--text-lg)]">{a.nom}</p>
-              <p className="mt-1 font-sans text-xs text-ivoire-sourd">
+              <p className="mt-1 font-sans text-xs text-texte-sourd">
                 {a.fonction}
               </p>
               {"precision" in a && a.precision && (
-                <p className="mt-3 font-sans text-xs uppercase tracking-[0.12em] text-scene">
+                <p className="mt-3 font-sans text-xs uppercase tracking-[0.12em] text-accent">
                   {a.precision}
                 </p>
               )}

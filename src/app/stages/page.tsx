@@ -19,35 +19,35 @@ export default function Stages() {
         chapo="Vous n’êtes pas élève de l’école ? Certains stages vous sont ouverts, débutant·e ou confirmé·e. Des formats courts, encadrés par des spécialistes de leur discipline."
       />
 
-      <Section className="!pt-0">
-        <ul className="space-y-px bg-ivoire/10">
+      <Section>
+        <ul className="space-y-px bg-[var(--color-filet)]">
           {stages.map((s) => (
             <li key={s.slug}>
               <Link
                 href={`/stages/${s.slug}`}
-                className="group grid gap-6 bg-salle py-10 md:grid-cols-12 md:gap-10"
+                className="group grid gap-6 bg-fond py-10 md:grid-cols-12 md:gap-10"
               >
                 <div className="md:col-span-5">
-                  <h2 className="font-display text-[length:var(--text-2xl)] group-hover:text-scene">
+                  <h2 className="font-display text-[length:var(--text-2xl)] group-hover:text-accent">
                     {s.titre}
                   </h2>
-                  <p className="mt-2 font-sans text-xs uppercase tracking-[0.12em] text-scene">
+                  <p className="mt-2 font-sans text-xs uppercase tracking-[0.12em] text-accent">
                     {s.intervenant}
                   </p>
                 </div>
 
-                <p className="font-sans text-sm text-ivoire-doux md:col-span-4">
+                <p className="font-sans text-sm text-texte-doux md:col-span-4">
                   {s.chapo}
                 </p>
 
                 <div className="md:col-span-3">
-                  <p className="font-sans text-sm text-ivoire">{s.duree}</p>
-                  <p className="mt-1 font-sans text-sm text-ivoire-doux">
+                  <p className="font-sans text-sm text-texte">{s.duree}</p>
+                  <p className="mt-1 font-sans text-sm text-texte-doux">
                     {s.tarif}
                   </p>
                   {/* État explicite quand la date n’est pas arrêtée — au lieu
                       d’un champ vide comme sur l’ancien site. */}
-                  <p className="mt-3 font-sans text-xs text-ivoire-sourd">
+                  <p className="mt-3 font-sans text-xs text-texte-sourd">
                     {s.dates ?? "Dates à paraître — inscription en liste d’attente"}
                   </p>
                 </div>
@@ -56,7 +56,7 @@ export default function Stages() {
           ))}
         </ul>
 
-        <p className="mt-12 max-w-2xl font-sans text-sm text-ivoire-sourd">
+        <p className="mt-12 max-w-2xl font-sans text-sm text-texte-sourd">
           Les stages sont confirmés sous réserve d’un nombre suffisant de
           participants. Le règlement s’effectue par chèque ou par virement, au
           plus tard un mois avant le début du stage.

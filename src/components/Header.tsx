@@ -15,7 +15,7 @@ function Logo() {
       {/* Le lion de Lyon, repris du logo de l’école. Inline : zéro requête. */}
       <span
         aria-hidden
-        className="grid size-10 shrink-0 place-items-center bg-scene text-salle"
+        className="grid size-10 shrink-0 place-items-center bg-accent text-fond"
       >
         <svg viewBox="0 0 24 24" className="size-7" fill="currentColor">
           <path d="M12 2.6c-1.1 1.5-2.6 2-4.2 2.2-.7.1-1 .5-.8 1.2.2.6.1 1-.4 1.5-1 .9-1.4 2-1.2 3.3.1.7.4 1.3.9 1.8.4.4.5.8.3 1.3-.5 1.4-.2 2.7.8 3.8.9 1 2 1.6 3.3 1.9l.6.1v1.7c0 .4.2.6.6.6h.2c.4 0 .6-.2.6-.6v-1.6h.7v1.6c0 .4.2.6.6.6h.2c.4 0 .6-.2.6-.6v-1.8c1.7-.4 3-1.3 3.8-2.8.6-1.1.6-2.2.2-3.3-.2-.5-.1-.9.3-1.3 1.1-1.2 1.2-3 .1-4.2-.4-.4-.5-.8-.4-1.4.2-.8-.1-1.2-.9-1.3-1.6-.2-3-.7-4.1-2.1a1 1 0 0 0-.8-.4c-.3 0-.6.1-.8.4Zm-2.4 7.2c.6 0 1 .5 1 1.1s-.4 1.1-1 1.1-1-.5-1-1.1.4-1.1 1-1.1Zm4.8 0c.6 0 1 .5 1 1.1s-.4 1.1-1 1.1-1-.5-1-1.1.4-1.1 1-1.1ZM12 13.4c.9 0 1.6.4 1.6.9 0 .6-.7 1-1.6 1s-1.6-.4-1.6-1c0-.5.7-.9 1.6-.9Z" />
@@ -25,7 +25,7 @@ function Logo() {
         <span className="block font-display text-lg tracking-tight">
           École de Théâtre
         </span>
-        <span className="block font-sans text-[0.65rem] uppercase tracking-[0.22em] text-ivoire-sourd">
+        <span className="block font-sans text-[0.65rem] uppercase tracking-[0.22em] text-texte-sourd">
           de Lyon
         </span>
       </span>
@@ -65,16 +65,20 @@ export function Header() {
       {/* Obligation RGAA : un lien d’évitement, visible au focus. */}
       <a
         href="#contenu"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-scene focus:px-4 focus:py-3 focus:font-sans focus:text-sm focus:text-salle"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-accent focus:px-4 focus:py-3 focus:font-sans focus:text-sm focus:text-fond"
       >
         Aller au contenu
       </a>
 
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-[var(--ease-scene)] ${
+        /* Toujours en registre salle : l'en-tête passe soit au-dessus d'un
+           en-tête de page noir, soit sur son propre fond noir une fois la
+           page défilée. Le contraste du menu ne dépend donc jamais de ce
+           qu'il y a dessous. */
+        className={`registre-salle fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-[var(--ease-scene)] ${
           defile || ouvert
-            ? "bg-salle/95 backdrop-blur-[2px] border-b border-ivoire/10"
-            : "bg-transparent"
+            ? "!bg-[var(--color-salle)]/95 border-b border-filet backdrop-blur-[3px]"
+            : "!bg-transparent"
         }`}
       >
         <div className="enveloppe flex h-20 items-center justify-between gap-6">
@@ -89,8 +93,8 @@ export function Header() {
                     aria-current={actif(item.href) ? "page" : undefined}
                     className={`whitespace-nowrap font-sans text-[0.8rem] uppercase tracking-[0.14em] transition-colors ${
                       actif(item.href)
-                        ? "text-scene"
-                        : "text-ivoire-doux hover:text-ivoire"
+                        ? "text-accent"
+                        : "text-texte-doux hover:text-texte"
                     }`}
                   >
                     {item.libelle}
@@ -98,12 +102,12 @@ export function Header() {
 
                   {"enfants" in item && item.enfants && (
                     <div className="invisible absolute left-1/2 top-full z-10 -translate-x-1/2 pt-5 opacity-0 transition-opacity duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                      <ul className="min-w-60 border border-ivoire/10 bg-plateau p-2">
+                      <ul className="min-w-60 border border-filet bg-fond-doux p-2">
                         {item.enfants.map((enfant) => (
                           <li key={enfant.href + enfant.libelle}>
                             <Link
                               href={enfant.href}
-                              className="block px-4 py-2.5 font-sans text-sm text-ivoire-doux transition-colors hover:bg-coulisse hover:text-ivoire"
+                              className="block px-4 py-2.5 font-sans text-sm text-texte-doux transition-colors hover:bg-fond-fort hover:text-texte"
                             >
                               {enfant.libelle}
                             </Link>
@@ -122,7 +126,7 @@ export function Header() {
                 permanente, présente sur chaque écran. */}
             <Link
               href="/candidater"
-              className="hidden bg-scene px-5 py-3 font-sans text-[0.75rem] uppercase tracking-[0.14em] text-salle transition-colors hover:bg-scene-chaud sm:block"
+              className="hidden bg-accent px-5 py-3 font-sans text-[0.75rem] uppercase tracking-[0.14em] text-fond transition-colors hover:bg-accent-vif sm:block"
             >
               Candidater
             </Link>
@@ -132,7 +136,7 @@ export function Header() {
               onClick={() => setOuvert((o) => !o)}
               aria-expanded={ouvert}
               aria-controls="menu-mobile"
-              className="grid size-11 place-items-center text-ivoire lg:hidden"
+              className="grid size-11 place-items-center text-texte lg:hidden"
             >
               <span className="sr-only">
                 {ouvert ? "Fermer le menu" : "Ouvrir le menu"}
@@ -158,15 +162,15 @@ export function Header() {
       <div
         id="menu-mobile"
         hidden={!ouvert}
-        className="fixed inset-0 z-40 overflow-y-auto bg-salle pt-20 lg:hidden"
+        className="registre-salle fixed inset-0 z-40 overflow-y-auto pt-20 lg:hidden"
       >
         <nav aria-label="Navigation principale (mobile)" className="enveloppe py-8">
-          <ul className="divide-y divide-ivoire/10">
+          <ul className="divide-y divide-[var(--color-filet)]">
             {navigation.map((item) => (
               <li key={item.href} className="py-5">
                 <Link
                   href={item.href}
-                  className="block font-display text-2xl text-ivoire"
+                  className="block font-display text-2xl text-texte"
                 >
                   {item.libelle}
                 </Link>
@@ -176,7 +180,7 @@ export function Header() {
                       <li key={enfant.href + enfant.libelle}>
                         <Link
                           href={enfant.href}
-                          className="font-sans text-sm text-ivoire-doux"
+                          className="font-sans text-sm text-texte-doux"
                         >
                           {enfant.libelle}
                         </Link>
@@ -190,12 +194,12 @@ export function Header() {
 
           <Link
             href="/candidater"
-            className="mt-8 flex items-center justify-between bg-scene px-6 py-5 font-sans text-sm uppercase tracking-[0.14em] text-salle"
+            className="mt-8 flex items-center justify-between bg-accent px-6 py-5 font-sans text-sm uppercase tracking-[0.14em] text-fond"
           >
             Candidater <span aria-hidden>→</span>
           </Link>
 
-          <p className="mt-8 font-sans text-sm text-ivoire-sourd">
+          <p className="mt-8 font-sans text-sm text-texte-sourd">
             <a href={`tel:${site.telephone.replace(/\s/g, "")}`} className="lien">
               {site.telephoneAffiche}
             </a>

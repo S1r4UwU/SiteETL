@@ -20,7 +20,7 @@ export default function Merci() {
         chapo="Votre demande est arrivée. Nous vous envoyons le dossier de candidature par e-mail sous 48 heures ouvrées — pensez à vérifier vos indésirables si vous ne voyez rien passer."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="max-w-2xl">
           <p className="prose-etl">
             En attendant, vous pouvez commencer à chercher la scène que vous
@@ -38,7 +38,7 @@ export default function Merci() {
             </Bouton>
           </div>
 
-          <p className="mt-12 font-sans text-sm text-ivoire-sourd">
+          <p className="mt-12 font-sans text-sm text-texte-sourd">
             Une urgence, une question&nbsp;?{" "}
             <a href={`tel:${site.telephone.replace(/\s/g, "")}`} className="lien">
               {site.telephoneAffiche}

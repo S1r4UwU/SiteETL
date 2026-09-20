@@ -49,7 +49,7 @@ export function Photo({
   return (
     <figure className="relative">
       {img}
-      <figcaption className="mt-2 font-sans text-xs text-ivoire-sourd">
+      <figcaption className="mt-2 font-sans text-xs text-texte-sourd">
         Photo&nbsp;: {credit}
       </figcaption>
     </figure>

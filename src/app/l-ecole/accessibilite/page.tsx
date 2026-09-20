@@ -26,10 +26,10 @@ export default function Accessibilite() {
         chapo="L’École de Théâtre de Lyon s’inscrit dans une politique d’égalité des chances, afin de permettre à tous nos stagiaires d’accéder à toutes nos formations."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
-            <p className="prose-etl text-[length:var(--text-lg)] !text-ivoire">
+            <p className="prose-etl text-[length:var(--text-lg)] !text-texte">
               Les participant·es en situation de handicap temporaire ou permanent,
               ou ayant un trouble de santé invalidant, peuvent être accompagné·es
               durant toute leur formation.
@@ -39,8 +39,8 @@ export default function Accessibilite() {
               <p className="surtitre">Nos engagements</p>
               <ul className="mt-6 space-y-4">
                 {engagements.map((e) => (
-                  <li key={e} className="flex gap-4 font-sans text-sm text-ivoire-doux">
-                    <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-scene" />
+                  <li key={e} className="flex gap-4 font-sans text-sm text-texte-doux">
+                    <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-accent" />
                     {e}
                   </li>
                 ))}
@@ -72,15 +72,15 @@ export default function Accessibilite() {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-scene/40 p-7">
+            <div className="border border-accent/45 p-7">
               <p className="surtitre">Votre interlocutrice</p>
               <p className="mt-5 font-display text-[length:var(--text-xl)]">
                 {site.legal.referenteHandicap}
               </p>
-              <p className="mt-1 font-sans text-xs text-ivoire-sourd">
+              <p className="mt-1 font-sans text-xs text-texte-sourd">
                 Référente handicap — administratrice de l’école
               </p>
-              <p className="mt-6 font-sans text-sm text-ivoire-doux">
+              <p className="mt-6 font-sans text-sm text-texte-doux">
                 Elle se tient à votre disposition pour toute question concernant
                 les dispositifs disponibles.
               </p>

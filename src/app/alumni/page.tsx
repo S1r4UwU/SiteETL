@@ -30,16 +30,16 @@ export default function Alumni() {
         }
       />
 
-      <Section className="!pt-0">
-        <ol className="space-y-px bg-ivoire/10">
+      <Section>
+        <ol className="space-y-px bg-[var(--color-filet)]">
           {alumni.map((a) => (
-            <li key={a.slug} className="bg-salle py-12 md:py-16">
+            <li key={a.slug} className="bg-fond py-12 md:py-16">
               <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
                 <div className="lg:col-span-5">
                   <h2 className="font-display text-[length:var(--text-2xl)]">
                     {a.nom}
                   </h2>
-                  <p className="mt-2 font-sans text-xs uppercase tracking-[0.14em] text-scene">
+                  <p className="mt-2 font-sans text-xs uppercase tracking-[0.14em] text-accent">
                     Promotion <span className="tnum">{a.promotion}</span> ·{" "}
                     {a.metier}
                   </p>
@@ -48,11 +48,11 @@ export default function Alumni() {
                     {a.parcours.map((etape) => (
                       <li
                         key={etape}
-                        className="flex gap-4 font-sans text-sm text-ivoire-doux"
+                        className="flex gap-4 font-sans text-sm text-texte-doux"
                       >
                         <span
                           aria-hidden
-                          className="mt-2.5 h-px w-5 shrink-0 bg-scene"
+                          className="mt-2.5 h-px w-5 shrink-0 bg-accent"
                         />
                         {etape}
                       </li>
@@ -73,7 +73,7 @@ export default function Alumni() {
         </ol>
       </Section>
 
-      <Section fond="plateau" className="!py-16">
+      <Section registre="creme" className="!py-16">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl font-display text-[length:var(--text-xl)]">
             Trois ans, et une promotion de vingt personnes qui ne se quittent

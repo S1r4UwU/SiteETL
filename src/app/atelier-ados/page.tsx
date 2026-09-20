@@ -36,16 +36,16 @@ export default function AtelierAdos() {
         chapo="Un atelier hebdomadaire d’octobre à juin, encadré par une comédienne professionnelle, dans les locaux de l’école. Aucune expérience requise — et un vrai spectacle en fin d’année."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
             {essai && (
-              <div className="mb-12 border border-scene/40 p-6">
+              <div className="mb-12 border border-accent/45 p-6">
                 <p className="surtitre">Cours d’essai</p>
                 <p className="mt-3 font-display text-[length:var(--text-xl)]">
                   {periode(essai)}
                 </p>
-                <p className="mt-2 font-sans text-sm text-ivoire-doux">
+                <p className="mt-2 font-sans text-sm text-texte-doux">
                   Une séance complète pour voir si ça lui plaît, sans engagement.
                 </p>
               </div>
@@ -54,8 +54,8 @@ export default function AtelierAdos() {
             <p className="surtitre">Ce qu’on y fait</p>
             <ul className="mt-6 space-y-4">
               {contenu.map((c) => (
-                <li key={c} className="flex gap-4 font-sans text-sm text-ivoire-doux">
-                  <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-scene" />
+                <li key={c} className="flex gap-4 font-sans text-sm text-texte-doux">
+                  <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-accent" />
                   {c}
                 </li>
               ))}
@@ -89,7 +89,7 @@ export default function AtelierAdos() {
               />
             </div>
 
-            <p className="mt-10 font-sans text-sm text-ivoire-sourd">
+            <p className="mt-10 font-sans text-sm text-texte-sourd">
               Laurianne Di Ruzza est une ancienne élève de l’école, promotion
               2020, aujourd’hui directrice artistique du Théâtre Le Nombril du
               Monde.{" "}
@@ -101,9 +101,9 @@ export default function AtelierAdos() {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-ivoire/15 p-7 md:p-9">
+            <div className="border border-filet p-7 md:p-9">
               <p className="surtitre">Inscrire son enfant</p>
-              <p className="mt-4 font-sans text-sm text-ivoire-doux">
+              <p className="mt-4 font-sans text-sm text-texte-doux">
                 Laissez-nous vos coordonnées : nous vous rappelons pour caler le
                 cours d’essai et répondre à vos questions.
               </p>
@@ -160,7 +160,7 @@ export default function AtelierAdos() {
               </div>
             </div>
 
-            <p className="mt-8 font-sans text-xs text-ivoire-sourd">
+            <p className="mt-8 font-sans text-xs text-texte-sourd">
               Les données concernant un·e mineur·e sont collectées auprès du
               représentant légal, et conservées le temps de l’année scolaire
               concernée.

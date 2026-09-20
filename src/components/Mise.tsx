@@ -8,7 +8,10 @@ import { Photo } from "./Photo";
  * cohérence d’un écran à l’autre.
  */
 
-/** En-tête de page. Le titre est toujours le seul <h1> du document. */
+/**
+ * En-tête de page, toujours en registre SALLE. Le titre est toujours le seul
+ * <h1> du document.
+ */
 export function EnTete({
   surtitre,
   titre,
@@ -25,7 +28,7 @@ export function EnTete({
   enfants?: ReactNode;
 }) {
   return (
-    <header className="relative overflow-hidden pb-[var(--spacing-section)] pt-40 md:pt-48">
+    <header className="registre-salle relative overflow-hidden pb-[var(--spacing-section)] pt-40 md:pt-48">
       {photo && (
         <div className="poursuite voile absolute inset-0 -z-10">
           <Photo
@@ -60,7 +63,7 @@ export function Section({
   chapo,
   children,
   id,
-  fond,
+  registre,
   className = "",
 }: {
   surtitre?: string;
@@ -68,13 +71,21 @@ export function Section({
   chapo?: string;
   children: ReactNode;
   id?: string;
-  fond?: "plateau";
+  /** « creme » pose la section sur le papier teinté, « salle » la fait
+   *  basculer dans le noir de plateau. Par défaut : le papier. */
+  registre?: "creme" | "salle";
   className?: string;
 }) {
+  const fond =
+    registre === "salle"
+      ? "registre-salle"
+      : registre === "creme"
+        ? "bg-fond-doux"
+        : "";
   return (
     <section
       id={id}
-      className={`${fond === "plateau" ? "bg-plateau" : ""} py-[var(--spacing-section)] ${className}`}
+      className={`${fond} py-[var(--spacing-section)] ${className}`}
     >
       <div className="enveloppe">
         {(surtitre || titre) && (
@@ -99,16 +110,16 @@ export function Fiche({
   entrees: { terme: string; valeur: ReactNode }[];
 }) {
   return (
-    <dl className="divide-y divide-ivoire/10 border-y border-ivoire/10">
+    <dl className="divide-y divide-[var(--color-filet)] border-y border-filet">
       {entrees.map((e) => (
         <div
           key={e.terme}
           className="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6"
         >
-          <dt className="font-sans text-xs uppercase tracking-[0.14em] text-ivoire-sourd">
+          <dt className="font-sans text-xs uppercase tracking-[0.14em] text-texte-sourd">
             {e.terme}
           </dt>
-          <dd className="font-sans text-sm text-ivoire">{e.valeur}</dd>
+          <dd className="font-sans text-sm text-texte">{e.valeur}</dd>
         </div>
       ))}
     </dl>
@@ -129,17 +140,17 @@ export function Chiffre({
 }) {
   return (
     <div>
-      <p className="font-display text-[length:var(--text-4xl)] leading-none text-scene tnum">
+      <p className="font-display text-[length:var(--text-4xl)] leading-none text-accent tnum">
         {valeur}
         {unite && (
-          <span className="ml-1 text-[length:var(--text-xl)] text-ivoire">
+          <span className="ml-1 text-[length:var(--text-xl)] text-texte">
             {unite}
           </span>
         )}
       </p>
-      <p className="mt-4 font-sans text-sm text-ivoire">{libelle}</p>
+      <p className="mt-4 font-sans text-sm text-texte">{libelle}</p>
       {precision && (
-        <p className="mt-1 font-sans text-xs text-ivoire-sourd">{precision}</p>
+        <p className="mt-1 font-sans text-xs text-texte-sourd">{precision}</p>
       )}
     </div>
   );
@@ -157,16 +168,16 @@ export function Citation({
 }) {
   return (
     <figure>
-      <blockquote className="font-display text-[length:var(--text-xl)] leading-[1.35] text-ivoire">
-        <span aria-hidden className="text-scene">
+      <blockquote className="font-display text-[length:var(--text-xl)] leading-[1.35] text-texte">
+        <span aria-hidden className="text-accent">
           «&nbsp;
         </span>
         {texte}
-        <span aria-hidden className="text-scene">
+        <span aria-hidden className="text-accent">
           &nbsp;»
         </span>
       </blockquote>
-      <figcaption className="mt-5 font-sans text-sm text-ivoire-sourd">
+      <figcaption className="mt-5 font-sans text-sm text-texte-sourd">
         {auteur}
         {precision && <span className="block text-xs">{precision}</span>}
       </figcaption>

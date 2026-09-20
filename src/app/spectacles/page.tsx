@@ -24,7 +24,7 @@ export default function Spectacles() {
       />
 
       {/* Le plus récent, en grand. */}
-      <Section className="!pt-0">
+      <Section>
         <Link
           href={`/spectacles/${premier.slug}`}
           className="group relative block min-h-[28rem] overflow-hidden md:min-h-[34rem]"
@@ -39,17 +39,17 @@ export default function Spectacles() {
             sizes="100vw"
             className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-[var(--ease-scene)] group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-salle via-salle/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-fond via-fond/70 to-transparent" />
           <div className="relative flex min-h-[28rem] flex-col justify-end p-7 md:min-h-[34rem] md:p-12">
             <p className="surtitre">
               Le dernier en date · {premier.saison}
               {premier.niveau ? ` · ${premier.niveau}` : ""}
             </p>
-            <h2 className="mt-4 max-w-3xl text-[length:var(--text-3xl)] group-hover:text-scene">
+            <h2 className="mt-4 max-w-3xl text-[length:var(--text-3xl)] group-hover:text-accent">
               {premier.titre}
             </h2>
             {premier.chapo && (
-              <p className="prose-etl mt-4 max-w-xl !text-ivoire">{premier.chapo}</p>
+              <p className="prose-etl mt-4 max-w-xl !text-texte">{premier.chapo}</p>
             )}
           </div>
         </Link>
@@ -63,11 +63,11 @@ export default function Spectacles() {
             if (affichables.length === 0) return null;
             return (
               <div key={annee}>
-                <div className="flex items-baseline gap-6 border-b border-ivoire/10 pb-5">
-                  <h3 className="font-display text-[length:var(--text-2xl)] text-scene tnum">
+                <div className="flex items-baseline gap-6 border-b border-filet pb-5">
+                  <h3 className="font-display text-[length:var(--text-2xl)] text-accent tnum">
                     {annee}
                   </h3>
-                  <span className="font-sans text-xs uppercase tracking-[0.14em] text-ivoire-sourd">
+                  <span className="font-sans text-xs uppercase tracking-[0.14em] text-texte-sourd">
                     {affichables.length} spectacle
                     {affichables.length > 1 ? "s" : ""}
                   </span>
@@ -77,7 +77,7 @@ export default function Spectacles() {
                   {affichables.map((s) => (
                     <li key={s.slug}>
                       <Link href={`/spectacles/${s.slug}`} className="group block">
-                        <div className="overflow-hidden bg-plateau">
+                        <div className="overflow-hidden bg-fond-doux">
                           <Photo
                             id={s.photos[0]}
                             alt=""
@@ -88,17 +88,17 @@ export default function Spectacles() {
                             className="aspect-[10/7] w-full object-cover opacity-80 transition-all duration-500 ease-[var(--ease-scene)] group-hover:scale-[1.04] group-hover:opacity-100"
                           />
                         </div>
-                        <h4 className="mt-5 font-display text-[length:var(--text-lg)] group-hover:text-scene">
+                        <h4 className="mt-5 font-display text-[length:var(--text-lg)] group-hover:text-accent">
                           {s.titre}
                         </h4>
                         {s.niveau && (
-                          <p className="mt-1 font-sans text-xs text-ivoire-sourd">
+                          <p className="mt-1 font-sans text-xs text-texte-sourd">
                             {s.niveau}
                             {s.miseEnScene ? ` · ${s.miseEnScene}` : ""}
                           </p>
                         )}
                         {s.chapo && (
-                          <p className="mt-3 font-sans text-sm text-ivoire-doux">
+                          <p className="mt-3 font-sans text-sm text-texte-doux">
                             {s.chapo}
                           </p>
                         )}

@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
 import { Poursuite } from "@/components/Poursuite";
+import { PlanLent } from "@/components/PlanLent";
 import { Bande } from "@/components/Bande";
 import { Defilant } from "@/components/Defilant";
 import {
@@ -15,9 +17,13 @@ import { disciplines, repertoire } from "@/content/disciplines";
 import { alumni, chiffresFormation, indicateurs } from "@/content/alumni";
 import { spectacles } from "@/content/spectacles";
 import { agenda, libelleType, periode } from "@/lib/agenda";
-import { site } from "@/lib/site";
+import { photo, site } from "@/lib/site";
 
 export const revalidate = 3600;
+
+/* Le trajet d'une soirée : on entre par le noir, on lit son programme sur du
+   papier, la lumière retombe sur les affiches, on relit, et le noir revient
+   pour l'appel. Chaque bascule de registre est un effet en soi. */
 
 export default function Accueil() {
   const { prochain } = agenda();
@@ -26,38 +32,39 @@ export default function Accueil() {
 
   return (
     <>
-      {/* ==================================================================
-          LE PLATEAU
-          Une photo de plateau prise deux fois : à froid dessous, en pleine
-          lumière dessus, découpée par une poursuite que le visiteur déplace
-          lui-même. On n'explique pas ce qu'est une école de théâtre : on met
-          quelqu'un derrière le projecteur.
-         ================================================================== */}
-      <section className="relative flex min-h-[94svh] items-end overflow-hidden">
-        <Poursuite className="absolute inset-0 -z-20">
-          <Photo
-            id={affiche.photos[0]}
-            alt=""
-            decoratif
-            largeur={2000}
-            hauteur={1200}
-            priority
-            sizes="100vw"
-            className="poursuite-froid"
-          />
-          <Photo
-            id={affiche.photos[0]}
-            alt=""
-            decoratif
-            largeur={2000}
-            hauteur={1200}
-            priority
-            sizes="100vw"
-            className="poursuite-chaud"
-          />
-        </Poursuite>
+      {/* ═══ NOIR ═══ Le plateau ════════════════════════════════════════════
+          Une photo prise deux fois : à froid dessous, en pleine lumière
+          dessus, découpée par une poursuite que le visiteur déplace. On
+          n'explique pas ce qu'est une école de théâtre — on met quelqu'un
+          derrière le projecteur.
+         ════════════════════════════════════════════════════════════════════ */}
+      <section className="registre-salle relative flex min-h-[94svh] items-end overflow-hidden">
+        <PlanLent intensite={0.14} className="absolute inset-0 -z-20 scale-110">
+          <Poursuite className="size-full">
+            <Photo
+              id={affiche.photos[0]}
+              alt=""
+              decoratif
+              largeur={2000}
+              hauteur={1200}
+              priority
+              sizes="100vw"
+              className="poursuite-froid"
+            />
+            <Photo
+              id={affiche.photos[0]}
+              alt=""
+              decoratif
+              largeur={2000}
+              hauteur={1200}
+              priority
+              sizes="100vw"
+              className="poursuite-chaud"
+            />
+          </Poursuite>
+        </PlanLent>
 
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-salle via-salle/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-[var(--color-salle)] via-[var(--color-salle)]/40 to-transparent" />
 
         <div className="enveloppe w-full pb-16 pt-32 md:pb-24">
           <p className="surtitre animate-[lumiere_0.8s_var(--ease-scene)_1.9s_both]">
@@ -86,8 +93,8 @@ export default function Accueil() {
           </div>
 
           {prochain && (
-            <p className="mt-12 font-sans text-sm text-ivoire-doux animate-[lumiere_0.9s_var(--ease-scene)_2.65s_both]">
-              <span className="text-scene">{libelleType[prochain.type]} — </span>
+            <p className="mt-12 font-sans text-sm text-texte-doux animate-[lumiere_0.9s_var(--ease-scene)_2.65s_both]">
+              <span className="text-accent">{libelleType[prochain.type]} — </span>
               {prochain.titre}, {periode(prochain)}.{" "}
               <Link href="/agenda" className="lien">
                 Tout l’agenda
@@ -96,45 +103,35 @@ export default function Accueil() {
           )}
         </div>
 
-        {/* Indice de poursuite : on dit une fois comment ça marche, discrètement. */}
-        <p className="pointer-events-none absolute bottom-7 right-6 hidden max-w-[13rem] text-right font-sans text-[0.7rem] uppercase tracking-[0.16em] text-ivoire-sourd animate-[lumiere_1s_var(--ease-scene)_3s_both] lg:block">
+        <p className="pointer-events-none absolute bottom-7 right-6 hidden text-right font-sans text-[0.7rem] uppercase tracking-[0.16em] text-texte-sourd animate-[lumiere_1s_var(--ease-scene)_3s_both] lg:block">
           Déplacez la poursuite
         </p>
       </section>
 
-      {/* ==================================================================
-          LE FRONTON
-          Les auteurs du répertoire défilent comme sur le fronton lumineux
-          d'un théâtre. Survolez : ça s'arrête.
-         ================================================================== */}
+      {/* ═══ PAPIER ═══ Le programme de salle ══════════════════════════════ */}
+
       <Defilant mots={repertoire} vitesse={68} />
 
-      {/* ==================================================================
-          LES CHIFFRES
-          Ils se composent à l'arrivée dans le champ, et les filets se tracent.
-         ================================================================== */}
-      <Section className="!py-20 md:!py-28">
+      <Section className="!py-20 md:!py-24">
         <FiletTrace />
         <div className="grid gap-12 py-14 sm:grid-cols-3 sm:gap-8">
           {chiffresFormation.map((c, i) => (
             <Apparition key={c.libelle} delai={i * 110}>
-              <p className="font-display text-[length:var(--text-4xl)] leading-none text-scene">
+              <p className="font-display text-[length:var(--text-4xl)] leading-none text-accent">
                 <Compteur valeur={c.nombre} />
-                <span className="ml-2 text-[length:var(--text-xl)] text-ivoire">
+                <span className="ml-2 text-[length:var(--text-xl)] text-texte">
                   {c.unite}
                 </span>
               </p>
-              <p className="mt-4 font-sans text-sm text-ivoire">{c.libelle}</p>
+              <p className="mt-4 font-sans text-sm text-texte">{c.libelle}</p>
             </Apparition>
           ))}
         </div>
         <FiletTrace />
       </Section>
 
-      {/* ==================================================================
-          LES DISCIPLINES
-         ================================================================== */}
-      <Section id="disciplines">
+      {/* Les disciplines, en notices de programme : vignette, titre, filet. */}
+      <Section id="disciplines" registre="creme">
         <div className="max-w-3xl">
           <p className="surtitre">Ce qu’on y travaille</p>
           <TitreLeve
@@ -151,41 +148,32 @@ export default function Accueil() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-px bg-ivoire/10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {disciplines.map((d, i) => (
             <Apparition key={d.slug} delai={i * 70}>
-              <Link
-                href={`/la-formation/${d.slug}`}
-                className="group relative flex h-full min-h-[23rem] flex-col justify-end overflow-hidden bg-salle p-7"
-              >
+              <Link href={`/la-formation/${d.slug}`} className="notice group block">
                 {d.photo && (
-                  <>
-                    <Photo
-                      id={d.photo}
+                  <span className="notice-vignette block">
+                    <Image
+                      src={photo(d.photo, { w: 800, h: 500 })}
                       alt=""
-                      decoratif
-                      largeur={800}
-                      hauteur={1000}
+                      aria-hidden
+                      width={800}
+                      height={500}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="absolute inset-0 -z-20 size-full scale-105 object-cover opacity-45 grayscale transition-all duration-[900ms] ease-[var(--ease-scene)] group-hover:scale-100 group-hover:opacity-95 group-hover:grayscale-0"
                     />
-                    <div className="absolute inset-0 -z-10 bg-gradient-to-t from-salle via-salle/75 to-salle/20 transition-opacity duration-700 group-hover:opacity-80" />
-                  </>
+                  </span>
                 )}
-
-                <p className="surtitre surtitre-sourd transition-colors duration-300 group-hover:text-scene">
+                <span className="surtitre surtitre-sourd mt-5 block">
                   {d.annees}
-                </p>
-                <h3 className="mt-3 text-[length:var(--text-xl)]">{d.titre}</h3>
-                <p className="mt-3 font-sans text-sm text-ivoire-doux">
+                </span>
+                <span className="mt-2 block font-display text-[length:var(--text-xl)] leading-tight transition-colors group-hover:text-accent">
+                  {d.titre}
+                </span>
+                <span className="mt-3 block font-sans text-sm text-texte-doux">
                   {d.accroche}
-                </p>
-
-                {/* Un filet d'orange se trace sous la carte au survol. */}
-                <span
-                  aria-hidden
-                  className="mt-6 block h-px w-0 bg-scene transition-[width] duration-500 ease-[var(--ease-scene)] group-hover:w-full"
-                />
+                </span>
+                <span className="notice-filet mt-5 block" aria-hidden />
               </Link>
             </Apparition>
           ))}
@@ -198,12 +186,11 @@ export default function Accueil() {
         </div>
       </Section>
 
-      {/* ==================================================================
-          LE MUR D'AFFICHES
+      {/* ═══ NOIR ═══ Le mur d'affiches ════════════════════════════════════
           Le défilement vertical fait avancer quinze ans de spectacles à
           l'horizontale. C'est le moment où le site cesse d'être une page.
-         ================================================================== */}
-      <section className="bg-plateau py-[var(--spacing-section)]">
+         ════════════════════════════════════════════════════════════════════ */}
+      <section className="registre-salle py-[var(--spacing-section)]">
         <div className="enveloppe mb-4">
           <p className="surtitre">L’archive</p>
           <TitreLeve
@@ -219,9 +206,7 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* ==================================================================
-          APRÈS L'ÉCOLE
-         ================================================================== */}
+      {/* ═══ PAPIER ═══ Après l'école ══════════════════════════════════════ */}
       <Section surtitre="Après l’école">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
@@ -234,10 +219,10 @@ export default function Accueil() {
             <ul className="mt-9 space-y-4">
               {enAvant.parcours.map((etape, i) => (
                 <Apparition key={etape} delai={i * 80}>
-                  <li className="flex gap-4 font-sans text-sm text-ivoire-doux">
+                  <li className="flex gap-4 font-sans text-sm text-texte-doux">
                     <span
                       aria-hidden
-                      className="mt-2.5 block h-px w-6 shrink-0 bg-scene"
+                      className="mt-2.5 block h-px w-6 shrink-0 bg-accent"
                     />
                     {etape}
                   </li>
@@ -262,20 +247,21 @@ export default function Accueil() {
         </div>
       </Section>
 
-      {/* ==================================================================
-          LES RÉSULTATS
-         ================================================================== */}
-      <Section fond="plateau" surtitre="Nos résultats" titre="Ce que deviennent nos élèves">
+      <Section
+        registre="creme"
+        surtitre="Nos résultats"
+        titre="Ce que deviennent nos élèves"
+      >
         <FiletTrace />
         <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-4">
           {indicateurs.map((ind, i) => (
             <Apparition key={ind.libelle} delai={i * 100}>
-              <p className="font-display text-[length:var(--text-4xl)] leading-none text-scene">
+              <p className="font-display text-[length:var(--text-4xl)] leading-none text-accent">
                 <Compteur valeur={parseInt(ind.valeur, 10)} suffixe=" %" />
               </p>
-              <p className="mt-4 font-sans text-sm text-ivoire">{ind.libelle}</p>
+              <p className="mt-4 font-sans text-sm text-texte">{ind.libelle}</p>
               {ind.precision && (
-                <p className="mt-1 font-sans text-xs text-ivoire-sourd">
+                <p className="mt-1 font-sans text-xs text-texte-sourd">
                   {ind.precision}
                 </p>
               )}
@@ -291,31 +277,31 @@ export default function Accueil() {
         </div>
       </Section>
 
-      {/* ==================================================================
-          L'APPEL
-         ================================================================== */}
-      <section className="relative overflow-hidden border-y border-ivoire/10">
-        <Poursuite className="absolute inset-0 -z-20">
-          <Photo
-            id={spectacles[1].photos[0]}
-            alt=""
-            decoratif
-            largeur={2000}
-            hauteur={1100}
-            sizes="100vw"
-            className="poursuite-froid"
-          />
-          <Photo
-            id={spectacles[1].photos[0]}
-            alt=""
-            decoratif
-            largeur={2000}
-            hauteur={1100}
-            sizes="100vw"
-            className="poursuite-chaud"
-          />
-        </Poursuite>
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-salle via-salle/85 to-salle/45" />
+      {/* ═══ NOIR ═══ L'appel ══════════════════════════════════════════════ */}
+      <section className="registre-salle relative overflow-hidden border-y border-filet">
+        <PlanLent intensite={0.12} className="absolute inset-0 -z-20 scale-110">
+          <Poursuite className="size-full">
+            <Photo
+              id={spectacles[1].photos[0]}
+              alt=""
+              decoratif
+              largeur={2000}
+              hauteur={1100}
+              sizes="100vw"
+              className="poursuite-froid"
+            />
+            <Photo
+              id={spectacles[1].photos[0]}
+              alt=""
+              decoratif
+              largeur={2000}
+              hauteur={1100}
+              sizes="100vw"
+              className="poursuite-chaud"
+            />
+          </Poursuite>
+        </PlanLent>
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[var(--color-salle)] via-[var(--color-salle)]/80 to-[var(--color-salle)]/35" />
 
         <div className="enveloppe py-[var(--spacing-section)]">
           <div className="max-w-2xl">

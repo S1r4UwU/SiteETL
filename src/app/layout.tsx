@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Scene } from "@/components/Scene";
 import { Rideau } from "@/components/Rideau";
+import { Entracte } from "@/components/Entracte";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -97,9 +98,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
+      {/* Le corps démarre en papier : la majorité des pages se lisent. */}
+      <body className="registre-papier">
         <div className="grain" aria-hidden />
         <Rideau />
+        <Entracte />
         <Scene />
         <Header />
         <main id="contenu">{children}</main>

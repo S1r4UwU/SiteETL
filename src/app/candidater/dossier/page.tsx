@@ -21,7 +21,7 @@ export default function Dossier() {
         chapo="Deux champs suffisent. Nous vous envoyons le dossier par e-mail sous 48 heures ouvrées — votre âge, votre adresse et vos pièces justificatives ne sont demandés qu’au moment du dépôt de candidature."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
             <Formulaire
@@ -68,7 +68,7 @@ export default function Dossier() {
           </div>
 
           <aside className="lg:col-span-5">
-            <div className="border border-ivoire/15 p-7">
+            <div className="border border-filet p-7">
               <p className="surtitre">Ce qui se passe ensuite</p>
               <ol className="mt-6 space-y-5">
                 {[
@@ -77,15 +77,15 @@ export default function Dossier() {
                   "Nous vous convoquons à une audition : une scène de cinq minutes, une chanson, un entretien.",
                 ].map((t, i) => (
                   <li key={t} className="flex gap-4">
-                    <span className="font-display text-sm text-scene tnum">
+                    <span className="font-display text-sm text-accent tnum">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="font-sans text-sm text-ivoire-doux">{t}</span>
+                    <span className="font-sans text-sm text-texte-doux">{t}</span>
                   </li>
                 ))}
               </ol>
 
-              <p className="mt-8 border-t border-ivoire/10 pt-6 font-sans text-sm text-ivoire-doux">
+              <p className="mt-8 border-t border-filet pt-6 font-sans text-sm text-texte-doux">
                 Vous préférez nous parler&nbsp;?
                 <br />
                 <a
@@ -98,7 +98,7 @@ export default function Dossier() {
               </p>
             </div>
 
-            <p className="mt-8 font-sans text-xs text-ivoire-sourd">
+            <p className="mt-8 font-sans text-xs text-texte-sourd">
               Candidat·e mineur·e&nbsp;? L’inscription est possible dès 17 ans
               avec l’accord écrit des parents. Le formulaire de candidature devra
               être signé par le ou les représentants légaux.

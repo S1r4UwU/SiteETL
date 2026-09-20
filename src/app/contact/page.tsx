@@ -36,7 +36,7 @@ export default function Contact() {
         chapo="L’administration est ouverte du lundi au vendredi, de 9h à 17h30 — et quelqu’un répond vraiment au téléphone."
       />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-6">
             {/* Trois champs. L’ancien formulaire en demandait huit, dont six
@@ -90,7 +90,7 @@ export default function Contact() {
                 <p className="mt-5 font-display text-[length:var(--text-2xl)]">
                   <a
                     href={`tel:${site.telephone.replace(/\s/g, "")}`}
-                    className="hover:text-scene"
+                    className="hover:text-accent"
                   >
                     {site.telephoneAffiche}
                   </a>
@@ -100,7 +100,7 @@ export default function Contact() {
                     {site.email}
                   </a>
                 </p>
-                <p className="mt-3 font-sans text-xs text-ivoire-sourd">
+                <p className="mt-3 font-sans text-xs text-texte-sourd">
                   {site.horaires}
                 </p>
               </div>
@@ -108,14 +108,14 @@ export default function Contact() {
               <div className="filet pt-12">
                 <p className="surtitre">Les adresses</p>
                 <div className="mt-5 grid gap-6 sm:grid-cols-2">
-                  <address className="font-sans text-sm not-italic text-ivoire-doux">
-                    <span className="block text-ivoire">Les cours</span>
+                  <address className="font-sans text-sm not-italic text-texte-doux">
+                    <span className="block text-texte">Les cours</span>
                     {site.adresseCours.rue}
                     <br />
                     {site.adresseCours.cp} {site.adresseCours.ville}
                   </address>
-                  <address className="font-sans text-sm not-italic text-ivoire-doux">
-                    <span className="block text-ivoire">
+                  <address className="font-sans text-sm not-italic text-texte-doux">
+                    <span className="block text-texte">
                       Administration & courrier
                     </span>
                     {site.adresseAdmin.rue}
@@ -130,16 +130,16 @@ export default function Contact() {
                 <dl className="mt-5 space-y-5">
                   {acces.map((a) => (
                     <div key={a.mode}>
-                      <dt className="font-sans text-xs uppercase tracking-[0.14em] text-scene">
+                      <dt className="font-sans text-xs uppercase tracking-[0.14em] text-accent">
                         {a.mode}
                       </dt>
-                      <dd className="mt-1.5 font-sans text-sm text-ivoire-doux">
+                      <dd className="mt-1.5 font-sans text-sm text-texte-doux">
                         {a.detail}
                       </dd>
                     </div>
                   ))}
                 </dl>
-                <p className="mt-6 font-sans text-xs text-ivoire-sourd">
+                <p className="mt-6 font-sans text-xs text-texte-sourd">
                   Pour venir à l’école, privilégiez les transports en commun, le
                   vélo ou le covoiturage.
                 </p>

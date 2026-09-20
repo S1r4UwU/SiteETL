@@ -50,7 +50,7 @@ export default async function FicheIntervenant({ params }: Params) {
     <>
       <EnTete surtitre={i.fonction} titre={nom} />
 
-      <Section className="!pt-0">
+      <Section>
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-5">
             {i.portrait && (
@@ -67,7 +67,7 @@ export default async function FicheIntervenant({ params }: Params) {
 
           <div className="lg:col-span-7">
             {i.bio && (
-              <p className="prose-etl !max-w-none text-[length:var(--text-lg)] !text-ivoire">
+              <p className="prose-etl !max-w-none text-[length:var(--text-lg)] !text-texte">
                 {i.bio}
               </p>
             )}
@@ -76,8 +76,8 @@ export default async function FicheIntervenant({ params }: Params) {
               <p className="surtitre">Formation</p>
               <ul className="mt-5 space-y-2.5">
                 {i.formation.map((f) => (
-                  <li key={f} className="flex gap-4 font-sans text-sm text-ivoire-doux">
-                    <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-scene" />
+                  <li key={f} className="flex gap-4 font-sans text-sm text-texte-doux">
+                    <span aria-hidden className="mt-2.5 h-px w-5 shrink-0 bg-accent" />
                     {f}
                   </li>
                 ))}
@@ -87,17 +87,17 @@ export default async function FicheIntervenant({ params }: Params) {
             <div className="mt-12">
               <p className="surtitre">Enseigne</p>
               {sesDisciplines.length > 0 ? (
-                <ul className="mt-5 space-y-px bg-ivoire/10">
+                <ul className="mt-5 space-y-px bg-[var(--color-filet)]">
                   {sesDisciplines.map((d) => (
                     <li key={d.slug}>
                       <Link
                         href={`/la-formation/${d.slug}`}
-                        className="group flex items-baseline justify-between gap-6 bg-salle py-4 transition-colors"
+                        className="group flex items-baseline justify-between gap-6 bg-fond py-4 transition-colors"
                       >
-                        <span className="font-display text-[length:var(--text-lg)] group-hover:text-scene">
+                        <span className="font-display text-[length:var(--text-lg)] group-hover:text-accent">
                           {d.titre}
                         </span>
-                        <span className="shrink-0 font-sans text-xs text-ivoire-sourd">
+                        <span className="shrink-0 font-sans text-xs text-texte-sourd">
                           {d.annees}
                         </span>
                       </Link>
@@ -109,7 +109,7 @@ export default async function FicheIntervenant({ params }: Params) {
                   {i.matieres.map((m) => (
                     <li
                       key={m}
-                      className="border border-ivoire/20 px-3 py-1.5 font-sans text-xs text-ivoire-doux"
+                      className="border border-filet px-3 py-1.5 font-sans text-xs text-texte-doux"
                     >
                       {m}
                     </li>
@@ -121,17 +121,17 @@ export default async function FicheIntervenant({ params }: Params) {
             {sesSpectacles.length > 0 && (
               <div className="mt-12">
                 <p className="surtitre">Mises en scène à l’école</p>
-                <ul className="mt-5 space-y-px bg-ivoire/10">
+                <ul className="mt-5 space-y-px bg-[var(--color-filet)]">
                   {sesSpectacles.map((s) => (
                     <li key={s.slug}>
                       <Link
                         href={`/spectacles/${s.slug}`}
-                        className="group flex items-baseline justify-between gap-6 bg-salle py-4"
+                        className="group flex items-baseline justify-between gap-6 bg-fond py-4"
                       >
-                        <span className="font-display text-[length:var(--text-lg)] group-hover:text-scene">
+                        <span className="font-display text-[length:var(--text-lg)] group-hover:text-accent">
                           {s.titre}
                         </span>
-                        <span className="shrink-0 font-sans text-xs text-ivoire-sourd tnum">
+                        <span className="shrink-0 font-sans text-xs text-texte-sourd tnum">
                           {s.annee}
                         </span>
                       </Link>

@@ -39,28 +39,29 @@ const reseaux = [
 ];
 
 export function Footer() {
+  // La salle se rallume en noir : le pied de page est un registre salle.
   return (
-    <footer className="filet mt-[var(--spacing-section)] bg-plateau">
+    <footer className="registre-salle mt-[var(--spacing-section)]">
       <div className="enveloppe py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-12">
           {/* Coordonnées */}
           <div className="md:col-span-4">
             <p className="surtitre">Nous trouver</p>
 
-            <address className="mt-6 space-y-5 font-sans text-sm not-italic text-ivoire-doux">
+            <address className="mt-6 space-y-5 font-sans text-sm not-italic text-texte-doux">
               <div>
-                <span className="block text-ivoire">Les cours</span>
+                <span className="block text-texte">Les cours</span>
                 {site.adresseCours.rue}
                 <br />
                 {site.adresseCours.cp} {site.adresseCours.ville}
                 <br />
-                <span className="text-ivoire-sourd">
+                <span className="text-texte-sourd">
                   {site.adresseCours.quartier}
                 </span>
               </div>
 
               <div>
-                <span className="block text-ivoire">Administration</span>
+                <span className="block text-texte">Administration</span>
                 {site.adresseAdmin.rue}
                 <br />
                 {site.adresseAdmin.cp} {site.adresseAdmin.ville}
@@ -78,7 +79,7 @@ export function Footer() {
                 </a>
               </div>
 
-              <p className="text-ivoire-sourd">{site.horaires}</p>
+              <p className="text-texte-sourd">{site.horaires}</p>
             </address>
           </div>
 
@@ -92,7 +93,7 @@ export function Footer() {
                     <li key={lien.href}>
                       <Link
                         href={lien.href}
-                        className="font-sans text-sm text-ivoire-doux transition-colors hover:text-scene-chaud"
+                        className="font-sans text-sm text-texte-doux transition-colors hover:text-accent-vif"
                       >
                         {lien.libelle}
                       </Link>
@@ -110,14 +111,14 @@ export function Footer() {
           <div className="flex items-start gap-4">
             <span
               aria-hidden
-              className="mt-0.5 grid size-11 shrink-0 place-items-center border border-scene text-scene"
+              className="mt-0.5 grid size-11 shrink-0 place-items-center border border-accent text-accent"
             >
               <svg viewBox="0 0 24 24" className="size-5" fill="none" strokeWidth="2" stroke="currentColor">
                 <path d="m4 12 5.5 5.5L20 7" strokeLinecap="square" />
               </svg>
             </span>
-            <p className="max-w-md font-sans text-sm text-ivoire-doux">
-              <span className="text-ivoire">Certification Qualiopi</span> —
+            <p className="max-w-md font-sans text-sm text-texte-doux">
+              <span className="text-texte">Certification Qualiopi</span> —
               délivrée au titre de la catégorie « actions de formation ». Nos
               formations sont éligibles aux financements AFDAS, France Travail et
               aux dispositifs de la formation professionnelle.{" "}
@@ -134,7 +135,7 @@ export function Footer() {
                   href={r.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="font-sans text-xs uppercase tracking-[0.14em] text-ivoire-sourd transition-colors hover:text-scene-chaud"
+                  className="font-sans text-xs uppercase tracking-[0.14em] text-texte-sourd transition-colors hover:text-accent-vif"
                 >
                   {r.nom}
                 </a>
@@ -143,24 +144,24 @@ export function Footer() {
           </ul>
         </div>
 
-        <div className="filet mt-10 flex flex-col gap-4 pt-8 font-sans text-xs text-ivoire-sourd md:flex-row md:items-center md:justify-between">
+        <div className="filet mt-10 flex flex-col gap-4 pt-8 font-sans text-xs text-texte-sourd md:flex-row md:items-center md:justify-between">
           <p>
             © {new Date().getFullYear()} {site.nom}® — {site.legal.forme} · SIRET{" "}
             <span className="tnum">{site.legal.siret}</span>
           </p>
           <ul className="flex flex-wrap gap-5">
             <li>
-              <Link href="/mentions-legales" className="hover:text-ivoire">
+              <Link href="/mentions-legales" className="hover:text-texte">
                 Mentions légales
               </Link>
             </li>
             <li>
-              <Link href="/confidentialite" className="hover:text-ivoire">
+              <Link href="/confidentialite" className="hover:text-texte">
                 Confidentialité
               </Link>
             </li>
             <li>
-              <Link href="/l-ecole/resultats" className="hover:text-ivoire">
+              <Link href="/l-ecole/resultats" className="hover:text-texte">
                 Indicateurs de résultats
               </Link>
             </li>
