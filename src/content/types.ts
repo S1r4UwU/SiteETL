@@ -44,6 +44,10 @@ export type Spectacle = {
   texte?: string;
   chapo?: string;
   lieu?: string;
+  /** Cle de l affiche reelle du spectacle dans medias.ts. */
+  affiche?: string;
+  /** Eleves en scene, quand le credit de l ancien site les nommait. */
+  distribution?: string[];
   photos: string[];
 };
 

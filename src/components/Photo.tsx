@@ -20,6 +20,7 @@ export function Photo({
   priority = false,
   className = "",
   credit,
+  enScene,
 }: {
   id: string;
   alt: string;
@@ -29,7 +30,10 @@ export function Photo({
   sizes?: string;
   priority?: boolean;
   className?: string;
+  /** Le ou la photographe. */
   credit?: string;
+  /** Les comédiennes et comédiens sur l'image. */
+  enScene?: string;
 }) {
   const img = (
     <Image
@@ -44,13 +48,24 @@ export function Photo({
     />
   );
 
-  /* Usage du spectacle vivant : on crédite toujours le photographe. */
-  if (!credit) return img;
+  /* Usage du spectacle vivant : on crédite toujours — et on ne confond pas le
+     photographe avec les comédiens. L'ancien site entassait les deux dans le
+     même champ ; les attribuer l'un à l'autre serait une faute. */
+  if (!credit && !enScene) return img;
   return (
     <figure className="relative">
       {img}
-      <figcaption className="mt-2 font-sans text-xs text-texte-sourd">
-        Photo&nbsp;: {credit}
+      <figcaption className="mt-2 font-sans text-xs leading-relaxed text-texte-sourd">
+        {enScene && (
+          <span className="block">
+            <span className="text-texte-doux">En scène</span> : {enScene}
+          </span>
+        )}
+        {credit && (
+          <span className="block">
+            <span className="text-texte-doux">Photo</span> : {credit}
+          </span>
+        )}
       </figcaption>
     </figure>
   );

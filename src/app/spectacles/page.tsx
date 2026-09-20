@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Photo } from "@/components/Photo";
 import { EnTete, Section } from "@/components/Mise";
 import { spectacles, spectaclesParAnnee } from "@/content/spectacles";
+import { affiches } from "@/content/medias";
 
 export const metadata: Metadata = {
   title: "Les spectacles",
@@ -77,15 +78,25 @@ export default function Spectacles() {
                   {affichables.map((s) => (
                     <li key={s.slug}>
                       <Link href={`/spectacles/${s.slug}`} className="group block">
-                        <div className="overflow-hidden bg-fond-doux">
+                        {/* L'affiche si elle existe, en entier et au format A ;
+                            une photo de plateau sinon. */}
+                        <div
+                          className={`overflow-hidden bg-fond-doux ${
+                            s.affiche ? "aspect-[1/1.414]" : "aspect-[10/7]"
+                          }`}
+                        >
                           <Photo
-                            id={s.photos[0]}
+                            id={s.affiche ? affiches[s.affiche].id : s.photos[0]}
                             alt=""
                             decoratif
                             largeur={800}
-                            hauteur={560}
+                            hauteur={s.affiche ? 1131 : 560}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            className="aspect-[10/7] w-full object-cover opacity-80 transition-all duration-500 ease-[var(--ease-scene)] group-hover:scale-[1.04] group-hover:opacity-100"
+                            className={`size-full transition-all duration-500 ease-[var(--ease-scene)] group-hover:scale-[1.03] ${
+                              s.affiche
+                                ? "object-contain"
+                                : "object-cover opacity-80 group-hover:opacity-100"
+                            }`}
                           />
                         </div>
                         <h4 className="mt-5 font-display text-[length:var(--text-lg)] group-hover:text-accent">

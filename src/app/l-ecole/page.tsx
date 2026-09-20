@@ -4,6 +4,7 @@ import { Photo } from "@/components/Photo";
 import { EnTete, Citation, Section } from "@/components/Mise";
 import { spectacles } from "@/content/spectacles";
 import { temoignagesEleves } from "@/content/alumni";
+import { cours, dixAns } from "@/content/coulisses";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -111,6 +112,65 @@ export default function LEcole() {
               17h30 — on y répond au téléphone.
             </p>
           </div>
+        </div>
+      </Section>
+
+      {/* Les coulisses. Trente-neuf photographies qui dormaient dans une
+          galerie sans titre de l’ancien site : le module clown, le studio de
+          voix, la préparation aux castings, la fête des dix ans. Les légendes
+          sont celles de l’école, mot pour mot — elles nomment les promotions
+          et les années, et c’est ce qui les rend vraies. */}
+      <Section registre="salle" surtitre="Les coulisses">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <h2 className="text-[length:var(--text-3xl)]">
+              Ce qui se passe entre les spectacles
+            </h2>
+            <p className="prose-etl mt-6">
+              Le cours de danse du mardi, l’enregistrement de voix en studio, la
+              préparation aux castings, le module clown, et la fête des dix ans
+              de l’école en mai 2022. C’est là que se passe l’essentiel des
+              1 500 heures.
+            </p>
+          </div>
+
+          <div className="lg:col-span-8">
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {cours.slice(0, 9).map((c) => (
+                <li key={c.id}>
+                  <Photo
+                    id={c.id}
+                    alt={c.alt ?? c.titre ?? "Cours à l’École de Théâtre de Lyon"}
+                    largeur={600}
+                    hauteur={450}
+                    sizes="(max-width: 640px) 50vw, 25vw"
+                    className="aspect-[4/3] w-full object-cover"
+                  />
+                  {c.titre && (
+                    <p className="credit mt-2 line-clamp-2">{c.titre}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="filet mt-16 pt-12">
+          <p className="surtitre">Mai 2022 — les dix ans de l’école</p>
+          <ul className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-6">
+            {dixAns.slice(0, 12).map((c) => (
+              <li key={c.id}>
+                <Photo
+                  id={c.id}
+                  alt={c.alt ?? "Fête des dix ans de l’École de Théâtre de Lyon, mai 2022"}
+                  largeur={400}
+                  hauteur={400}
+                  sizes="(max-width: 640px) 33vw, 16vw"
+                  className="aspect-square w-full object-cover"
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </Section>
 

@@ -102,13 +102,22 @@ EMAIL_EXPEDITEUR=site@ecoledetheatredelyon.com      # domaine à vérifier chez 
       l'ancien site Wix (`static.wixstatic.com`, autorisé dans
       `next.config.ts`). Il faut les exports HD de l'école, déposés dans
       `public/`, puis retirer ce domaine de la configuration.
+      `src/content/medias.ts` porte les identifiants, les dimensions d'origine
+      et les métadonnées de chaque visuel : la correspondance se refera dessus.
+- [ ] **Faire valider la publication nominative** des comédiennes et comédiens
+      en scène (`enScene` dans `medias.ts`, `distribution` dans
+      `spectacles.ts`). Ces noms viennent des crédits publics de l'ancien site
+      et créditer la distribution est l'usage au théâtre — mais ça se demande.
+- [ ] **Compléter les promotions** (`src/content/promotions.ts`) : années
+      exactes, et les noms antérieurs à 2021.
 - [ ] **Renseigner l'hébergeur** dans les mentions légales (mention obligatoire,
       LCEN art. 6-III) — le bloc « À compléter par l'école » est en place.
 - [ ] **Compléter les dates 2026-2027** dans `src/content/agenda.ts` et
       `src/content/stages.ts` : auditions, portes ouvertes, stages escrime /
       marionnettes / commedia, restitution de l'atelier ados.
-- [ ] **Créditer les photographes** sur les pages spectacles
-      (`Photo` accepte déjà un `credit`).
+- [x] **Créditer les photographes.** Fait : récoltés dans les métadonnées des
+      galeries de l'ancien site (Charlotte Magne, Maxime Charpy, Ali Aouzoulène,
+      Anna Ollivier, Oscar Buenafuente) et séparés des comédiens en scène.
 - [ ] Vérifier le domaine d'envoi chez Resend et poser `RESEND_API_KEY`.
 
 ### Important

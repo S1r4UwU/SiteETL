@@ -12,6 +12,7 @@ import { Distribution } from "@/components/Distribution";
 import { nomComplet } from "@/content/equipe";
 import { disciplines, feuilleFormation, repertoire } from "@/content/disciplines";
 import { alumni, indicateurs } from "@/content/alumni";
+import { photographes, promotions } from "@/content/promotions";
 import { spectacles } from "@/content/spectacles";
 import { agenda, libelleType, periode } from "@/lib/agenda";
 import { site } from "@/lib/site";
@@ -218,6 +219,55 @@ export default function Accueil() {
           </Bouton>
         </div>
       </section>
+
+      {/* Les promotions. Chaque promotion porte le nom d’un artiste choisi par
+          les élèves — Ariane Mnouchkine, Jean-Pierre Bacri, Kae Tempest. Ce
+          détail n’apparaissait NULLE PART sur l’ancien site : il était enfoui
+          dans les légendes des photos de galerie, d’où il a été récolté. C’est
+          exactement le genre de chose qui ne s’invente pas, et qui fait qu’un
+          site appartient à quelqu’un. */}
+      <Section>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <p className="marge-numero">Les promotions</p>
+            <p className="surtitre">Une maison où l’on porte un nom</p>
+            <TitreLeve
+              className="mt-5 text-[length:var(--text-3xl)]"
+              lignes={["Chaque promotion", "choisit *son* artiste"]}
+            />
+            <p className="prose-etl mt-7">
+              À l’entrée, la promotion se choisit un nom. Ce n’est pas une
+              formalité : c’est la première décision collective de trois années
+              de troupe, et elle engage. On ne sort pas indemne d’avoir passé
+              trois ans à s’appeler Beckett.
+            </p>
+            <p className="mt-6 font-sans text-xs text-texte-sourd">
+              Relevé dans les légendes des photographies de l’école. Les années
+              exactes et les promotions antérieures à 2021 restent à compléter.
+            </p>
+          </div>
+
+          <div className="lg:col-span-7">
+            <Apparition>
+              <ol className="promos">
+                {promotions.map((pr) => (
+                  <li key={pr.nom} className="promo">
+                    <span className="promo-nom">{pr.nom}</span>
+                    <span className="promo-qui">{pr.qui}</span>
+                    <span className="promo-periode">{pr.periode}</span>
+                  </li>
+                ))}
+              </ol>
+            </Apparition>
+
+            <p className="credit mt-8">
+              Les photographies de l’école sont l’œuvre de{" "}
+              {photographes.slice(0, -1).join(", ")} et{" "}
+              {photographes[photographes.length - 1]}.
+            </p>
+          </div>
+        </div>
+      </Section>
 
       {/* ═══ PAPIER ═══ Après l’école ══════════════════════════════════════ */}
       <Section surtitre="Après l’école">

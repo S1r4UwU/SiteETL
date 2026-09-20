@@ -1115,3 +1115,87 @@
     transition: none;
   }
 }
+
+/* ==========================================================================
+   LES AFFICHES
+   Format A (1/√2). Une affiche ne se recadre pas et ne se voile pas : c’est
+   un objet fini, dessiné pour être vu en entier.
+   ========================================================================== */
+
+@layer components {
+  .bande-image--affiche {
+    aspect-ratio: 1 / 1.414;
+    background: var(--color-fond-fort);
+    /* Le léger relief d’une feuille punaisée au mur. */
+    box-shadow:
+      0 1px 0 color-mix(in oklab, var(--color-ivoire) 10%, transparent),
+      0 18px 40px -22px rgb(0 0 0 / 0.85);
+  }
+
+  .bande-image--affiche img {
+    object-fit: contain;
+    filter: none;
+    transform: none;
+  }
+
+  .bande-carte:hover .bande-image--affiche img,
+  .bande-carte:focus-visible .bande-image--affiche img {
+    filter: none;
+    transform: scale(1.02);
+  }
+
+  /* --- Les promotions ------------------------------------------------------
+     Chaque promotion porte le nom d’un artiste choisi par les élèves.        */
+  .promos {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--color-filet);
+  }
+
+  .promo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, auto);
+    align-items: baseline;
+    gap: 0.25rem 1.5rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--color-filet);
+  }
+
+  .promo-nom {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1.05;
+  }
+
+  .promo-qui {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-texte-doux);
+  }
+
+  .promo-periode {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-texte-sourd);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 47.99rem) {
+    .promo {
+      grid-template-columns: 1fr;
+    }
+
+    .promo-periode {
+      text-align: left;
+    }
+  }
+
+  /* --- Crédit photo --------------------------------------------------------
+     Usage du spectacle vivant : on crédite, toujours, et lisiblement.        */
+  .credit {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-texte-sourd);
+  }
+}

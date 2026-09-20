@@ -5,6 +5,7 @@ import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
 import { EnTete, Fiche, Section } from "@/components/Mise";
 import { spectacleParSlug, spectacles } from "@/content/spectacles";
+import { affiches, parId } from "@/content/medias";
 import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -31,6 +32,7 @@ export default async function FicheSpectacle({ params }: Params) {
   const s = spectacleParSlug(slug);
   if (!s) notFound();
 
+  const aff = s.affiche ? affiches[s.affiche] : undefined;
   const index = spectacles.findIndex((x) => x.slug === slug);
   const suivant = spectacles[(index + 1) % spectacles.length];
 
@@ -75,6 +77,24 @@ export default async function FicheSpectacle({ params }: Params) {
           </div>
 
           <aside className="lg:col-span-5">
+            {aff && (
+              <figure className="mb-10">
+                {/* L'affiche réelle du spectacle, en entier et sans recadrage :
+                    c'est un objet fini, dessiné pour être vu tel quel. */}
+                <Photo
+                  id={aff.id}
+                  alt={`Affiche du spectacle ${s.titre}`}
+                  largeur={900}
+                  hauteur={Math.round((900 * aff.h) / aff.l)}
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="w-full bg-[var(--color-fond-fort)] object-contain shadow-[0_18px_40px_-22px_rgb(0_0_0/0.8)]"
+                />
+                <figcaption className="credit mt-3">
+                  Affiche du spectacle
+                </figcaption>
+              </figure>
+            )}
+
             <Fiche
               entrees={[
                 { terme: "Année", valeur: String(s.annee) },
@@ -109,7 +129,9 @@ export default async function FicheSpectacle({ params }: Params) {
               >
                 <Photo
                   id={p}
-                  alt={`${s.titre} — photographie de plateau`}
+                  alt={parId(p)?.alt ?? `${s.titre} — photographie de plateau`}
+                  credit={parId(p)?.credit}
+                  enScene={parId(p)?.enScene}
                   largeur={i % 5 === 0 ? 1400 : 800}
                   hauteur={i % 5 === 0 ? 900 : 1000}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

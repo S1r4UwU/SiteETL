@@ -4,14 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { photo } from "@/lib/site";
+import { affiches } from "@/content/medias";
 import type { Spectacle } from "@/content/types";
 
 /**
  * La bande.
  *
  * Une section épinglée où le défilement vertical fait avancer les spectacles
- * à l'horizontale, comme on longe un mur d'affiches. Le numéro de l'affiche
- * et son année restent en surimpression pendant tout le parcours.
+ * à l'horizontale, comme on longe un mur d'affiches.
+ *
+ * Ce sont de VRAIES affiches : récoltées sur l'ancien site, au format A
+ * (ratio 1/√2), dessinées pour chaque spectacle. Elles remplacent les photos
+ * de plateau qui servaient ici de bouche-trou. Un mur d'affiches montre des
+ * affiches — c'est tout l'écart entre un site qui illustre et un site qui
+ * archive.
  *
  * Repli : si le système demande moins d'animations, ou sur petit écran, la
  * bande redevient un simple défilement horizontal à la main (scroll-snap).
@@ -52,23 +58,25 @@ export function Bande({ spectacles }: { spectacles: Spectacle[] }) {
     };
   }, [spectacles.length]);
 
-  const cartes = spectacles.map((s, i) => (
+  const cartes = spectacles.map((s, i) => {
+    const aff = s.affiche ? affiches[s.affiche] : undefined;
+    return (
     <Link
       key={s.slug}
       href={`/spectacles/${s.slug}`}
       className="bande-carte group"
     >
-      <div className="bande-image">
+      <div className={`bande-image ${aff ? "bande-image--affiche" : ""}`}>
         <Image
-          src={photo(s.photos[0], { w: 900, h: 1200 })}
+          src={photo(aff ? aff.id : s.photos[0], { w: 900, h: 1272 })}
           alt=""
           aria-hidden
           width={900}
-          height={1200}
+          height={1272}
           sizes="(max-width: 1024px) 78vw, 30vw"
           className="size-full object-cover"
         />
-        <span className="bande-voile" aria-hidden />
+        {!aff && <span className="bande-voile" aria-hidden />}
       </div>
 
       <span className="bande-numero tnum" aria-hidden>
@@ -90,7 +98,8 @@ export function Bande({ spectacles }: { spectacles: Spectacle[] }) {
         )}
       </span>
     </Link>
-  ));
+    );
+  });
 
   if (!epingle) {
     return (
