@@ -81,13 +81,13 @@ export function Header() {
           <Logo />
 
           <nav aria-label="Navigation principale" className="hidden lg:block">
-            <ul className="flex items-center gap-7">
+            <ul className="flex items-center gap-5 xl:gap-7">
               {navigation.map((item) => (
                 <li key={item.href} className="group relative">
                   <Link
                     href={item.href}
                     aria-current={actif(item.href) ? "page" : undefined}
-                    className={`font-sans text-[0.8rem] uppercase tracking-[0.14em] transition-colors ${
+                    className={`whitespace-nowrap font-sans text-[0.8rem] uppercase tracking-[0.14em] transition-colors ${
                       actif(item.href)
                         ? "text-scene"
                         : "text-ivoire-doux hover:text-ivoire"
