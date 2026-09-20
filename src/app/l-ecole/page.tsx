@@ -5,6 +5,7 @@ import { EnTete, Citation, Section } from "@/components/Mise";
 import { spectacles } from "@/content/spectacles";
 import { temoignagesEleves } from "@/content/alumni";
 import { cours, dixAns } from "@/content/coulisses";
+import { Galerie } from "@/components/Galerie";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -135,42 +136,15 @@ export default function LEcole() {
           </div>
 
           <div className="lg:col-span-8">
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {cours.slice(0, 9).map((c) => (
-                <li key={c.id}>
-                  <Photo
-                    id={c.id}
-                    alt={c.alt ?? c.titre ?? "Cours à l’École de Théâtre de Lyon"}
-                    largeur={600}
-                    hauteur={450}
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                  {c.titre && (
-                    <p className="credit mt-2 line-clamp-2">{c.titre}</p>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <Galerie medias={cours} legende="Les cours" colonnes="trois" />
           </div>
         </div>
 
         <div className="filet mt-16 pt-12">
           <p className="surtitre">Mai 2022 — les dix ans de l’école</p>
-          <ul className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-6">
-            {dixAns.slice(0, 12).map((c) => (
-              <li key={c.id}>
-                <Photo
-                  id={c.id}
-                  alt={c.alt ?? "Fête des dix ans de l’École de Théâtre de Lyon, mai 2022"}
-                  largeur={400}
-                  hauteur={400}
-                  sizes="(max-width: 640px) 33vw, 16vw"
-                  className="aspect-square w-full object-cover"
-                />
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8">
+            <Galerie medias={dixAns} legende="Les dix ans de l’école, mai 2022" colonnes="six" />
+          </div>
         </div>
       </Section>
 

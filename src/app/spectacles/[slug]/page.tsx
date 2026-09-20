@@ -6,6 +6,7 @@ import { Photo } from "@/components/Photo";
 import { EnTete, Fiche, Section } from "@/components/Mise";
 import { spectacleParSlug, spectacles } from "@/content/spectacles";
 import { affiches, parId } from "@/content/medias";
+import { Galerie } from "@/components/Galerie";
 import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -118,28 +119,17 @@ export default async function FicheSpectacle({ params }: Params) {
         </div>
       </Section>
 
-      {/* Galerie — grille éditoriale, pas un carrousel automatique. */}
+      {/* La galerie s'ouvre en grand : <dialog> natif, flèches au clavier,
+          glissement au doigt, et la légende reprend la forme d'un crédit de
+          programme — qui est en scène, qui a photographié. */}
       {s.photos.length > 1 && (
         <Section registre="creme" surtitre="En images">
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {s.photos.map((p, i) => (
-              <li
-                key={p}
-                className={i % 5 === 0 ? "sm:col-span-2 lg:col-span-2" : ""}
-              >
-                <Photo
-                  id={p}
-                  alt={parId(p)?.alt ?? `${s.titre} — photographie de plateau`}
-                  credit={parId(p)?.credit}
-                  enScene={parId(p)?.enScene}
-                  largeur={i % 5 === 0 ? 1400 : 800}
-                  hauteur={i % 5 === 0 ? 900 : 1000}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="w-full object-cover"
-                />
-              </li>
-            ))}
-          </ul>
+          <Galerie
+            legende={s.titre}
+            medias={s.photos.map(
+              (p) => parId(p) ?? { id: p, alt: `${s.titre} — photographie de plateau`, l: 0, h: 0 },
+            )}
+          />
         </Section>
       )}
 

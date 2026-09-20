@@ -403,17 +403,23 @@
   .poursuite-chaud {
     filter: saturate(1.1) contrast(1.05);
     opacity: calc(var(--pr) * 0.96);
+    /* Rayon en POURCENTAGE de l'élément, et non en pixels : la même poursuite
+       éclaire un plateau plein écran et un portrait de 240 px sans réglage
+       séparé. `ellipse` et non `circle`, parce que seul `ellipse` accepte des
+       rayons en pourcentage. */
     -webkit-mask-image: radial-gradient(
-      circle calc(var(--pr) * 230px + 60px) at var(--px) var(--py),
+      ellipse calc(var(--pr) * 38% + 8%) calc(var(--pr) * 38% + 8%)
+        at var(--px) var(--py),
       #000 0%,
       #000 42%,
-      transparent 76%
+      transparent 78%
     );
     mask-image: radial-gradient(
-      circle calc(var(--pr) * 230px + 60px) at var(--px) var(--py),
+      ellipse calc(var(--pr) * 38% + 8%) calc(var(--pr) * 38% + 8%)
+        at var(--px) var(--py),
       #000 0%,
       #000 42%,
-      transparent 76%
+      transparent 78%
     );
   }
 
@@ -1197,5 +1203,188 @@
     font-family: var(--font-sans);
     font-size: var(--text-xs);
     color: var(--color-texte-sourd);
+  }
+}
+
+/* ==========================================================================
+   LA VISIONNEUSE
+   <dialog> natif : le calque supérieur, le fond, l’arrière-plan inerte et la
+   touche Échap sont fournis par le navigateur. On n’habille que le reste.
+   ========================================================================== */
+
+@layer components {
+  .visionneuse {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100svh;
+    max-height: 100svh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-salle);
+    color: var(--color-ivoire);
+  }
+
+  .visionneuse::backdrop {
+    background: rgb(0 0 0 / 0.92);
+  }
+
+  .visionneuse[open] {
+    animation: visionneuse-ouvre 0.35s var(--ease-scene) both;
+  }
+
+  @keyframes visionneuse-ouvre {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .visionneuse-cadre {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100svh;
+    padding: 1.1rem var(--spacing-gouttiere) 1.4rem;
+    gap: 1rem;
+  }
+
+  @media (min-width: 48rem) {
+    .visionneuse-cadre {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .visionneuse-barre {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .visionneuse-figure {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.9rem;
+    min-height: 0;
+  }
+
+  .visionneuse-image {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: contain;
+  }
+
+  .visionneuse-legende {
+    max-width: 46rem;
+  }
+
+  .visionneuse-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .visionneuse-bouton {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-texte-doux);
+    padding: 0.55rem 0;
+    transition: color 0.2s var(--ease-scene);
+  }
+
+  .visionneuse-bouton:hover,
+  .visionneuse-bouton:focus-visible {
+    color: var(--color-accent);
+  }
+
+  /* --- Vignettes -----------------------------------------------------------
+     Une planche contact parfaitement régulière est un réflexe de gabarit.
+     Celle-ci est irrégulière : une image sur cinq tient deux colonnes.       */
+  .galerie-vignette {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-fond-doux);
+    cursor: zoom-in;
+  }
+
+  .galerie-vignette img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition:
+      transform 0.6s var(--ease-scene),
+      filter 0.5s var(--ease-scene);
+  }
+
+  .galerie-vignette:hover img,
+  .galerie-vignette:focus-visible img {
+    transform: scale(1.04);
+  }
+
+  .galerie-loupe {
+    position: absolute;
+    left: 0.7rem;
+    bottom: 0.7rem;
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ivoire);
+    background: rgb(0 0 0 / 0.55);
+    padding: 0.3rem 0.6rem;
+    opacity: 0;
+    translate: 0 6px;
+    transition:
+      opacity 0.3s var(--ease-scene),
+      translate 0.3s var(--ease-scene);
+  }
+
+  .galerie-vignette:hover .galerie-loupe,
+  .galerie-vignette:focus-visible .galerie-loupe {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visionneuse[open] {
+    animation: none;
+  }
+
+  .galerie-vignette img,
+  .galerie-loupe {
+    transition: none;
+  }
+}
+
+@layer components {
+  /* --- Poursuite sur le registre papier ------------------------------------
+     Le réglage par défaut (brightness 0.62) est fait pour le noir de salle :
+     sur du papier il rend terne. Ici on ne baisse pas la lumière, on retire
+     seulement la couleur — la poursuite la ramène.
+
+     C'est une classe explicite, et non un sélecteur descendant depuis
+     .registre-papier : les sections en registre salle sont imbriquées dans le
+     body papier, un descendant les toucherait aussi. */
+  .poursuite--papier .poursuite-froid {
+    filter: grayscale(1) contrast(1.04);
+  }
+
+  .poursuite--papier {
+    overflow: hidden;
+  }
+
+  /* Au repos, un portrait reste à froid : la poursuite ne fait qu'y poser une
+     tache de lumière lente. C'est le passage du curseur qui le révèle. */
+  .poursuite--papier[data-derive="1"] {
+    --pr: 0.5;
   }
 }

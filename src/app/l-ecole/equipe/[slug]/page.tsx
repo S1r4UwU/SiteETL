@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
+import { Poursuite } from "@/components/Poursuite";
 import { EnTete, Section } from "@/components/Mise";
 import { equipe } from "@/content/equipe";
 import { disciplines } from "@/content/disciplines";
@@ -54,14 +55,25 @@ export default async function FicheIntervenant({ params }: Params) {
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-5">
             {i.portrait && (
-              <Photo
-                id={i.portrait}
-                alt={`Portrait de ${nom}`}
-                largeur={800}
-                hauteur={950}
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                className="aspect-[4/5] w-full object-cover grayscale"
-              />
+              <Poursuite className="poursuite--papier aspect-[4/5] w-full bg-fond-doux">
+                <Photo
+                  id={i.portrait}
+                  alt={`Portrait de ${nom}`}
+                  largeur={800}
+                  hauteur={950}
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="poursuite-froid"
+                />
+                <Photo
+                  id={i.portrait}
+                  alt=""
+                  decoratif
+                  largeur={800}
+                  hauteur={950}
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="poursuite-chaud"
+                />
+              </Poursuite>
             )}
           </div>
 

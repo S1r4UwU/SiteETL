@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Photo } from "@/components/Photo";
+import { Poursuite } from "@/components/Poursuite";
 import { EnTete, Section } from "@/components/Mise";
 import { administration, equipe } from "@/content/equipe";
 import type { Intervenant } from "@/content/types";
@@ -20,7 +21,10 @@ function Carte({ i }: { i: Intervenant }) {
         className="group block bg-fond transition-colors"
       >
         {i.portrait && (
-          <div className="overflow-hidden bg-fond-doux">
+          /* La poursuite, sur un visage. Le portrait est à froid ; on l'éclaire
+             en passant dessus. C'est le dispositif signature du site, et c'est
+             ici qu'il est le plus juste : on met la lumière sur quelqu'un. */
+          <Poursuite className="poursuite--papier aspect-[7/8] w-full bg-fond-doux">
             <Photo
               id={i.portrait}
               alt=""
@@ -28,9 +32,18 @@ function Carte({ i }: { i: Intervenant }) {
               largeur={700}
               hauteur={800}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="aspect-[7/8] w-full object-cover grayscale transition-all duration-500 ease-[var(--ease-scene)] group-hover:scale-[1.03] group-hover:grayscale-0"
+              className="poursuite-froid"
             />
-          </div>
+            <Photo
+              id={i.portrait}
+              alt=""
+              decoratif
+              largeur={700}
+              hauteur={800}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="poursuite-chaud"
+            />
+          </Poursuite>
         )}
         <div className="pt-5">
           <h3 className="font-display text-[length:var(--text-lg)] group-hover:text-accent">
