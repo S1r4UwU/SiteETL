@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Archivo } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Scene } from "@/components/Scene";
+import { Rideau } from "@/components/Rideau";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -79,9 +81,26 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={`${fraunces.variable} ${archivo.variable}`}>
+    <html
+      lang="fr"
+      className={`${fraunces.variable} ${archivo.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Posé avant le premier rendu : c'est lui qui autorise les états
+            cachés des animations d'entrée. Sans JavaScript, l'attribut n'est
+            jamais là, et tout le contenu reste visible. */}
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.dataset.js='1'",
+          }}
+        />
+      </head>
       <body>
         <div className="grain" aria-hidden />
+        <Rideau />
+        <Scene />
         <Header />
         <main id="contenu">{children}</main>
         <Footer />

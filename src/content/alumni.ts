@@ -118,9 +118,9 @@ export const indicateurs: Indicateur[] = [
 ];
 
 export const chiffresFormation = [
-  { valeur: "1 500", unite: "heures", libelle: "de formation sur trois ans" },
-  { valeur: "95", unite: "%", libelle: "de pratique" },
-  { valeur: "20", unite: "élèves", libelle: "au maximum par promotion" },
+  { nombre: 1500, unite: "heures", libelle: "de formation sur trois ans" },
+  { nombre: 95, unite: "%", libelle: "de pratique" },
+  { nombre: 20, unite: "élèves", libelle: "au maximum par promotion" },
 ] as const;
 
 export const temoignagesEleves = [

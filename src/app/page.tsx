@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
-import { Reveal } from "@/components/Reveal";
-import { Chiffre, Citation, Section } from "@/components/Mise";
-import { disciplines } from "@/content/disciplines";
+import { Poursuite } from "@/components/Poursuite";
+import { Bande } from "@/components/Bande";
+import { Defilant } from "@/components/Defilant";
+import {
+  Apparition,
+  Compteur,
+  FiletTrace,
+  TitreLeve,
+} from "@/components/Apparition";
+import { Citation, Section } from "@/components/Mise";
+import { disciplines, repertoire } from "@/content/disciplines";
 import { alumni, chiffresFormation, indicateurs } from "@/content/alumni";
 import { spectacles } from "@/content/spectacles";
 import { agenda, libelleType, periode } from "@/lib/agenda";
@@ -14,48 +22,63 @@ export const revalidate = 3600;
 export default function Accueil() {
   const { prochain } = agenda();
   const enAvant = alumni[0];
-  const dernierSpectacle = spectacles[0];
+  const affiche = spectacles[0];
 
   return (
     <>
-      {/* ------------------------------------------------------------------
-          Plein écran. Une photo de plateau, un titre, une phrase — pas cinq
-          listes à puces. L’action principale est visible au premier écran.
-         ------------------------------------------------------------------ */}
-      <section className="relative flex min-h-[92svh] items-end overflow-hidden">
-        <div className="absolute inset-0 -z-10">
+      {/* ==================================================================
+          LE PLATEAU
+          Une photo de plateau prise deux fois : à froid dessous, en pleine
+          lumière dessus, découpée par une poursuite que le visiteur déplace
+          lui-même. On n'explique pas ce qu'est une école de théâtre : on met
+          quelqu'un derrière le projecteur.
+         ================================================================== */}
+      <section className="relative flex min-h-[94svh] items-end overflow-hidden">
+        <Poursuite className="absolute inset-0 -z-20">
           <Photo
-            id={dernierSpectacle.photos[0]}
+            id={affiche.photos[0]}
             alt=""
             decoratif
             largeur={2000}
             hauteur={1200}
             priority
             sizes="100vw"
-            className="size-full object-cover"
+            className="poursuite-froid"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-salle via-salle/75 to-salle/35" />
-        </div>
+          <Photo
+            id={affiche.photos[0]}
+            alt=""
+            decoratif
+            largeur={2000}
+            hauteur={1200}
+            priority
+            sizes="100vw"
+            className="poursuite-chaud"
+          />
+        </Poursuite>
+
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-salle via-salle/40 to-transparent" />
 
         <div className="enveloppe w-full pb-16 pt-32 md:pb-24">
-          <p className="surtitre animate-[lumiere_0.7s_var(--ease-scene)_both]">
+          <p className="surtitre animate-[lumiere_0.8s_var(--ease-scene)_1.9s_both]">
             {site.baseline} — Lyon 1er
           </p>
 
-          <h1 className="mt-6 max-w-[16ch] text-[length:var(--text-5xl)] animate-[lumiere_0.9s_var(--ease-scene)_120ms_both]">
-            On n’apprend pas
-            <br />
-            à jouer. <span className="text-scene">On joue.</span>
-          </h1>
+          <TitreLeve
+            balise="h1"
+            delai={2000}
+            className="mt-6 max-w-[16ch] text-[length:var(--text-5xl)]"
+            lignes={["On n’apprend pas", "à jouer. *On joue.*"]}
+          />
 
-          <p className="prose-etl mt-8 max-w-xl text-[length:var(--text-lg)] animate-[lumiere_0.9s_var(--ease-scene)_240ms_both]">
+          <p className="prose-etl mt-8 max-w-xl text-[length:var(--text-lg)] animate-[lumiere_0.9s_var(--ease-scene)_2.35s_both]">
             Trois années de formation professionnalisante au métier de
             comédien·ne. <strong>1 500 heures</strong>, dont{" "}
             <strong>95 % de pratique</strong>, dans une promotion de vingt
             élèves au maximum.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4 animate-[lumiere_0.9s_var(--ease-scene)_360ms_both]">
+          <div className="mt-10 flex flex-wrap items-center gap-4 animate-[lumiere_0.9s_var(--ease-scene)_2.5s_both]">
             <Bouton href="/candidater">Candidater</Bouton>
             <Bouton href="/la-formation" variante="fantome" fleche={false}>
               Découvrir le cursus
@@ -63,10 +86,8 @@ export default function Accueil() {
           </div>
 
           {prochain && (
-            <p className="mt-12 font-sans text-sm text-ivoire-doux animate-[lumiere_0.9s_var(--ease-scene)_480ms_both]">
-              <span className="text-scene">
-                {libelleType[prochain.type]} —{" "}
-              </span>
+            <p className="mt-12 font-sans text-sm text-ivoire-doux animate-[lumiere_0.9s_var(--ease-scene)_2.65s_both]">
+              <span className="text-scene">{libelleType[prochain.type]} — </span>
               {prochain.titre}, {periode(prochain)}.{" "}
               <Link href="/agenda" className="lien">
                 Tout l’agenda
@@ -74,43 +95,68 @@ export default function Accueil() {
             </p>
           )}
         </div>
+
+        {/* Indice de poursuite : on dit une fois comment ça marche, discrètement. */}
+        <p className="pointer-events-none absolute bottom-7 right-6 hidden max-w-[13rem] text-right font-sans text-[0.7rem] uppercase tracking-[0.16em] text-ivoire-sourd animate-[lumiere_1s_var(--ease-scene)_3s_both] lg:block">
+          Déplacez la poursuite
+        </p>
       </section>
 
-      {/* ------------------------------------------------------------------
-          Trois chiffres, très grands, rien d’autre. C’est l’argument le plus
-          fort de l’école, et il était introuvable sur l’ancien site.
-         ------------------------------------------------------------------ */}
+      {/* ==================================================================
+          LE FRONTON
+          Les auteurs du répertoire défilent comme sur le fronton lumineux
+          d'un théâtre. Survolez : ça s'arrête.
+         ================================================================== */}
+      <Defilant mots={repertoire} vitesse={68} />
+
+      {/* ==================================================================
+          LES CHIFFRES
+          Ils se composent à l'arrivée dans le champ, et les filets se tracent.
+         ================================================================== */}
       <Section className="!py-20 md:!py-28">
-        <Reveal>
-          <div className="grid gap-12 border-y border-ivoire/10 py-14 sm:grid-cols-3 sm:gap-8">
-            {chiffresFormation.map((c) => (
-              <Chiffre
-                key={c.libelle}
-                valeur={c.valeur}
-                unite={c.unite}
-                libelle={c.libelle}
-              />
-            ))}
-          </div>
-        </Reveal>
+        <FiletTrace />
+        <div className="grid gap-12 py-14 sm:grid-cols-3 sm:gap-8">
+          {chiffresFormation.map((c, i) => (
+            <Apparition key={c.libelle} delai={i * 110}>
+              <p className="font-display text-[length:var(--text-4xl)] leading-none text-scene">
+                <Compteur valeur={c.nombre} />
+                <span className="ml-2 text-[length:var(--text-xl)] text-ivoire">
+                  {c.unite}
+                </span>
+              </p>
+              <p className="mt-4 font-sans text-sm text-ivoire">{c.libelle}</p>
+            </Apparition>
+          ))}
+        </div>
+        <FiletTrace />
       </Section>
 
-      {/* ------------------------------------------------------------------
-          Les six disciplines, en grille asymétrique. Chaque bloc mène à sa
-          propre page : six pages positionnables au lieu d’une page fleuve.
-         ------------------------------------------------------------------ */}
-      <Section
-        id="disciplines"
-        surtitre="Ce qu’on y travaille"
-        titre="Six disciplines, trois ans, une seule méthode : le plateau"
-        chapo="Stanislavski, Grotowski, le travail avec le partenaire, la création de la mise en scène par le plateau. Les élèves apprennent en jouant, pas en écoutant."
-      >
-        <div className="grid gap-px bg-ivoire/10 sm:grid-cols-2 lg:grid-cols-3">
+      {/* ==================================================================
+          LES DISCIPLINES
+         ================================================================== */}
+      <Section id="disciplines">
+        <div className="max-w-3xl">
+          <p className="surtitre">Ce qu’on y travaille</p>
+          <TitreLeve
+            className="mt-5 text-[length:var(--text-3xl)]"
+            lignes={[
+              "Six disciplines, trois ans,",
+              "une seule méthode : le plateau",
+            ]}
+          />
+          <p className="prose-etl mt-6">
+            Stanislavski, Grotowski, le travail avec le partenaire, la création
+            de la mise en scène par le plateau. Les élèves apprennent en jouant,
+            pas en écoutant.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-px bg-ivoire/10 sm:grid-cols-2 lg:grid-cols-3">
           {disciplines.map((d, i) => (
-            <Reveal key={d.slug} delai={i * 60}>
+            <Apparition key={d.slug} delai={i * 70}>
               <Link
                 href={`/la-formation/${d.slug}`}
-                className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden bg-salle p-7 transition-colors"
+                className="group relative flex h-full min-h-[23rem] flex-col justify-end overflow-hidden bg-salle p-7"
               >
                 {d.photo && (
                   <>
@@ -121,24 +167,27 @@ export default function Accueil() {
                       largeur={800}
                       hauteur={1000}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="absolute inset-0 -z-10 size-full object-cover opacity-55 grayscale transition-all duration-500 ease-[var(--ease-scene)] group-hover:scale-[1.04] group-hover:opacity-85 group-hover:grayscale-0"
+                      className="absolute inset-0 -z-20 size-full scale-105 object-cover opacity-45 grayscale transition-all duration-[900ms] ease-[var(--ease-scene)] group-hover:scale-100 group-hover:opacity-95 group-hover:grayscale-0"
                     />
-                    <div className="absolute inset-0 -z-10 bg-gradient-to-t from-salle via-salle/70 to-salle/10" />
+                    <div className="absolute inset-0 -z-10 bg-gradient-to-t from-salle via-salle/75 to-salle/20 transition-opacity duration-700 group-hover:opacity-80" />
                   </>
                 )}
-                <p className="surtitre surtitre-sourd">{d.annees}</p>
+
+                <p className="surtitre surtitre-sourd transition-colors duration-300 group-hover:text-scene">
+                  {d.annees}
+                </p>
                 <h3 className="mt-3 text-[length:var(--text-xl)]">{d.titre}</h3>
                 <p className="mt-3 font-sans text-sm text-ivoire-doux">
                   {d.accroche}
                 </p>
+
+                {/* Un filet d'orange se trace sous la carte au survol. */}
                 <span
                   aria-hidden
-                  className="mt-5 font-sans text-xs uppercase tracking-[0.14em] text-scene opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                >
-                  Voir la discipline →
-                </span>
+                  className="mt-6 block h-px w-0 bg-scene transition-[width] duration-500 ease-[var(--ease-scene)] group-hover:w-full"
+                />
               </Link>
-            </Reveal>
+            </Apparition>
           ))}
         </div>
 
@@ -149,70 +198,91 @@ export default function Accueil() {
         </div>
       </Section>
 
-      {/* ------------------------------------------------------------------
-          Un parcours d’ancien élève, en pleine largeur. La preuve avant
-          l’argument.
-         ------------------------------------------------------------------ */}
-      <Section fond="plateau" surtitre="Après l’école">
-        <Reveal>
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-7">
-              <h2 className="text-[length:var(--text-3xl)]">
-                {enAvant.nom}, promotion&nbsp;
-                <span className="tnum">{enAvant.promotion}</span>
-              </h2>
-              <p className="surtitre mt-4">{enAvant.metier}</p>
+      {/* ==================================================================
+          LE MUR D'AFFICHES
+          Le défilement vertical fait avancer quinze ans de spectacles à
+          l'horizontale. C'est le moment où le site cesse d'être une page.
+         ================================================================== */}
+      <section className="bg-plateau py-[var(--spacing-section)]">
+        <div className="enveloppe mb-4">
+          <p className="surtitre">L’archive</p>
+          <TitreLeve
+            className="mt-5 max-w-3xl text-[length:var(--text-3xl)]"
+            lignes={["Quinze ans de spectacles,", "joués devant du monde"]}
+          />
+        </div>
+        <Bande spectacles={spectacles.slice(0, 12)} />
+        <div className="enveloppe mt-12">
+          <Bouton href="/spectacles" variante="fantome">
+            Toute l’archive
+          </Bouton>
+        </div>
+      </section>
 
-              <ul className="mt-9 space-y-4">
-                {enAvant.parcours.map((etape) => (
-                  <li
-                    key={etape}
-                    className="flex gap-4 font-sans text-sm text-ivoire-doux"
-                  >
-                    <span aria-hidden className="mt-2.5 block h-px w-6 shrink-0 bg-scene" />
+      {/* ==================================================================
+          APRÈS L'ÉCOLE
+         ================================================================== */}
+      <Section surtitre="Après l’école">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <TitreLeve
+              className="text-[length:var(--text-3xl)]"
+              lignes={[`${enAvant.nom},`, `promotion *${enAvant.promotion}*`]}
+            />
+            <p className="surtitre mt-4">{enAvant.metier}</p>
+
+            <ul className="mt-9 space-y-4">
+              {enAvant.parcours.map((etape, i) => (
+                <Apparition key={etape} delai={i * 80}>
+                  <li className="flex gap-4 font-sans text-sm text-ivoire-doux">
+                    <span
+                      aria-hidden
+                      className="mt-2.5 block h-px w-6 shrink-0 bg-scene"
+                    />
                     {etape}
                   </li>
-                ))}
-              </ul>
+                </Apparition>
+              ))}
+            </ul>
 
-              <div className="mt-10">
-                <Bouton href="/alumni" variante="fantome">
-                  Tous les parcours
-                </Bouton>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5 lg:pt-4">
-              <Citation
-                texte={enAvant.citation}
-                auteur={enAvant.nom}
-                precision={`Promotion ${enAvant.promotion}`}
-              />
+            <div className="mt-10">
+              <Bouton href="/alumni" variante="fantome">
+                Tous les parcours
+              </Bouton>
             </div>
           </div>
-        </Reveal>
+
+          <Apparition delai={140} className="lg:col-span-5 lg:pt-4">
+            <Citation
+              texte={enAvant.citation}
+              auteur={enAvant.nom}
+              precision={`Promotion ${enAvant.promotion}`}
+            />
+          </Apparition>
+        </div>
       </Section>
 
-      {/* ------------------------------------------------------------------
-          Les indicateurs Qualiopi. Obligatoires — et surtout, vendeurs.
-         ------------------------------------------------------------------ */}
-      <Section
-        surtitre="Nos résultats"
-        titre="Ce que deviennent nos élèves"
-        chapo="Indicateurs publiés au titre de la certification Qualiopi. Ils portent sur la promotion 2022-2025 et sur l’enquête de satisfaction 2025-2026."
-      >
-        <Reveal>
-          <div className="grid gap-12 border-t border-ivoire/10 pt-14 sm:grid-cols-2 lg:grid-cols-4">
-            {indicateurs.map((i) => (
-              <Chiffre
-                key={i.libelle}
-                valeur={i.valeur}
-                libelle={i.libelle}
-                precision={i.precision}
-              />
-            ))}
-          </div>
-        </Reveal>
+      {/* ==================================================================
+          LES RÉSULTATS
+         ================================================================== */}
+      <Section fond="plateau" surtitre="Nos résultats" titre="Ce que deviennent nos élèves">
+        <FiletTrace />
+        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-4">
+          {indicateurs.map((ind, i) => (
+            <Apparition key={ind.libelle} delai={i * 100}>
+              <p className="font-display text-[length:var(--text-4xl)] leading-none text-scene">
+                <Compteur valeur={parseInt(ind.valeur, 10)} suffixe=" %" />
+              </p>
+              <p className="mt-4 font-sans text-sm text-ivoire">{ind.libelle}</p>
+              {ind.precision && (
+                <p className="mt-1 font-sans text-xs text-ivoire-sourd">
+                  {ind.precision}
+                </p>
+              )}
+            </Apparition>
+          ))}
+        </div>
+        <FiletTrace />
 
         <div className="mt-12">
           <Bouton href="/l-ecole/resultats" variante="fantome">
@@ -221,30 +291,43 @@ export default function Accueil() {
         </div>
       </Section>
 
-      {/* ------------------------------------------------------------------
-          Appel final. Une seule action, et ce qu’elle implique vraiment.
-         ------------------------------------------------------------------ */}
+      {/* ==================================================================
+          L'APPEL
+         ================================================================== */}
       <section className="relative overflow-hidden border-y border-ivoire/10">
-        <div className="absolute inset-0 -z-10">
+        <Poursuite className="absolute inset-0 -z-20">
           <Photo
             id={spectacles[1].photos[0]}
             alt=""
             decoratif
             largeur={2000}
-            hauteur={1000}
+            hauteur={1100}
             sizes="100vw"
-            className="size-full object-cover opacity-25 grayscale"
+            className="poursuite-froid"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-salle via-salle/90 to-salle/60" />
-        </div>
+          <Photo
+            id={spectacles[1].photos[0]}
+            alt=""
+            decoratif
+            largeur={2000}
+            hauteur={1100}
+            sizes="100vw"
+            className="poursuite-chaud"
+          />
+        </Poursuite>
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-salle via-salle/85 to-salle/45" />
 
         <div className="enveloppe py-[var(--spacing-section)]">
           <div className="max-w-2xl">
             <p className="surtitre">Année {site.anneeScolaire}</p>
-            <h2 className="mt-5 text-[length:var(--text-3xl)]">
-              L’audition, c’est une scène de cinq minutes, une chanson et un
-              entretien.
-            </h2>
+            <TitreLeve
+              className="mt-5 text-[length:var(--text-3xl)]"
+              lignes={[
+                "L’audition, c’est une scène",
+                "de cinq minutes, une chanson",
+                "et un entretien.",
+              ]}
+            />
             <p className="prose-etl mt-7">
               Pas de dossier interminable, pas de concours anonyme. On veut
               savoir comment vous jouez et pourquoi vous voulez faire ce métier.
@@ -252,7 +335,11 @@ export default function Accueil() {
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Bouton href="/candidater">Voir les conditions d’admission</Bouton>
-              <Bouton href="/candidater/portes-ouvertes" variante="fantome" fleche={false}>
+              <Bouton
+                href="/candidater/portes-ouvertes"
+                variante="fantome"
+                fleche={false}
+              >
                 Venir aux portes ouvertes
               </Bouton>
             </div>

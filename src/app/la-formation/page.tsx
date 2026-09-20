@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
 import { EnTete, Fiche, Section } from "@/components/Mise";
+import { Compteur } from "@/components/Apparition";
 import { disciplines, modules, repertoire } from "@/content/disciplines";
 import { nomComplet } from "@/content/equipe";
 import { chiffresFormation } from "@/content/alumni";
@@ -88,9 +89,9 @@ export default function LaFormation() {
         <div className="grid gap-12 border-y border-ivoire/10 py-14 sm:grid-cols-3">
           {chiffresFormation.map((c) => (
             <div key={c.libelle}>
-              <p className="font-display text-[length:var(--text-3xl)] leading-none text-scene tnum">
-                {c.valeur}
-                <span className="ml-1 text-[length:var(--text-lg)] text-ivoire">
+              <p className="font-display text-[length:var(--text-3xl)] leading-none text-scene">
+                <Compteur valeur={c.nombre} />
+                <span className="ml-2 text-[length:var(--text-lg)] text-ivoire">
                   {c.unite}
                 </span>
               </p>

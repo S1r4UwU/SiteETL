@@ -276,3 +276,488 @@
     color: #000;
   }
 }
+
+/* ==========================================================================
+   LA MACHINERIE
+   Rideau, poursuite, rail, bandeau, mur d’affiches.
+   Un seul principe : rien ne surgit. Tout s’éclaire, se lève, ou se découvre.
+   ========================================================================== */
+
+@property --px {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+@property --py {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+@layer components {
+  /* --- Défilement inertiel (Lenis) -------------------------------------- */
+  html.lenis-actif,
+  html.lenis-actif body {
+    height: auto;
+  }
+
+  html.lenis-actif {
+    scroll-behavior: auto !important;
+  }
+
+  /* --- Rail de lumière ---------------------------------------------------
+     Une ligne d’orange en haut de page, qui avance avec la lecture.         */
+  .rail {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 55;
+    height: 2px;
+    pointer-events: none;
+  }
+
+  .rail-jauge {
+    height: 100%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--color-scene), var(--color-scene-chaud));
+    will-change: transform;
+  }
+
+  /* --- Halo de curseur ---------------------------------------------------
+     Une poursuite douce qui traîne derrière le pointeur, en fondu d’écran.  */
+  .halo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 54;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: screen;
+    transition: opacity 0.4s var(--ease-scene);
+    background: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--color-scene) 20%, transparent) 0%,
+      transparent 62%
+    );
+    will-change: transform;
+  }
+
+  /* --- Rideau -------------------------------------------------------------
+     Noir, un trait de lumière s’étire, les deux pans s’écartent.            */
+  .rideau {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .rideau-pan {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50.5vw;
+    background: var(--color-salle);
+    animation: pan-gauche 1s var(--ease-scene) 0.85s both;
+  }
+
+  .rideau-pan--droit {
+    inset: 0 0 0 auto;
+    animation-name: pan-droit;
+  }
+
+  .rideau-trait {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 1px;
+    width: 0;
+    translate: -50% -50%;
+    background: var(--color-scene);
+    box-shadow: 0 0 34px 3px color-mix(in oklab, var(--color-scene) 60%, transparent);
+    animation: trait-lumiere 1.15s var(--ease-scene) both;
+  }
+
+  @keyframes trait-lumiere {
+    0% {
+      width: 0;
+      opacity: 0;
+    }
+    28% {
+      opacity: 1;
+    }
+    70% {
+      width: min(38rem, 62vw);
+      opacity: 1;
+    }
+    100% {
+      width: min(38rem, 62vw);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pan-gauche {
+    to {
+      transform: translateX(-101%);
+    }
+  }
+
+  @keyframes pan-droit {
+    to {
+      transform: translateX(101%);
+    }
+  }
+
+  /* --- Poursuite ----------------------------------------------------------
+     Deux fois la même image : le plateau à froid, et la même en pleine
+     lumière, découpée par un masque radial piloté au pointeur.              */
+  .poursuite-cadre {
+    --px: 62%;
+    --py: 45%;
+    --pr: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .poursuite-froid,
+  .poursuite-chaud {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .poursuite-froid {
+    filter: grayscale(1) brightness(0.62) contrast(1.06);
+  }
+
+  .poursuite-chaud {
+    filter: saturate(1.1) contrast(1.05);
+    opacity: calc(var(--pr) * 0.96);
+    -webkit-mask-image: radial-gradient(
+      circle calc(var(--pr) * 230px + 60px) at var(--px) var(--py),
+      #000 0%,
+      #000 42%,
+      transparent 76%
+    );
+    mask-image: radial-gradient(
+      circle calc(var(--pr) * 230px + 60px) at var(--px) var(--py),
+      #000 0%,
+      #000 42%,
+      transparent 76%
+    );
+  }
+
+  /* Sans souris : la poursuite dérive seule, lentement. */
+  .poursuite-cadre[data-derive="1"] {
+    --pr: 1.45;
+    animation: derive 21s ease-in-out infinite alternate;
+  }
+
+  @keyframes derive {
+    0% {
+      --px: 26%;
+      --py: 58%;
+    }
+    50% {
+      --px: 68%;
+      --py: 38%;
+    }
+    100% {
+      --px: 44%;
+      --py: 64%;
+    }
+  }
+
+  /* --- Texte qui se lève derrière un cache -------------------------------- */
+  .leve-cache {
+    display: block;
+    overflow: hidden;
+    /* Respiration : sans elle, les jambages des lettres sont coupés. */
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  .leve-ligne {
+    display: block;
+    transition: transform 1s var(--ease-scene);
+    will-change: transform;
+  }
+
+  /* --- Bandeau d’affiche -------------------------------------------------- */
+  .defilant {
+    overflow: hidden;
+    white-space: nowrap;
+    border-block: 1px solid color-mix(in oklab, var(--color-ivoire) 14%, transparent);
+    padding-block: 1.6rem;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .defilant-piste {
+    display: inline-flex;
+    animation-name: defile;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  .defilant:hover .defilant-piste,
+  .defilant:focus-within .defilant-piste {
+    animation-play-state: paused;
+  }
+
+  .defilant-suite {
+    display: inline-flex;
+    flex: none;
+  }
+
+  .defilant-mot {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    line-height: 1;
+    color: var(--color-ivoire-doux);
+    transition: color 0.25s var(--ease-scene);
+  }
+
+  .defilant-mot:hover {
+    color: var(--color-scene);
+  }
+
+  .defilant-puce {
+    margin-inline: 1.1em;
+    color: var(--color-scene);
+    opacity: 0.5;
+  }
+
+  @keyframes defile {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* --- Mur d’affiches ------------------------------------------------------ */
+  .bande-piste {
+    display: flex;
+    gap: 1.5rem;
+    padding-inline: 2.5rem;
+    will-change: transform;
+  }
+
+  .bande-libre {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-inline: var(--spacing-gouttiere);
+    padding-bottom: 1.5rem;
+    scrollbar-width: thin;
+  }
+
+  .bande-libre .bande-carte {
+    scroll-snap-align: center;
+  }
+
+  .bande-carte {
+    position: relative;
+    flex: none;
+    /* La carte se cale aussi sur la HAUTEUR d’écran : dans la section
+       épinglée, une affiche qui déborde du cadre n’est plus une affiche. */
+    width: min(78vw, 22rem, 46svh);
+    display: block;
+  }
+
+  .bande-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: var(--color-plateau);
+  }
+
+  .bande-image img {
+    filter: grayscale(1) brightness(0.7);
+    transform: scale(1.02);
+    transition:
+      filter 0.6s var(--ease-scene),
+      transform 0.8s var(--ease-scene);
+  }
+
+  .bande-carte:hover .bande-image img,
+  .bande-carte:focus-visible .bande-image img {
+    filter: grayscale(0) brightness(1);
+    transform: scale(1.07);
+  }
+
+  .bande-voile {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--color-salle) 78%, transparent),
+      transparent 55%
+    );
+  }
+
+  .bande-numero {
+    position: absolute;
+    top: 0.7rem;
+    left: 1rem;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    color: var(--color-scene);
+  }
+
+  .bande-texte {
+    display: block;
+    padding-top: 1.25rem;
+    transition: color 0.25s var(--ease-scene);
+  }
+
+  .bande-carte:hover .bande-texte,
+  .bande-carte:focus-visible .bande-texte {
+    color: var(--color-scene);
+  }
+
+  /* --- Balayage de lumière sur les boutons -------------------------------- */
+  .balayage {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .balayage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    translate: -101% 0;
+    background: color-mix(in oklab, var(--color-ivoire) 15%, transparent);
+    transition: translate 0.45s var(--ease-scene);
+  }
+
+  .balayage:hover::before,
+  .balayage:focus-visible::before {
+    translate: 0 0;
+  }
+
+  /* --- Entrée de page ------------------------------------------------------
+     Après une navigation, la page se découvre derrière un cache. Un noir
+     d’entracte, pas une transition de diaporama.                            */
+  .entree {
+    animation: entree 0.7s var(--ease-scene) both;
+  }
+
+  @keyframes entree {
+    from {
+      opacity: 0;
+      clip-path: inset(0 0 12% 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rideau,
+  .halo,
+  .rail {
+    display: none;
+  }
+
+  .defilant-piste,
+  .poursuite-cadre[data-derive="1"] {
+    animation: none;
+  }
+
+  .poursuite-chaud {
+    opacity: 0.8;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .leve-ligne {
+    transition: none;
+    transform: none !important;
+  }
+
+  .entree {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   ÉTATS D’ENTRÉE
+   Le contenu est visible par défaut. L’état caché n’existe QUE sous
+   html[data-js] — posé par un script en ligne dans le <head>. Sans
+   JavaScript, ou si le script échoue, rien ne disparaît.
+   ========================================================================== */
+
+@layer components {
+  .leve-ligne,
+  .apparition {
+    transition-timing-function: var(--ease-scene);
+  }
+
+  .leve-ligne {
+    transition-property: transform;
+    transition-duration: 1s;
+  }
+
+  .apparition {
+    transition-property: opacity, clip-path, transform;
+    transition-duration: 0.85s;
+  }
+
+  .filet-trace {
+    width: 100%;
+    transition: width 1.1s var(--ease-scene);
+  }
+
+  html[data-js] .leve-ligne {
+    transform: translateY(106%);
+  }
+
+  html[data-js] .leve-ligne[data-vu="1"] {
+    transform: translateY(0);
+  }
+
+  html[data-js] .apparition {
+    opacity: 0;
+    clip-path: inset(0 0 36% 0);
+    transform: scale(0.988);
+  }
+
+  html[data-js] .apparition[data-vu="1"] {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+
+  html[data-js] .filet-trace {
+    width: 0;
+  }
+
+  html[data-js] .filet-trace[data-vu="1"] {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-js] .leve-ligne,
+  html[data-js] .apparition,
+  html[data-js] .filet-trace {
+    transform: none;
+    opacity: 1;
+    clip-path: none;
+    width: 100%;
+    transition: none;
+  }
+}

@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 type Variante = "scene" | "fantome" | "sourd";
 
 const bases =
-  "group inline-flex items-center gap-3 font-sans text-sm font-medium uppercase tracking-[0.12em] " +
+  "group balayage inline-flex items-center gap-3 font-sans text-sm font-medium uppercase tracking-[0.12em] " +
   "px-6 py-4 transition-colors duration-200 ease-[var(--ease-scene)]";
 
 /* L’orange est un fond UNIQUEMENT sous du texte noir (11,3:1). Jamais sous du
@@ -13,7 +13,7 @@ const variantes: Record<Variante, string> = {
   scene: "bg-scene text-salle hover:bg-scene-chaud",
   fantome:
     "border border-ivoire/30 text-ivoire hover:border-scene hover:text-scene-chaud",
-  sourd: "text-ivoire-doux hover:text-scene-chaud px-0 py-2",
+  sourd: "!overflow-visible text-ivoire-doux hover:text-scene-chaud px-0 py-2",
 };
 
 function Fleche() {
