@@ -158,3 +158,51 @@ export const repertoire = [
   "Gorki", "Feydeau", "Koltès", "Bernhard", "Brecht", "Renaude", "Claudel",
   "Pinter", "Bond", "Kane", "Grumberg", "De Obaldia", "Novarina", "Kelly", "Levin",
 ] as const;
+
+/**
+ * La feuille de service de la formation.
+ *
+ * Remplace le triptyque de trois grands chiffres — la forme qu'une machine
+ * produit quand on lui donne trois données (voir docs/anti-ia.md). Une feuille
+ * de service est dense, alignée sur des colonnes, et on peut y ajouter des
+ * lignes sans casser la composition. Toutes les valeurs viennent de la
+ * plaquette de l'école.
+ */
+export const feuilleFormation = [
+  {
+    valeur: "3",
+    unite: "ans",
+    libelle: "De la première année au spectacle de sortie",
+    note: "de septembre à juin",
+  },
+  {
+    valeur: "1 500",
+    unite: "h",
+    libelle: "Volume horaire total de la formation",
+    note: "14 à 18 h par semaine",
+  },
+  {
+    valeur: "95",
+    unite: "%",
+    libelle: "De pratique — on apprend sur le plateau",
+    note: "5 % de théorie",
+  },
+  {
+    valeur: "20",
+    unite: "max",
+    libelle: "Élèves par promotion",
+    note: "suivi individuel, bilan semestriel",
+  },
+  {
+    valeur: "1",
+    unite: "par an",
+    libelle: "Stage obligatoire en milieu professionnel",
+    note: "théâtres, compagnies",
+  },
+  {
+    valeur: "6",
+    unite: "+ 5",
+    libelle: "Disciplines au cursus, et cinq modules",
+    note: "escrime, clown, marionnette, biomécanique, administration",
+  },
+] as const;

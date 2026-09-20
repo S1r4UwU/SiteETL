@@ -127,12 +127,15 @@
   /* --- Grain -------------------------------------------------------------
      C'est ce qui, plus que tout, casse la platitude du rendu « template ».
      Un seul nœud, en fixed, non interactif, invisible à l'impression.      */
+  /* Le grain de salle : il ne concerne QUE le noir. Le registre papier a sa
+     propre trame, fibreuse et en multiplication — un grain en « overlay » lit
+     très mal sur du clair. */
   .grain {
     position: fixed;
     inset: 0;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.055;
+    opacity: 0.06;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   }
@@ -835,5 +838,280 @@
   .notice:hover,
   .notice:focus-visible {
     transform: none;
+  }
+}
+
+/* ==========================================================================
+   LA MAIN
+   Marques à l’encre, distribution, feuille de service, débords.
+   Voir docs/anti-ia.md — ces formes remplacent les cartes et les rangées de
+   trois, qui sont les réflexes d’une machine.
+   ========================================================================== */
+
+@layer components {
+  /* --- Marques tracées à la main ---------------------------------------- */
+  .marque {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    color: var(--color-accent);
+    pointer-events: none;
+  }
+
+  .marque-trait {
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.34, 0.02, 0.3, 1);
+  }
+
+  /* Une marque posée par-dessus du texte, sans déplacer la ligne. */
+  .marque-sur {
+    position: absolute;
+    inset: auto;
+    z-index: 1;
+  }
+
+  .porte-marque {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* --- Distribution -------------------------------------------------------
+     Nom à gauche, mention à droite, points de conduite entre les deux.       */
+  .distribution {
+    position: relative;
+  }
+
+  .distribution-liste {
+    border-top: 1px solid var(--color-filet);
+  }
+
+  .distribution-liste > li {
+    border-bottom: 1px solid var(--color-filet);
+  }
+
+  .distribution-ligne {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, auto) 1fr minmax(0, auto);
+    align-items: baseline;
+    gap: 0 1rem;
+    padding-block: 1.1rem;
+    transition: color 0.25s var(--ease-scene);
+  }
+
+  .distribution-ligne:hover,
+  .distribution-ligne:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .distribution-numero {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-texte-sourd);
+    letter-spacing: 0.08em;
+  }
+
+  .distribution-titre {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  /* Les points de conduite : le détail qui dit « programme de salle ». */
+  .distribution-conduite {
+    align-self: end;
+    height: 1px;
+    margin-bottom: 0.42em;
+    background-image: radial-gradient(
+      circle,
+      currentColor 0.8px,
+      transparent 0.8px
+    );
+    background-size: 6px 2px;
+    background-repeat: repeat-x;
+    opacity: 0.4;
+  }
+
+  .distribution-mention {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    text-align: right;
+    color: var(--color-texte-doux);
+  }
+
+  .distribution-second {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-texte-sourd);
+  }
+
+  @media (max-width: 47.99rem) {
+    .distribution-ligne {
+      grid-template-columns: 2rem 1fr;
+      gap: 0.35rem 0.75rem;
+    }
+
+    .distribution-conduite {
+      display: none;
+    }
+
+    .distribution-mention {
+      grid-column: 2;
+      text-align: left;
+    }
+  }
+
+  /* La vignette de marge — grand écran seulement, purement gratifiante. */
+  .distribution-vignette {
+    display: none;
+  }
+
+  @media (min-width: 64rem) and (pointer: fine) {
+    .distribution-vignette {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: -2rem;
+      width: 19rem;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: var(--color-fond-doux);
+      opacity: 0;
+      /* Elle sort de la gouttière : c’est le débord de la section. */
+      translate: 30% 8%;
+      rotate: 2.4deg;
+      transition:
+        opacity 0.4s var(--ease-scene),
+        translate 0.6s var(--ease-scene);
+      pointer-events: none;
+    }
+
+    .distribution-vignette[data-visible="1"] {
+      opacity: 1;
+      translate: 30% 0;
+    }
+
+    .distribution-vignette img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.06);
+    }
+  }
+
+  /* --- Feuille de service -------------------------------------------------
+     Les chiffres de la formation en colonne serrée, avec conduite — et non
+     en triptyque de grands nombres centrés.                                  */
+  .feuille {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--color-filet);
+  }
+
+  .feuille-ligne {
+    display: grid;
+    grid-template-columns: minmax(0, 7.5rem) 1fr minmax(0, auto);
+    align-items: baseline;
+    gap: 0 1.25rem;
+    padding-block: 0.95rem;
+    border-bottom: 1px solid var(--color-filet);
+  }
+
+  .feuille-valeur {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .feuille-libelle {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-texte);
+  }
+
+  .feuille-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-texte-sourd);
+    text-align: right;
+  }
+
+  @media (max-width: 47.99rem) {
+    .feuille-ligne {
+      grid-template-columns: minmax(0, 5.5rem) 1fr;
+    }
+
+    .feuille-note {
+      grid-column: 2;
+      text-align: left;
+      padding-top: 0.2rem;
+    }
+  }
+
+  /* --- Débords -------------------------------------------------------------
+     Au moins un élément par page sort de la gouttière. Règle 3 d’anti-ia.md. */
+  .deborde-gauche {
+    margin-left: calc(var(--spacing-gouttiere) * -1);
+  }
+
+  @media (min-width: 48rem) {
+    .deborde-gauche {
+      margin-left: -4vw;
+    }
+  }
+
+  /* Numéro de section posé dans la marge, à la verticale. */
+  .marge-numero {
+    display: none;
+  }
+
+  @media (min-width: 80rem) {
+    .marge-numero {
+      display: block;
+      position: absolute;
+      left: -3.5rem;
+      top: 0.4rem;
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-texte-sourd);
+      writing-mode: vertical-rl;
+    }
+  }
+
+  /* --- Texture de papier ---------------------------------------------------
+     Le grain générique en fondu « overlay » lit mal sur du clair. Sur le
+     registre papier on passe à une trame fibreuse en multiplication.         */
+  .registre-papier {
+    position: relative;
+  }
+
+  .registre-papier::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.35' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23f)' opacity='0.11'/%3E%3C/svg%3E");
+  }
+
+  .registre-papier > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marque-trait {
+    transition: none;
+  }
+
+  .distribution-vignette {
+    transition: none;
   }
 }

@@ -1,29 +1,26 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Bouton } from "@/components/Bouton";
 import { Photo } from "@/components/Photo";
 import { Poursuite } from "@/components/Poursuite";
 import { PlanLent } from "@/components/PlanLent";
 import { Bande } from "@/components/Bande";
 import { Defilant } from "@/components/Defilant";
-import {
-  Apparition,
-  Compteur,
-  FiletTrace,
-  TitreLeve,
-} from "@/components/Apparition";
+import { Apparition, Compteur, TitreLeve } from "@/components/Apparition";
 import { Citation, Section } from "@/components/Mise";
-import { disciplines, repertoire } from "@/content/disciplines";
-import { alumni, chiffresFormation, indicateurs } from "@/content/alumni";
+import { Marque } from "@/components/Marque";
+import { Distribution } from "@/components/Distribution";
+import { nomComplet } from "@/content/equipe";
+import { disciplines, feuilleFormation, repertoire } from "@/content/disciplines";
+import { alumni, indicateurs } from "@/content/alumni";
 import { spectacles } from "@/content/spectacles";
 import { agenda, libelleType, periode } from "@/lib/agenda";
-import { photo, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const revalidate = 3600;
 
-/* Le trajet d'une soirée : on entre par le noir, on lit son programme sur du
+/* Le trajet d’une soirée : on entre par le noir, on lit son programme sur du
    papier, la lumière retombe sur les affiches, on relit, et le noir revient
-   pour l'appel. Chaque bascule de registre est un effet en soi. */
+   pour l’appel. Chaque bascule de registre est un effet en soi. */
 
 export default function Accueil() {
   const { prochain } = agenda();
@@ -35,7 +32,7 @@ export default function Accueil() {
       {/* ═══ NOIR ═══ Le plateau ════════════════════════════════════════════
           Une photo prise deux fois : à froid dessous, en pleine lumière
           dessus, découpée par une poursuite que le visiteur déplace. On
-          n'explique pas ce qu'est une école de théâtre — on met quelqu'un
+          n’explique pas ce qu’est une école de théâtre — on met quelqu’un
           derrière le projecteur.
          ════════════════════════════════════════════════════════════════════ */}
       <section className="registre-salle relative flex min-h-[94svh] items-end overflow-hidden">
@@ -112,71 +109,87 @@ export default function Accueil() {
 
       <Defilant mots={repertoire} vitesse={68} />
 
-      <Section className="!py-20 md:!py-24">
-        <FiletTrace />
-        <div className="grid gap-12 py-14 sm:grid-cols-3 sm:gap-8">
-          {chiffresFormation.map((c, i) => (
-            <Apparition key={c.libelle} delai={i * 110}>
-              <p className="font-display text-[length:var(--text-4xl)] leading-none text-accent">
-                <Compteur valeur={c.nombre} />
-                <span className="ml-2 text-[length:var(--text-xl)] text-texte">
-                  {c.unite}
-                </span>
-              </p>
-              <p className="mt-4 font-sans text-sm text-texte">{c.libelle}</p>
+      {/* La feuille de service. C’était une rangée de trois grands chiffres
+          centrés — le réflexe exact d’une machine à qui l’on donne trois
+          données. C’est maintenant un document de travail : six lignes, des
+          colonnes, des notes en marge. Plus dense, plus vrai, et on peut y
+          ajouter une ligne sans casser la composition. */}
+      <Section className="!pb-16 !pt-20 md:!pt-24">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <p className="marge-numero">Feuille de service</p>
+            <p className="surtitre">Le cursus en chiffres</p>
+            <p className="prose-etl mt-5">
+              Rien d’extraordinaire là-dedans : ce sont les volumes réels, ceux
+              qui figurent sur la plaquette. Nous les mettons ici parce que
+              c’est la première chose qu’on veut savoir avant de s’engager trois
+              ans.
+            </p>
+          </div>
+
+          <div className="lg:col-span-8">
+            <Apparition>
+              <dl className="feuille">
+                {feuilleFormation.map((l) => (
+                  <div key={l.libelle} className="feuille-ligne">
+                    <dt className="feuille-valeur">
+                      {l.valeur}
+                      <span className="ml-1.5 text-[length:var(--text-sm)] text-texte-sourd">
+                        {l.unite}
+                      </span>
+                    </dt>
+                    <dd className="feuille-libelle">{l.libelle}</dd>
+                    <dd className="feuille-note">{l.note}</dd>
+                  </div>
+                ))}
+              </dl>
             </Apparition>
-          ))}
+          </div>
         </div>
-        <FiletTrace />
       </Section>
 
-      {/* Les disciplines, en notices de programme : vignette, titre, filet. */}
+      {/* La distribution. C’était une grille de six cartes — le réflexe d’une
+          machine à qui l’on demande de présenter six choses. C’est maintenant
+          la forme la plus reconnaissable du théâtre imprimé : nom à gauche,
+          mention à droite, points de conduite entre les deux. La vignette sort
+          de la gouttière au survol : c’est le débord de la page. */}
       <Section id="disciplines" registre="creme">
-        <div className="max-w-3xl">
-          <p className="surtitre">Ce qu’on y travaille</p>
-          <TitreLeve
-            className="mt-5 text-[length:var(--text-3xl)]"
-            lignes={[
-              "Six disciplines, trois ans,",
-              "une seule méthode : le plateau",
-            ]}
-          />
-          <p className="prose-etl mt-6">
-            Stanislavski, Grotowski, le travail avec le partenaire, la création
-            de la mise en scène par le plateau. Les élèves apprennent en jouant,
-            pas en écoutant.
-          </p>
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <p className="surtitre">Ce qu’on y travaille</p>
+            <TitreLeve
+              className="mt-5 text-[length:var(--text-3xl)]"
+              lignes={["Six disciplines, trois ans,", "une seule méthode :"]}
+            />
+            {/* Le mot entouré au crayon — une seule marque dans cet écran. */}
+            <span className="porte-marque mt-1 inline-block font-display text-[length:var(--text-3xl)] leading-none">
+              le plateau
+              <Marque
+                forme="cercle"
+                bascule={-1.5}
+                delai={420}
+                className="marque-sur -left-[7%] -top-[26%] w-[118%]"
+              />
+            </span>
+            <p className="prose-etl mt-7">
+              Stanislavski, Grotowski, le travail avec le partenaire, la
+              création de la mise en scène par le plateau. Quatre-vingt-quinze
+              pour cent du temps, les élèves sont debout.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {disciplines.map((d, i) => (
-            <Apparition key={d.slug} delai={i * 70}>
-              <Link href={`/la-formation/${d.slug}`} className="notice group block">
-                {d.photo && (
-                  <span className="notice-vignette block">
-                    <Image
-                      src={photo(d.photo, { w: 800, h: 500 })}
-                      alt=""
-                      aria-hidden
-                      width={800}
-                      height={500}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </span>
-                )}
-                <span className="surtitre surtitre-sourd mt-5 block">
-                  {d.annees}
-                </span>
-                <span className="mt-2 block font-display text-[length:var(--text-xl)] leading-tight transition-colors group-hover:text-accent">
-                  {d.titre}
-                </span>
-                <span className="mt-3 block font-sans text-sm text-texte-doux">
-                  {d.accroche}
-                </span>
-                <span className="notice-filet mt-5 block" aria-hidden />
-              </Link>
-            </Apparition>
-          ))}
+        <div className="mt-14">
+          <Distribution
+            lignes={disciplines.map((d) => ({
+              slug: d.slug,
+              titre: d.titre,
+              mention: d.annees,
+              second: d.intervenants.map(nomComplet).join(" · "),
+              photo: d.photo,
+              href: `/la-formation/${d.slug}`,
+            }))}
+          />
         </div>
 
         <div className="mt-12">
@@ -186,9 +199,9 @@ export default function Accueil() {
         </div>
       </Section>
 
-      {/* ═══ NOIR ═══ Le mur d'affiches ════════════════════════════════════
+      {/* ═══ NOIR ═══ Le mur d’affiches ════════════════════════════════════
           Le défilement vertical fait avancer quinze ans de spectacles à
-          l'horizontale. C'est le moment où le site cesse d'être une page.
+          l’horizontale. C’est le moment où le site cesse d’être une page.
          ════════════════════════════════════════════════════════════════════ */}
       <section className="registre-salle py-[var(--spacing-section)]">
         <div className="enveloppe mb-4">
@@ -206,7 +219,7 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* ═══ PAPIER ═══ Après l'école ══════════════════════════════════════ */}
+      {/* ═══ PAPIER ═══ Après l’école ══════════════════════════════════════ */}
       <Section surtitre="Après l’école">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
@@ -247,37 +260,69 @@ export default function Accueil() {
         </div>
       </Section>
 
-      <Section
-        registre="creme"
-        surtitre="Nos résultats"
-        titre="Ce que deviennent nos élèves"
-      >
-        <FiletTrace />
-        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-4">
-          {indicateurs.map((ind, i) => (
-            <Apparition key={ind.libelle} delai={i * 100}>
-              <p className="font-display text-[length:var(--text-4xl)] leading-none text-accent">
-                <Compteur valeur={parseInt(ind.valeur, 10)} suffixe=" %" />
-              </p>
-              <p className="mt-4 font-sans text-sm text-texte">{ind.libelle}</p>
-              {ind.precision && (
-                <p className="mt-1 font-sans text-xs text-texte-sourd">
-                  {ind.precision}
-                </p>
-              )}
-            </Apparition>
-          ))}
-        </div>
-        <FiletTrace />
+      {/* Les résultats. C’était quatre grands pourcentages en ligne — la même
+          rangée, une troisième fois. Un seul chiffre domine maintenant, entouré
+          au crayon, et les trois autres passent en feuille. Une hiérarchie, pas
+          un alignement. */}
+      <Section registre="creme">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <p className="surtitre">Nos résultats</p>
+            <p className="porte-marque mt-8 inline-block font-display text-[length:var(--text-5xl)] leading-none text-accent">
+              <Compteur valeur={100} suffixe=" %" />
+              <Marque
+                forme="cercle"
+                bascule={2}
+                delai={600}
+                className="marque-sur -left-[12%] -top-[24%] w-[126%]"
+              />
+            </p>
+            <p className="mt-7 max-w-sm font-display text-[length:var(--text-xl)] leading-tight">
+              des élèves de la promotion 2022-2025 se sont professionnalisés
+              dans les six mois.
+            </p>
+            <p className="mt-4 max-w-sm font-sans text-sm text-texte-sourd">
+              Sur une promotion de vingt, ce sont vingt parcours suivis un par
+              un — pas une statistique de masse. Sept d’entre eux racontent le
+              leur sur ce site, nommément.
+            </p>
+            <div className="mt-9">
+              <Bouton href="/l-ecole/resultats" variante="fantome">
+                Le détail des enquêtes
+              </Bouton>
+            </div>
+          </div>
 
-        <div className="mt-12">
-          <Bouton href="/l-ecole/resultats" variante="fantome">
-            Le détail des enquêtes
-          </Bouton>
+          <div className="lg:col-span-6 lg:col-start-7 lg:pt-4">
+            <Apparition>
+              <dl className="feuille">
+                {indicateurs.slice(1).map((ind) => (
+                  <div key={ind.libelle} className="feuille-ligne">
+                    <dt className="feuille-valeur">{ind.valeur}</dt>
+                    <dd className="feuille-libelle">{ind.libelle}</dd>
+                    <dd className="feuille-note">{ind.precision}</dd>
+                  </div>
+                ))}
+                <div className="feuille-ligne">
+                  <dt className="feuille-valeur">2</dt>
+                  <dd className="feuille-libelle">
+                    Anciennes admises à l’ENSATT et à l’École Nationale de
+                    Théâtre du Canada
+                  </dd>
+                  <dd className="feuille-note">promotions 2023 et 2025</dd>
+                </div>
+              </dl>
+              <p className="mt-6 font-sans text-xs text-texte-sourd">
+                Indicateurs publiés au titre de la certification Qualiopi.
+                Enquête de satisfaction 2025-2026, enquête d’insertion sur la
+                promotion 2022-2025.
+              </p>
+            </Apparition>
+          </div>
         </div>
       </Section>
 
-      {/* ═══ NOIR ═══ L'appel ══════════════════════════════════════════════ */}
+      {/* ═══ NOIR ═══ L’appel ══════════════════════════════════════════════ */}
       <section className="registre-salle relative overflow-hidden border-y border-filet">
         <PlanLent intensite={0.12} className="absolute inset-0 -z-20 scale-110">
           <Poursuite className="size-full">
@@ -319,7 +364,15 @@ export default function Accueil() {
               savoir comment vous jouez et pourquoi vous voulez faire ce métier.
               Le reste, on vous l’apprend.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            {/* La flèche de marge : le geste du metteur en scène qui désigne
+                la ligne qui compte. Une seule par écran. */}
+            <div className="relative mt-10 flex flex-wrap items-center gap-4">
+              <Marque
+                forme="fleche"
+                bascule={8}
+                delai={500}
+                className="pointer-events-none absolute -left-24 -top-8 hidden w-20 xl:block"
+              />
               <Bouton href="/candidater">Voir les conditions d’admission</Bouton>
               <Bouton
                 href="/candidater/portes-ouvertes"
